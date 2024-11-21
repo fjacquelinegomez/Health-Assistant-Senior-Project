@@ -1,0 +1,14 @@
+[{
+  "_id": {
+    "full_name": "Giovanna Ruiz",
+    "phone": "424-376-4112",
+    "email": "giovanna.ruiz@student.csulb.edu",
+    "gender": "female",
+    "dob": "2002-03-19T00:00:00.000+00:00",
+    "account": {
+      "username": "gioru",
+      "password": "hello123",
+      "passcode": "123"
+    }
+  }
+}]

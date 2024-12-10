@@ -1,14 +1,15 @@
-# Ignore all files not relevant to Android Studio
-.idea/
-.gradle/
-build/
 *.iml
-
-# Example: Exclude VSCode-specific files
-.vscode/
-*.code-workspace
-node_modules/
-
-# Exclude OS-specific files
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
 .DS_Store
-Thumbs.db
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties

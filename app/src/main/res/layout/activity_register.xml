@@ -6,93 +6,101 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FBE2E2"
-    tools:context=".LoginActivity">
+    tools:context=".RegisterActivity">
 
 
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="136dp"
-        android:layout_height="200dp"
+    <Button
+        android:id="@+id/next_button"
+        android:layout_width="306dp"
+        android:layout_height="56dp"
+        android:background="@android:color/black"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Next"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/medicalsupport" />
+        app:layout_constraintVertical_bias="0.703" />
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="306dp"
-        android:layout_height="71dp"
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
-        android:padding="10dp"
-        android:text="Log In"
-        android:textAlignment="center"
+        android:text="Registration"
         android:textColor="@color/black"
-        android:textSize="34sp"
+        android:textSize="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.053" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.12" />
 
     <EditText
-        android:id="@+id/editTextTextEmailAddress"
-        android:layout_width="341dp"
+        android:id="@+id/editTextText"
+        android:layout_width="306dp"
         android:layout_height="60dp"
         android:background="#FFFFFF"
         android:ems="10"
         android:fontFamily="@font/poppins_medium"
-        android:inputType="textEmailAddress"
-        android:padding="15dp"
-        android:hint="Email"
-        android:textSize="20sp"
+        android:hint="Full Name"
+        android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:padding="15dp"
+        app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.089" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.255" />
+
+    <EditText
+        android:id="@+id/editTextTextEmailAddress"
+        android:layout_width="306dp"
+        android:layout_height="60dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:fontFamily="@font/poppins_medium"
+        android:hint="Email"
+        android:padding="15dp"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.518"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.391" />
 
     <EditText
         android:id="@+id/editTextTextPassword"
-        android:layout_width="341dp"
+        android:layout_width="306dp"
         android:layout_height="60dp"
         android:background="#FFFFFF"
+        android:padding="15dp"
         android:ems="10"
         android:fontFamily="@font/poppins_medium"
         android:hint="Password"
         android:inputType="textPassword"
-        android:padding="15dp"
-        android:textSize="20sp"
-        app:passwordToggleEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress"
-        app:layout_constraintVertical_bias="0.08" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.542" />
 
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="340dp"
-        android:layout_height="67dp"
-        android:backgroundTint="@color/black"
-        android:fontFamily="@font/poppins_bold"
-        android:text="LOG IN"
-        android:textColor="#ffffff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
-        app:layout_constraintVertical_bias="0.128" />
-
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
 
     <ImageButton
         android:id="@+id/back_button"
-        android:layout_width="59dp"
+        android:layout_width="52dp"
         android:layout_height="48dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Back"

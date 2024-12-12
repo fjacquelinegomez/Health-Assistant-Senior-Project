@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private Button login_btn;
+    private Button register_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //logic for once the user presses the register button
+        register_btn=findViewById(R.id.register_button);
+        register_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,RegisterActivity.class);
                 startActivity(intent);
             }
         });

@@ -1,7 +1,9 @@
 package com.example.healthassistant;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
@@ -13,6 +15,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private Button login_btn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,16 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 finish();
+            }
+        });
+
+        //logic for once the user presses the next button
+        login_btn=findViewById(R.id.button5);
+        login_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(LoginActivity.this,Homescreen.class);
+                startActivity(intent);
             }
         });
 

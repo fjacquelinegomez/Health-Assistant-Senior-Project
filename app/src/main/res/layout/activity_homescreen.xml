@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:background="#FBE2E2"
+    android:layout_height="match_parent"
+    tools:context=".Homescreen">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/topCard"
+        android:layout_width="412dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="-50dp"
+        app:cardBackgroundColor="#FFDCD5"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/helloText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Hello"
+                android:textColor="#000000"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.084"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.431" />
+
+            <!-- TODO: Make this dyanmic based off user's input -->
+            <TextView
+                android:id="@+id/nameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Fernanda"
+                android:textColor="#000000"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.101"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.642" />
+
+            <TextView
+                android:id="@+id/questionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="How can we help you today?"
+                android:textColor="#50555C"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.183"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.876" />
+
+            <ImageButton
+                android:id="@+id/userProfileButton"
+                android:layout_width="95dp"
+                android:layout_height="65dp"
+                android:background="#FFDCD5"
+                android:contentDescription="User Profile"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.99"
+                app:layout_constraintStart_toEndOf="@+id/helloText"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.429"
+                app:srcCompat="@drawable/user_profile_icon" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/medicationPlanText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Today's Medication Plan"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.149"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topCard"
+        app:layout_constraintVertical_bias="0.032" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/medicationPlanCard"
+        android:layout_width="357dp"
+        android:layout_height="135dp"
+        app:cardBackgroundColor="#E2E2E2"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medicationPlanText"
+        app:layout_constraintVertical_bias="0.031" />
+
+    <TextView
+        android:id="@+id/recommendedFoodText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Recommended Food Options"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.198"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medicationPlanCard"
+        app:layout_constraintVertical_bias="0.046" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/recommendedFoodCard"
+        android:layout_width="357dp"
+        android:layout_height="135dp"
+        app:cardBackgroundColor="#F1E1EF"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recommendedFoodText"
+        app:layout_constraintVertical_bias="0.04" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/symptomLogsCard"
+        android:layout_width="104dp"
+        android:layout_height="90dp"
+        app:cardBackgroundColor="#FF9EB1"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/appointmentReminderCard"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recommendedFoodCard"
+        app:layout_constraintVertical_bias="0.138" >
+
+        <ImageButton
+            android:id="@+id/symptomLogsButton"
+            android:layout_width="104dp"
+            android:layout_height="90dp"
+            android:background="#FF9EB1"
+            android:contentDescription="Log Symptom"
+            app:srcCompat="@drawable/symptom_log_icon"
+            tools:layout_editor_absoluteX="56dp"
+            tools:layout_editor_absoluteY="595dp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/appointmentReminderCard"
+        android:layout_width="104dp"
+        android:layout_height="90dp"
+        app:cardBackgroundColor="#B8ECBC"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sleepLogsCard"
+        app:layout_constraintHorizontal_bias="0.857"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recommendedFoodCard"
+        app:layout_constraintVertical_bias="0.138" >
+
+        <ImageButton
+            android:id="@+id/appointmentReminderButton"
+            android:layout_width="110dp"
+            android:layout_height="90dp"
+            android:background="#B8ECBC"
+            android:contentDescription="Appt Reminder"
+            app:srcCompat="@drawable/create_appointment_reminder_icon"
+            tools:layout_editor_absoluteX="56dp"
+            tools:layout_editor_absoluteY="595dp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/sleepLogsCard"
+        android:layout_width="104dp"
+        android:layout_height="90dp"
+        app:cardBackgroundColor="#73BEE9"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.944"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recommendedFoodCard"
+        app:layout_constraintVertical_bias="0.138" >
+
+        <ImageButton
+            android:id="@+id/sleepLogsButton"
+            android:layout_width="105dp"
+            android:layout_height="90dp"
+            android:background="#73BEE9"
+            android:contentDescription="Log sleep"
+            app:srcCompat="@drawable/sleep_log_icon"
+            tools:layout_editor_absoluteX="56dp"
+            tools:layout_editor_absoluteY="595dp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/bottomBar"
+        android:layout_width="355dp"
+        android:layout_height="63dp"
+        app:cardBackgroundColor="#FFDCD5"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appointmentReminderCard"
+        app:layout_constraintVertical_bias="0.815">
+
+
+        <ImageButton
+            android:id="@+id/searchButton"
+            android:layout_width="71dp"
+            android:layout_height="match_parent"
+            android:background="#FFDCD5"
+            android:contentDescription="Search"
+            app:srcCompat="@drawable/search_icon"
+            android:layout_marginStart="35dp" />
+
+        <ImageButton
+            android:id="@+id/foodManagerButton"
+            android:layout_width="71dp"
+            android:layout_height="match_parent"
+            android:contentDescription="Food Manager"
+            android:background="#FFDCD5"
+            app:srcCompat="@drawable/food_manager_icon"
+            android:layout_marginStart="105dp" />
+
+        <ImageButton
+            android:id="@+id/healthGoalsButton"
+            android:layout_width="71dp"
+            android:layout_height="match_parent"
+            android:background="#FFDCD5"
+            android:contentDescription="Health Goals"
+            app:srcCompat="@drawable/health_goals_icon"
+            android:layout_marginStart="175dp" />
+
+        <ImageButton
+            android:id="@+id/medicationManagerButton"
+            android:layout_width="71dp"
+            android:layout_height="match_parent"
+            android:contentDescription="Medication "
+            android:background="#FFDCD5"
+            app:srcCompat="@drawable/medication_manager_icon"
+            android:layout_marginStart="245dp" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/symptomLogsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:text="Log a Symptom"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/bottomBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.092"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/symptomLogsCard"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <TextView
+        android:id="@+id/appointmentReminderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:text="Create an\nAppointment \nReminder"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/bottomBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appointmentReminderCard"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <TextView
+        android:id="@+id/sleepLogsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:text="Log Your Sleep"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/bottomBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.932"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sleepLogsCard"
+        app:layout_constraintVertical_bias="0.2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

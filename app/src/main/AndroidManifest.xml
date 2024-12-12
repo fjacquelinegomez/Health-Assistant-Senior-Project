@@ -13,6 +13,33 @@
         android:theme="@style/Theme.HealthAssistant"
         tools:targetApi="31">
         <activity
+            android:name=".SymptomLogs"
+            android:exported="false" />
+        <activity
+            android:name=".SleepLogs"
+            android:exported="false" />
+        <activity
+            android:name=".Settings"
+            android:exported="false" />
+        <activity
+            android:name=".Search"
+            android:exported="false" />
+        <activity
+            android:name=".MedicationManager"
+            android:exported="false" />
+        <activity
+            android:name=".HealthGoals"
+            android:exported="false" />
+        <activity
+            android:name=".FoodManager"
+            android:exported="false" />
+        <activity
+            android:name=".Appointments"
+            android:exported="false" />
+        <activity
+            android:name=".Homescreen"
+            android:exported="false" />
+        <activity
             android:name=".RegisterActivity2"
             android:exported="false" />
         <activity

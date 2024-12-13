@@ -1,0 +1,134 @@
+[
+    {
+        "merged": "com.example.myapplication.app-debug-31:/xml_backup_rules.xml.flat",
+        "source": "com.example.myapplication.app-main-33:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.myapplication.app-main-33:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.myapplication.app-main-33:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.myapplication.app-main-33:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/layout_activity_food_manager.xml.flat",
+        "source": "com.example.myapplication.app-main-33:/layout/activity_food_manager.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.example.myapplication.app-main-33:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.example.myapplication.app-main-33:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.example.myapplication.app-main-33:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/layout_activity_homescreen.xml.flat",
+        "source": "com.example.myapplication.app-main-33:/layout/activity_homescreen.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/layout_activity_symptom_logs.xml.flat",
+        "source": "com.example.myapplication.app-main-33:/layout/activity_symptom_logs.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.example.myapplication.app-main-33:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.myapplication.app-main-33:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/layout_activity_health_goals.xml.flat",
+        "source": "com.example.myapplication.app-main-33:/layout/activity_health_goals.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/xml_data_extraction_rules.xml.flat",
+        "source": "com.example.myapplication.app-main-33:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/drawable_food_manager_icon.png.flat",
+        "source": "com.example.myapplication.app-main-33:/drawable/food_manager_icon.png"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/drawable_sleep_log_icon.png.flat",
+        "source": "com.example.myapplication.app-main-33:/drawable/sleep_log_icon.png"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.example.myapplication.app-main-33:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/drawable_create_appointment_reminder_icon.png.flat",
+        "source": "com.example.myapplication.app-main-33:/drawable/create_appointment_reminder_icon.png"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.myapplication.app-main-33:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/drawable_symptom_log_icon.png.flat",
+        "source": "com.example.myapplication.app-main-33:/drawable/symptom_log_icon.png"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/drawable_medication_manager_icon.png.flat",
+        "source": "com.example.myapplication.app-main-33:/drawable/medication_manager_icon.png"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/drawable_health_goals_icon.png.flat",
+        "source": "com.example.myapplication.app-main-33:/drawable/health_goals_icon.png"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/layout_activity_settings.xml.flat",
+        "source": "com.example.myapplication.app-main-33:/layout/activity_settings.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/layout_activity_appointments.xml.flat",
+        "source": "com.example.myapplication.app-main-33:/layout/activity_appointments.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.myapplication.app-main-33:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.myapplication.app-main-33:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/drawable_search_icon.png.flat",
+        "source": "com.example.myapplication.app-main-33:/drawable/search_icon.png"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/drawable_user_profile_icon.png.flat",
+        "source": "com.example.myapplication.app-main-33:/drawable/user_profile_icon.png"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/layout_activity_sleep_logs.xml.flat",
+        "source": "com.example.myapplication.app-main-33:/layout/activity_sleep_logs.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.example.myapplication.app-main-33:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/layout_activity_medication_manager.xml.flat",
+        "source": "com.example.myapplication.app-main-33:/layout/activity_medication_manager.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.example.myapplication.app-main-33:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-31:/layout_activity_search.xml.flat",
+        "source": "com.example.myapplication.app-main-33:/layout/activity_search.xml"
+    }
+]

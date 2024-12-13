@@ -25,14 +25,19 @@ public class Settings extends AppCompatActivity {
         });
 
         Button back = findViewById(R.id.settingsBackButton);
+        Button signOut = findViewById(R.id.signOutButton);
         View.OnClickListener buttonClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.settingsBackButton) {
                     startActivity(new Intent(Settings.this, Homescreen.class));
+                } else if (v.getId() == R.id.signOutButton) {
+                    startActivity(new Intent(Settings.this, MainActivity.class));
                 }
             }
         };
         back.setOnClickListener(buttonClickListener);
+        signOut.setOnClickListener(buttonClickListener);
+
     }
 }

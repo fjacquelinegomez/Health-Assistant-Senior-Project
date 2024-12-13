@@ -1,7 +1,9 @@
 package com.example.healthassistant;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
@@ -27,6 +29,17 @@ public class RegisterActivity2 extends AppCompatActivity {
                 finish();
             }
         });
+
+        Button signUp = findViewById(R.id.signUpButton);
+        View.OnClickListener buttonClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v.getId() == R.id.signUpButton) {
+                    startActivity(new Intent(RegisterActivity2.this, Homescreen.class));
+                }
+            }
+        };
+        signUp.setOnClickListener(buttonClickListener);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

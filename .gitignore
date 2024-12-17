@@ -1,0 +1,14 @@
+# Ignore all files not relevant to Android Studio
+.idea/
+.gradle/
+build/
+*.iml
+
+# Example: Exclude VSCode-specific files
+.vscode/
+*.code-workspace
+node_modules/
+
+# Exclude OS-specific files
+.DS_Store
+Thumbs.db

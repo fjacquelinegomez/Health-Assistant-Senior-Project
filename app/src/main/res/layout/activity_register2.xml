@@ -9,6 +9,23 @@
     tools:context=".RegisterActivity2">
 
     <EditText
+        android:id="@+id/editTextTextText"
+        android:layout_width="306dp"
+        android:layout_height="60dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:fontFamily="@font/poppins_medium"
+        android:hint="Full Name"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="15dp"
+        app:layout_constraintHorizontal_bias="0.518"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.255" />
+
+    <EditText
         android:id="@+id/editTextText"
         android:layout_width="341dp"
         android:layout_height="60dp"

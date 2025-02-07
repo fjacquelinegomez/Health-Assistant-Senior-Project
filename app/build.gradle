@@ -27,6 +27,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -49,6 +52,9 @@ dependencies {
     // Add the dependency for the Realtime Database library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-database")
+
+    implementation 'com.google.android.material:material:1.12.0'
+
 
 
 

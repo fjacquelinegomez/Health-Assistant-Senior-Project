@@ -1,69 +1,55 @@
 package com.example.healthassistant;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.healthassistant.databinding.ActivityHomescreenBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+
 public class Homescreen extends AppCompatActivity {
+
+    ActivityHomescreenBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_homescreen);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        binding = ActivityHomescreenBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-
-        ImageButton search = findViewById(R.id.searchButton);
-        ImageButton foodManager = findViewById(R.id.foodManagerButton);
-        ImageButton healthGoals = findViewById(R.id.healthGoalsButton);
-        ImageButton medicationManager = findViewById(R.id.medicationManagerButton);
-        ImageButton symptomLogs = findViewById(R.id.symptomLogsButton);
-        ImageButton appointments = findViewById(R.id.appointmentReminderButton);
-        ImageButton sleepLogs = findViewById(R.id.sleepLogsButton);
-        ImageButton settings = findViewById(R.id.userProfileButton);
-
-        View.OnClickListener buttonClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.searchButton) {
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.home:
+                    startActivity(new Intent(Homescreen.this, Homescreen.class));
+                    break;
+                case R.id.searchMedication:
                     startActivity(new Intent(Homescreen.this, Search.class));
-                } else if (v.getId() == R.id.foodManagerButton) {
+                    break;
+                case R.id.foodManager:
                     startActivity(new Intent(Homescreen.this, FoodManager.class));
-                } else if (v.getId() == R.id.healthGoalsButton) {
+                    break;
+                case R.id.healthGoals:
                     startActivity(new Intent(Homescreen.this, HealthGoals.class));
-                } else if (v.getId() == R.id.medicationManagerButton) {
+                    break;
+                case R.id.medicationManager:
                     startActivity(new Intent(Homescreen.this, MedicationManager.class));
-                } else if (v.getId() == R.id.symptomLogsButton) {
-                    startActivity(new Intent(Homescreen.this, SymptomLogs.class));
-                } else if (v.getId() == R.id.appointmentReminderButton) {
-                    startActivity(new Intent(Homescreen.this, Appointments.class));
-                } else if (v.getId() == R.id.sleepLogsButton) {
-                    startActivity(new Intent(Homescreen.this, SleepLogs.class));
-                } else if (v.getId() == R.id.userProfileButton) {
-                    startActivity(new Intent(Homescreen.this, Settings.class));
-                }
+                    break;
             }
-        };
-
-        search.setOnClickListener(buttonClickListener);
-        foodManager.setOnClickListener(buttonClickListener);
-        healthGoals.setOnClickListener(buttonClickListener);
-        medicationManager.setOnClickListener(buttonClickListener);
-        symptomLogs.setOnClickListener(buttonClickListener);
-        appointments.setOnClickListener(buttonClickListener);
-        sleepLogs.setOnClickListener(buttonClickListener);
-        settings.setOnClickListener(buttonClickListener);
+            return false;
+        });
     }
 }

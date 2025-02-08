@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -38,6 +39,14 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
 
+        TextView signUpRedirectButton = findViewById(R.id.signUpRedirect);
+        signUpRedirectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+            }
+        });
+
         ImageButton backbutton = findViewById(R.id.back_button);
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         logInPassword = findViewById(R.id.logInPassword);
 
         //logic for once the user presses the next button
-        Button login_btn = findViewById(R.id.button5);
+        Button login_btn = findViewById(R.id.logInButton);
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

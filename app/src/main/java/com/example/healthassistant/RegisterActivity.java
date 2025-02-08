@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -49,6 +50,14 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        TextView logInRedirectButton = findViewById(R.id.logInRedirect);
+        logInRedirectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            }
+        });
+
         //logic for once the user presses the next button
         Button next_btn = findViewById(R.id.nextButton);
         next_btn.setOnClickListener(new View.OnClickListener() {
@@ -76,10 +85,6 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     });
                 }
-                /*
-                Intent intent=new Intent(RegisterActivity.this,RegisterActivity2.class);
-                startActivity(intent);
-                 */
             }
         });
     }

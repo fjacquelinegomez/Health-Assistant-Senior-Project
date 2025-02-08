@@ -1,7 +1,9 @@
 package com.example.healthassistant;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
@@ -25,6 +27,14 @@ public class RegisterActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 finish();
+            }
+        });
+
+        Button signUp_btn = findViewById(R.id.signUpButton);
+        signUp_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(RegisterActivity2.this, Homescreen.class));
             }
         });
 

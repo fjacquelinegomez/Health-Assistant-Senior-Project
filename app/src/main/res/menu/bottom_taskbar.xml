@@ -6,7 +6,6 @@
         android:id="@+id/home"
         android:title="Home"
         android:icon="@drawable/home"
-        android:insetBottom="10dp"
         />
     <item
         android:id="@+id/searchMedication"

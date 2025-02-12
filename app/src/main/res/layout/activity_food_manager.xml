@@ -93,188 +93,117 @@
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintVertical_bias="0.75"
         app:layout_constraintWidth_percent="0.9"
-        app:layout_constraintHeight_percent="0.07"
-        >
+        app:layout_constraintHeight_percent="0.07">
 
-<LinearLayout
-
-    android:id="@+id/weekLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-        <Button
-            android:id="@+id/mondayButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@android:color/white"
-            android:fontFamily="@font/poppins_medium"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            android:text="Mon"
-            android:textAllCaps="false"
-            android:textSize="17dp"
-            app:layout_constraintWidth_percent="0.9"
-            android:layout_weight="1"
-
-            />
-        <Button
-            android:id="@+id/tuesdayButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@android:color/white"
-            android:fontFamily="@font/poppins_medium"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            android:text="Tue"
-            android:textAllCaps="false"
-            android:textSize="17dp"
-            android:layout_weight="1"/>
-        <Button
-            android:id="@+id/wednesdayButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@android:color/white"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            android:text="Wed"
-            android:textAllCaps="false"
-            android:textSize="17dp"
-            android:layout_weight="1"
-            />
-
-        <Button
-            android:id="@+id/thursdayButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@android:color/white"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            android:text="Thu"
-            android:textAllCaps="false"
-            android:textSize="17dp"
-            android:layout_weight="1"
-            />
-
-        <Button
-            android:id="@+id/fridayButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@android:color/white"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            android:text="Fri"
-            android:textAllCaps="false"
-            android:textSize="17dp"
-            android:layout_weight="1"/>
-
-        <Button
-            android:id="@+id/saturdayButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@android:color/white"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            android:text="Sat"
-            android:textAllCaps="false"
-            android:textSize="17dp"
-            android:layout_weight="1"/>
-
-        <Button
-            android:id="@+id/sundayButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@android:color/white"
-            android:bottomLeftRadius="10dp"
-            android:bottomRightRadius="50dp"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            android:text="Sun"
-            android:textAllCaps="false"
-            android:textSize="17sp"
-            android:topLeftRadius="10dp"
-            android:topRightRadius="10dp"
-            android:layout_weight="1"/>
-
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/weekLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/mondayButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="@android:color/white"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:text="Mon"
+                android:textAllCaps="false"
+                android:textSize="17dp"
+                app:layout_constraintWidth_percent="0.9"
+                android:layout_weight="1" />
+            <Button
+                android:id="@+id/tuesdayButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="@android:color/white"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:text="Tue"
+                android:textAllCaps="false"
+                android:textSize="17dp"
+                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/wednesdayButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="@android:color/white"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:text="Wed"
+                android:textAllCaps="false"
+                android:textSize="17dp"
+                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/thursdayButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="@android:color/white"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:text="Thu"
+                android:textAllCaps="false"
+                android:textSize="17dp"
+                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/fridayButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="@android:color/white"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:text="Fri"
+                android:textAllCaps="false"
+                android:textSize="17dp"
+                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/saturdayButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="@android:color/white"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:text="Sat"
+                android:textAllCaps="false"
+                android:textSize="17dp"
+                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/sundayButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="@android:color/white"
+                android:bottomLeftRadius="10dp"
+                android:bottomRightRadius="50dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:text="Sun"
+                android:textAllCaps="false"
+                android:textSize="17sp"
+                android:topLeftRadius="10dp"
+                android:topRightRadius="10dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
-
-    <!--
-    <androidx.cardview.widget.CardView
-        android:id="@+id/recommendedCard"
-        android:layout_width="350dp"
-        android:layout_height="150dp"
-        app:cardBackgroundColor="#F1E1EF"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.344"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recommendedText"
-        app:layout_constraintVertical_bias="0.0">
-
-        <ImageButton
-            android:id="@+id/addButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="65dp"
-            android:background="@drawable/add_grey" />
-
-        <ImageButton
-            android:id="@+id/dislikeButtonRecommended"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="305dp"
-            android:layout_marginTop="65dp"
-            android:background="@drawable/dislike"
-            android:scaleX="-1" />
-
-        <ImageButton
-            android:id="@+id/likeButtonRecommended"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="265dp"
-            android:layout_marginTop="65dp"
-            android:background="@drawable/like"
-            android:scaleX="-1" />
-
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/recommendedText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Today's Food Recommendations"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.269"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eatenCard"
-        app:layout_constraintVertical_bias="0.0" />
--->
-
+<!--gravity center, centers block, not text-->
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="start"
+        android:layout_gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.609"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.33"
+        app:layout_constraintVertical_bias="0.3"
         app:layout_constraintWidth_percent="0.9">
 
         <TextView
@@ -284,14 +213,13 @@
             android:fontFamily="@font/poppins_medium"
             android:text="Eaten Today"
             android:textColor="#000000"
-            android:textSize="20sp"
+            android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
-    <!-- RECOMMENDED-->
     <androidx.cardview.widget.CardView
         android:id="@+id/eatenCard"
         android:layout_width="0dp"
@@ -301,11 +229,11 @@
         app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.1"
-        app:layout_constraintHorizontal_bias="0.609"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintWidth_percent="0.9">
+        app:layout_constraintWidth_percent="0.9"
+        android:layout_gravity="center">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -369,13 +297,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="start"
+        android:layout_gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.609"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eatenCard"
-        app:layout_constraintVertical_bias="0.15"
+        app:layout_constraintVertical_bias="0.07"
         app:layout_constraintWidth_percent="0.9">
 
         <TextView
@@ -385,13 +312,13 @@
             android:fontFamily="@font/poppins_medium"
             android:text="Today's Food Recommendations"
             android:textColor="#000000"
-            android:textSize="20sp"
+            android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.073"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/eatenCard"
-            app:layout_constraintVertical_bias="0.1" />
+            app:layout_constraintVertical_bias="0.9" />
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
@@ -403,11 +330,11 @@
         app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.1"
-        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recommendedLayout"
-        app:layout_constraintVertical_bias="0.01"
-        app:layout_constraintWidth_percent="0.9">
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintWidth_percent="0.9"
+        android:layout_gravity="center">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -463,9 +390,6 @@
                     android:scaleX="-1" />
             </LinearLayout>
         </LinearLayout>
-
-
     </androidx.cardview.widget.CardView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

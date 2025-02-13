@@ -204,7 +204,7 @@
             tools:layout_editor_absoluteX="56dp"
             tools:layout_editor_absoluteY="595dp" />
     </androidx.cardview.widget.CardView>
--->
+
     <androidx.cardview.widget.CardView
         android:id="@+id/sleepLogsCard"
         android:layout_width="104dp"
@@ -229,7 +229,7 @@
             tools:layout_editor_absoluteX="56dp"
             tools:layout_editor_absoluteY="595dp" />
     </androidx.cardview.widget.CardView>
-
+-->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"

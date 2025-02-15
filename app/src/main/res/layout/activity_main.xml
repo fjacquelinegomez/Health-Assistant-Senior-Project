@@ -35,12 +35,12 @@
         app:layout_constraintVertical_bias="0.786" />
 
     <Button
-        android:id="@+id/login_button"
+        android:id="@+id/register_button"
         android:layout_width="183dp"
         android:layout_height="50dp"
         android:background="@drawable/button_stroke"
         android:fontFamily="@font/poppins_bold"
-        android:text="LOG IN"
+        android:text="REGISTER"
         android:textColor="#000000"
         android:textColorLink="#FFFFFF"
         app:backgroundTint="#FFFFFF"
@@ -55,13 +55,13 @@
         app:strokeWidth="50dp" />
 
     <Button
-        android:id="@+id/register_button"
+        android:id="@+id/login_button"
         android:layout_width="183dp"
         android:layout_height="50dp"
         android:background="@drawable/button_stroke"
         android:backgroundTint="#FFFFFF"
         android:fontFamily="@font/poppins_bold"
-        android:text="REGISTER"
+        android:text="LOG IN"
         android:textColor="#000000"
         android:textColorLink="#000000"
         app:layout_constraintBottom_toBottomOf="parent"

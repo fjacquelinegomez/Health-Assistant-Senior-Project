@@ -13,6 +13,9 @@
         android:theme="@style/Theme.HealthAssistant"
         tools:targetApi="35">
         <activity
+            android:name=".ProfileCustomization"
+            android:exported="false" />
+        <activity
             android:name=".SymptomLogs"
             android:exported="false" />
         <activity

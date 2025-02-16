@@ -152,7 +152,7 @@
         app:layout_constraintTop_toBottomOf="@+id/recommendedFoodText"
         app:layout_constraintVertical_bias="0.04" />
 
-    <!--
+
 <androidx.cardview.widget.CardView
     android:id="@+id/symptomLogsCard"
     android:layout_width="104dp"
@@ -229,7 +229,7 @@
             tools:layout_editor_absoluteX="56dp"
             tools:layout_editor_absoluteY="595dp" />
     </androidx.cardview.widget.CardView>
--->
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"

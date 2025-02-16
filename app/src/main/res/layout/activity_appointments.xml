@@ -8,29 +8,406 @@
     android:layout_height="match_parent"
     tools:context=".Appointments">
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
+    <!-- bottom toolbar -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Appointments Page"
+        android:background="@drawable/bottom_background"
+        app:itemIconSize="35dp"
+        app:itemIconTint="@drawable/item_selector"
+        app:itemPaddingBottom="1dp"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:menu="@menu/bottom_taskbar" />
 
-    <Button
-        android:id="@+id/appointmentsBackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Back"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintVertical_bias="0.0" />
+    <!--implements scroll functionality on screen-->
+    <ScrollView
+        android:id="@+id/appointmentsScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- header -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/appointmentsCard"
+                android:layout_width="0dp"
+                android:layout_height="110dp"
+                android:layout_marginTop="0dp"
+                app:cardBackgroundColor="#b8ecbc"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.666"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintWidth_percent="1.0">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.05"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/appointmentsText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Appointments"
+                            android:textColor="#000000"
+                            android:textSize="25sp"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"/>
+
+                        <ImageButton
+                            android:id="@+id/userProfileButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="65dp"
+                            android:background="#b8ecbc"
+                            android:src="@drawable/user_profile_icon"
+                            android:contentDescription="User Profile"
+                            android:layout_weight="0.25"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!--displays table containing appointment information-->
+            <TableLayout
+                android:id="@+id/appointmentsTableLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/appointmentsCard"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.9"
+                app:layout_constraintVertical_bias="0.1">
+                <TableRow
+                    android:id="@+id/headerRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    <TextView
+                        android:id="@+id/dateHeaderCell"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/cell_shape_header"
+                        android:textColor="#000"
+                        android:text="Date"
+                        android:textSize="17sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="center"
+                        android:layout_weight="1">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/typeHeaderCell"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/cell_shape_header"
+                        android:textColor="#000"
+                        android:text="Type"
+                        android:textSize="17sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="center"
+                        android:layout_weight="1">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/providerHeaderCell"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/cell_shape_header"
+                        android:textColor="#000"
+                        android:text="Provider"
+                        android:textSize="17sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="center"
+                        android:layout_weight="1">
+                    </TextView>
+                </TableRow>
+                <TableRow
+                    android:id="@+id/contentRow1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/dateCell1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/cell_shape"
+                        android:textColor="#000"
+                        android:text="00/00/0000"
+                        android:textSize="17sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/typeCell1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/cell_shape"
+                        android:textColor="#000"
+                        android:text="Text"
+                        android:textSize="17sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/providerCell1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/cell_shape"
+                        android:textColor="#000"
+                        android:text="Text"
+                        android:textSize="17sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:layout_weight="1"/>
+                </TableRow>
+                <TableRow
+                    android:id="@+id/contentRow2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/dateCell2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/cell_shape"
+                        android:textColor="#000"
+                        android:text="00/00/0000"
+                        android:textSize="17sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/typeCell2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/cell_shape"
+                        android:textColor="#000"
+                        android:text="Text"
+                        android:textSize="17sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/providerCell2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/cell_shape"
+                        android:textColor="#000"
+                        android:text="Text"
+                        android:textSize="17sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:layout_weight="1"/>
+                </TableRow>
+            </TableLayout>
+
+            <!--edit table button-->
+            <Button
+                android:id="@+id/editAppointmentsTableButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Edit Table"
+                android:textAllCaps="true"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#000000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appointmentsTableLayout"
+                app:layout_constraintWidth_percent="0.4"
+                app:layout_constraintVertical_bias="0.0"
+                android:textSize="15sp"
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp" />
+
+            <!--create reminder header-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/createReminderCard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:cardBackgroundColor="@color/darkgreen"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editAppointmentsTableButton"
+                app:layout_constraintWidth_percent="0.9"
+                app:layout_constraintVertical_bias="0.0"
+                android:layout_marginTop="30dp">
+                <RelativeLayout
+                    android:id="@+id/createReminderRelativeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingStart="15dp">
+                    <TextView
+                        android:id="@+id/todayMedicationText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Create Reminder"
+                        android:textColor="#000000"
+                        android:textSize="17sp"
+                        />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!--date portion of appointment reminder-->
+            <LinearLayout
+                android:id="@+id/dateReminderLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/createReminderCard"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:paddingTop="10dp"
+                app:layout_constraintVertical_bias="0.0">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/calendar_create_appoint"
+                    android:layout_weight="0.25" />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MM/DD/YYYY"
+                    android:layout_weight="1"
+                    android:alpha="0.5" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25"/>
+            </LinearLayout>
+
+            <!--type portion of appointment reminder-->
+            <LinearLayout
+                android:id="@+id/typeAppointmentTextLinearLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dateReminderLinearLayout"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintWidth_percent="0.9"
+                android:padding="7dp">
+                <TextView
+                    android:id="@+id/typeAppointmentText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Type of appointment"
+                    android:textColor="#000000"
+                    android:textSize="17sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/typeAppointmentInputLinearLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/typeAppointmentTextLinearLayout"
+                app:layout_constraintWidth_percent="0.9"
+                android:padding="7dp"
+                app:layout_constraintVertical_bias="0.0">
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="e.g. psychiatric,orthopedic"
+                    android:layout_weight="1"
+                    android:alpha="0.5" />
+            </LinearLayout>
+
+            <!--provider portion of appointment reminder-->
+            <LinearLayout
+                android:id="@+id/providerAppointmentTextLinearLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/typeAppointmentInputLinearLayout"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintWidth_percent="0.9"
+                android:padding="7dp">
+                <TextView
+                    android:id="@+id/providerAppointmentText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Name of the healthcare provider"
+                    android:textColor="#000000"
+                    android:textSize="17sp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/providerAppointmentInputLinearLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/providerAppointmentTextLinearLayout"
+                app:layout_constraintWidth_percent="0.9"
+                android:padding="7dp"
+                app:layout_constraintVertical_bias="0.0">
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Dr. Name"
+                    android:layout_weight="1"
+                    android:alpha="0.5" />
+            </LinearLayout>
+
+            <!--add reminder to table button-->
+            <Button
+                android:id="@+id/addAppointmentButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Add to table"
+                android:textAllCaps="true"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#000000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/providerAppointmentInputLinearLayout"
+                app:layout_constraintWidth_percent="0.4"
+                app:layout_constraintVertical_bias="0.0"
+                android:textSize="15sp"
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

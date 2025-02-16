@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--remove unneccesday linearlayouts and implement scrool-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,10 +9,7 @@
     android:background="#FBE2E2"
     tools:context=".FoodManager">
 
-    <include
-        android:id="@+id/week_toolbar"
-        layout="@layout/week_toolbar"/>
-
+    <!--bottom toolbar-->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
@@ -27,11 +25,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_taskbar" />
 
+    <!--header-->
     <androidx.cardview.widget.CardView
         android:id="@+id/foodManagerCard"
         android:layout_width="0dp"
-        android:layout_height="160dp"
-        android:layout_marginTop="-50dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="0dp"
         app:cardBackgroundColor="#F1E1EF"
         app:cardCornerRadius="20dp"
         app:cardElevation="15dp"
@@ -43,58 +42,55 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_percent="1.0">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false">
-
-            <TextView
-                android:id="@+id/foodManagerText"
-                android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.05"/>
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_bold"
-                android:text="Food Manager"
-                android:textColor="#000000"
-                android:textSize="28sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.703" />
-
-            <ImageButton
-                android:id="@+id/userProfileButton"
-                android:layout_width="95dp"
-                android:layout_height="65dp"
-                android:background="#F1E0EF"
-                android:contentDescription="User Profile"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.737"
-                app:layout_constraintStart_toEndOf="@+id/foodManagerText"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.666"
-                app:srcCompat="@drawable/user_profile_icon" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/foodManagerText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Food Manager"
+                    android:textColor="#000000"
+                    android:textSize="28sp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"/>
+                <ImageButton
+                    android:id="@+id/userProfileButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="65dp"
+                    android:background="#F1E0EF"
+                    android:contentDescription="User Profile"
+                    android:layout_weight="0.25"
+                    app:srcCompat="@drawable/user_profile_icon" />
+            </LinearLayout>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- week view -->
     <androidx.cardview.widget.CardView
         android:id="@+id/calendarCard"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
         app:cardCornerRadius="15dp"
         app:cardElevation="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75"
+        app:layout_constraintVertical_bias="0.77"
         app:layout_constraintWidth_percent="0.9"
-        app:layout_constraintHeight_percent="0.07">
-
+        app:layout_constraintHeight_percent="0.06">
         <LinearLayout
             android:id="@+id/weekLayout"
             android:layout_width="match_parent"
@@ -192,7 +188,8 @@
                 android:layout_weight="1"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-<!--gravity center, centers block, not text-->
+
+    <!--eaten today text-->
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
@@ -204,8 +201,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3"
-        app:layout_constraintWidth_percent="0.9">
-
+        app:layout_constraintWidth_percent="0.9"
+        android:padding="7dp">
         <TextView
             android:id="@+id/eatenText"
             android:layout_width="wrap_content"
@@ -220,6 +217,7 @@
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
+    <!--eaten card with checked mark and dislike and like buttons-->
     <androidx.cardview.widget.CardView
         android:id="@+id/eatenCard"
         android:layout_width="0dp"
@@ -234,37 +232,31 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_percent="0.9"
         android:layout_gravity="center">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical">
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="center">
-
                 <ImageButton
                     android:id="@+id/addedButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@drawable/added_grey" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="center"></LinearLayout>
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="center">
-
                 <ImageButton
                     android:id="@+id/likeButton"
                     android:layout_width="30dp"
@@ -273,13 +265,11 @@
                     android:background="@drawable/like"
                     android:scaleX="-1" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="center">
-
                 <ImageButton
                     android:id="@+id/dislikeButton"
                     android:layout_width="30dp"
@@ -288,10 +278,9 @@
                     android:scaleX="-1" />
             </LinearLayout>
         </LinearLayout>
-
-
     </androidx.cardview.widget.CardView>
 
+    <!--recommended text-->
     <LinearLayout
         android:id="@+id/recommendedLayout"
         android:layout_width="0dp"
@@ -303,8 +292,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eatenCard"
         app:layout_constraintVertical_bias="0.07"
-        app:layout_constraintWidth_percent="0.9">
-
+        app:layout_constraintWidth_percent="0.9"
+        android:padding="7dp">
         <TextView
             android:id="@+id/recommendedText"
             android:layout_width="wrap_content"
@@ -321,6 +310,7 @@
             app:layout_constraintVertical_bias="0.9" />
     </LinearLayout>
 
+    <!--recommended card with checked mark and dislike and like buttons-->
     <androidx.cardview.widget.CardView
         android:id="@+id/recommendedCard"
         android:layout_width="0dp"
@@ -335,39 +325,32 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_percent="0.9"
         android:layout_gravity="center">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical">
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="center">
-
                 <ImageButton
                     android:id="@+id/addButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@drawable/add_grey" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="center">
-
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="center">
-
                 <ImageButton
                     android:id="@+id/likeButtonRecommended"
                     android:layout_width="30dp"
@@ -375,13 +358,11 @@
                     android:background="@drawable/like"
                     android:scaleX="-1" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="center">
-
                 <ImageButton
                     android:id="@+id/dislikeButtonRecommended"
                     android:layout_width="30dp"
@@ -391,5 +372,4 @@
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

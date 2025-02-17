@@ -15,34 +15,18 @@ import com.example.healthassistant.databinding.ActivityAppointmentsBinding;
 import com.example.healthassistant.databinding.ActivityMedicationManagerBinding;
 
 public class Appointments extends AppCompatActivity {
-
     ActivityAppointmentsBinding binding;
 
+    /**this was already created**/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_appointments);
-        /**
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
+        /**section below is new**/
 
-        Button back = findViewById(R.id.appointmentsBackButton);
-        View.OnClickListener buttonClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.appointmentsBackButton) {
-                    startActivity(new Intent(Appointments.this, Homescreen.class));
-                }
-            }
-        };
-        back.setOnClickListener(buttonClickListener);
-         **/
-
+        /**bottom bar navigation functionality**/
         binding = ActivityAppointmentsBinding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
@@ -64,7 +48,6 @@ public class Appointments extends AppCompatActivity {
                 case R.id.medicationManager:
                     startActivity(new Intent(Appointments.this, MedicationManager.class));
                     break;
-
             }
             return true;
         });

@@ -36,8 +36,9 @@ public class SleepLogs extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
+        // checks if the user is signed in
         if (user != null){
-            String uid = user.getUid();
+            String uid = user.getUid(); // captures the user UID from the auth. database
             databaseRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("sleep_time");
             buttonSaveSleepLog.setOnClickListener(v -> saveSleepLog());
         } else {
@@ -52,6 +53,7 @@ public class SleepLogs extends AppCompatActivity {
             return insets;
         });
 
+        // back button for the user to go back to the homescreen
         Button back = findViewById(R.id.sleepLogsBackButton);
         View.OnClickListener buttonClickListener = new View.OnClickListener() {
             @Override
@@ -64,7 +66,7 @@ public class SleepLogs extends AppCompatActivity {
         back.setOnClickListener(buttonClickListener);
     }
 
-        private void saveSleepLog() {
+        private void saveSleepLog() { // logic for when the user submits their sleep time, it saves in the realtime database
             String sleepLog = editSleepLogs.getText().toString().trim();
 
             if (TextUtils.isEmpty(sleepLog)){

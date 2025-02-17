@@ -13,17 +13,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
-<<<<<<< HEAD
-=======
 import com.google.firebase.auth.FirebaseUser;
->>>>>>> 5c55887f3c542855d120ba922975679d2ffda839
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button login_btn;
-    private FirebaseAuth mAuth;
     private DatabaseReference databaseRef;
 
     private Button register_btn;
@@ -35,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        // Write a message to the database
+        // Write a message to the database to confirm it works
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("message");
 
-        myRef.setValue("HELLO TEST123!");
+
         myRef.setValue("This is me testing, testing, testing again. ");
 
         //logic for once the user presses the login button

@@ -6,21 +6,35 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.google.firebase.firestore.WriteBatch;
+
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button login_btn;
     private Button register_btn;
+    //private FirebaseFirestore firestoreDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("message");
-
         myRef.setValue("HELLO TEST123!");
         myRef.setValue("This is me testing, testing, testing again. ");
 
@@ -45,6 +58,19 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Testing firestore connection
+        FirebaseFirestore firestore_db = FirebaseFirestore.getInstance();
+        firestore_db.collection("test")
+                .add(new HashMap<String, Object>() {{
+                    put("message", "Hello Firestore!");
+                }})
+                .addOnSuccessListener(documentReference -> {
+                    Log.d("Firestore", "DocumentSnapshot added with ID: " + documentReference.getId());
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("Firestore", "Error adding document", e);
+                });
 
         //logic for once the user presses the register button
         register_btn=findViewById(R.id.register_button);
@@ -71,5 +97,56 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
+        // Upload medications to medication database (still a WIP)
+        //uploadMedicationsToFirestore();
     }
+
+    // Upload medications to medication database by parsing through JSON file (still a WIP)
+    /*
+    private void uploadMedicationsToFirestore() {
+        try {
+            FirebaseFirestore firestoreDatabase = FirebaseFirestore.getInstance();
+            // Initializing tools
+            InputStream inputStream = getAssets().open("medicationInfo_01.json");
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonFactory factory = new JsonFactory();
+            JsonParser parser = factory.createParser(inputStream);
+            parser.setCodec(objectMapper);
+
+            // Parse/stream through the JSON file
+            while (!parser.isClosed()) {
+                JsonToken token = parser.nextToken();
+
+                // Check if it's a new medication object
+                if (token == JsonToken.START_OBJECT) {
+                    // Create a JsonNode of current object
+                    JsonNode medicationNode = objectMapper.readTree(parser);
+                    JsonNode openfdaNode = medicationNode.get("openfda");
+
+                    // Extract relevant fields from the OpenFDA data
+                    String brandName = openfdaNode.has("brand_name") ? openfdaNode.get("brand_name").get(0).asText() : "Unknown";
+                    String genericName = openfdaNode.has("generic_name") ? openfdaNode.get("generic_name").get(0).asText() : "Unknown";
+                    String manufacturerName = openfdaNode.has("manufacturer_name") ? openfdaNode.get("manufacturer_name").get(0).asText() : "Unknown";
+                    String route = openfdaNode.has("route") ? openfdaNode.get("route").get(0).asText() : "Unknown";
+
+                    // Create a map of the medication data to upload to Firestore
+                    Map<String, Object> medData = new HashMap<>();
+                    medData.put("brand_name", brandName);
+                    medData.put("generic_name", genericName);
+                    medData.put("manufacturer_name", manufacturerName);
+                    medData.put("route", route);
+
+                    // Upload the medication data to Firestore
+                    DocumentReference medRef = firestoreDatabase.collection("Medications").document(brandName);
+                    medRef.set(medData)
+                            .addOnSuccessListener(aVoid -> Log.d("Firestore", "Medication upload successful"))
+                            .addOnFailureListener(e -> Log.e("Firestore", "Error uploading medication", e));
+                }
+            }
+
+        } catch (Exception e) {
+            Log.e("Firestore", "Error uploading medication", e);
+        }
+    }
+     */
 }

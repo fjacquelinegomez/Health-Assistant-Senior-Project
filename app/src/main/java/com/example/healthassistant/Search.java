@@ -24,6 +24,7 @@ public class Search extends AppCompatActivity {
             return insets;
         });
 
+        /*
         Button back = findViewById(R.id.searchBackButton);
         View.OnClickListener buttonClickListener = new View.OnClickListener() {
             @Override
@@ -34,5 +35,6 @@ public class Search extends AppCompatActivity {
             }
         };
         back.setOnClickListener(buttonClickListener);
+        */
     }
 }

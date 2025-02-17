@@ -9,6 +9,7 @@
     tools:context=".LoginActivity">
 
 
+    <!-- Buttons -->
     <TextView
         android:id="@+id/signUpRedirect"
         android:layout_width="wrap_content"
@@ -23,6 +24,38 @@
         app:layout_constraintTop_toBottomOf="@+id/logInPassword"
         app:layout_constraintVertical_bias="0.05" />
 
+    <Button
+        android:id="@+id/logInButton"
+        android:layout_width="340dp"
+        android:layout_height="67dp"
+        android:backgroundTint="@color/black"
+        android:fontFamily="@font/poppins_bold"
+        android:text="LOG IN"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/haventmadeAnAccountYetText"
+        app:layout_constraintVertical_bias="0.095" />
+
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="59dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Back"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/back_arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.013"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018" />
+
+    <!-- Misc stuff like texts and images -->
     <ImageView
         android:id="@+id/healthAssistantLogo"
         android:layout_width="136dp"
@@ -52,6 +85,20 @@
         app:layout_constraintTop_toBottomOf="@+id/healthAssistantLogo"
         app:layout_constraintVertical_bias="0.053" />
 
+    <TextView
+        android:id="@+id/haventmadeAnAccountYetText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Haven't made an account yet?"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.181"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logInPassword"
+        app:layout_constraintVertical_bias="0.05" />
+
+    <!-- Text Fields -->
     <EditText
         android:id="@+id/logInEmailAddress"
         android:layout_width="341dp"
@@ -86,51 +133,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logInEmailAddress"
         app:layout_constraintVertical_bias="0.08" />
-
-
-    <Button
-        android:id="@+id/logInButton"
-        android:layout_width="340dp"
-        android:layout_height="67dp"
-        android:backgroundTint="@color/black"
-        android:fontFamily="@font/poppins_bold"
-        android:text="LOG IN"
-        android:textColor="#ffffff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/haventmadeAnAccountYetText"
-        app:layout_constraintVertical_bias="0.095" />
-
-    <TextView
-        android:id="@+id/haventmadeAnAccountYetText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Haven't made an account yet?"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.181"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logInPassword"
-        app:layout_constraintVertical_bias="0.05" />
-
-    <ImageButton
-        android:id="@+id/back_button"
-        android:layout_width="59dp"
-        android:layout_height="48dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Back"
-        android:padding="8dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/back_arrow"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.013"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.018" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

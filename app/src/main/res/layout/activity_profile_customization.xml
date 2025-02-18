@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FBE2E2"
+    tools:context=".ProfileCustomization">
+
+
+    "<!--" Text at the top of page"-->"
+    <TextView
+        android:id="@+id/title_profilecustom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:padding="10dp"
+        android:text="Hello User"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.072"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.082" />
+
+
+    "<!--" Subtitle underneath title "-->"
+    <TextView
+        android:id="@+id/subtitle_profilecustom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/black"
+        android:text="Let's get started with your Profile Customization. \n Click on Medical History first 😊 "
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.592"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.166" />
+
+
+    "<!--" Medical History card "-->"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/medicalhistoryCard"
+        android:layout_width="166dp"
+        android:layout_height="155dp"
+        app:cardBackgroundColor="#FFC7BC"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.100"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.400">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/medicalHistoryButton"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="#FFC7BC"
+                android:contentDescription="MedicalHistory"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/medical_kit" />
+
+            <TextView
+            android:id="@+id/medical_profilecustom_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Medical History"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+             />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    "<!--" Health Goals card "-->"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/healthGoalsCard"
+        android:layout_width="166dp"
+        android:layout_height="155dp"
+        app:cardBackgroundColor="#FFC7BC"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.877"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.400">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+
+            <ImageButton
+                android:id="@+id/healthGoalsButton"
+                android:layout_width="151dp"
+                android:layout_height="112dp"
+                android:background="#FFC7BC"
+                android:contentDescription="HealthGoals"
+                android:enabled="false"
+                android:alpha="0.5"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/health_goals" />
+
+            <TextView
+                android:id="@+id/health_goals_profilecustom_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="Health Goals"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    "<!--" Dietary Restrictions card "-->"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/dietaryRestrictionCard"
+        android:layout_width="166dp"
+        android:layout_height="155dp"
+        app:cardBackgroundColor="#FFC7BC"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.097"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.690">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/dietRestrictionButton"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="#FFC7BC"
+                android:contentDescription="Diet Restriction"
+                android:scaleType="fitCenter"
+                android:enabled="false"
+                android:alpha="0.5"
+                app:srcCompat="@drawable/diet_restrictions" />
+
+            <TextView
+                android:id="@+id/diet_restriction_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Dietary Restrictions"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    "<!--" Food Preference card "-->"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/foodPreferenceCard"
+        android:layout_width="166dp"
+        android:layout_height="155dp"
+        app:cardBackgroundColor="#FFC7BC"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.877"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.690">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/foodPreferenceButton"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:alpha="0.5"
+                android:background="#FFC7BC"
+                android:contentDescription="Diet Restriction"
+                android:enabled="false"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/healthy_food" />
+
+            <TextView
+                android:id="@+id/food_preference_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="Food Preferences"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,35 +6,24 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.google.firebase.firestore.WriteBatch;
-
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button login_btn;
     private Button register_btn;
-    //private FirebaseFirestore firestoreDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("message");
+
         myRef.setValue("HELLO TEST123!");
         myRef.setValue("This is me testing, testing, testing again. ");
 
@@ -55,6 +45,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //logic for once the user presses the register button
+        register_btn=findViewById(R.id.register_button);
+        register_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,RegisterActivity.class);
                 startActivity(intent);
             }
         });
@@ -71,16 +71,6 @@ public class MainActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Log.w("Firestore", "Error adding document", e);
                 });
-
-        //logic for once the user presses the register button
-        register_btn=findViewById(R.id.register_button);
-        register_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,RegisterActivity.class);
-                startActivity(intent);
-            }
-        });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

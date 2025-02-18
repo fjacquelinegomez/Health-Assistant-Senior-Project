@@ -30,6 +30,8 @@ public class SleepLogs extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sleep_logs);
 
+        /**
+         *Fernanda's portion
         editSleepLogs = findViewById(R.id.sleep_log_tester);
         Button buttonSaveSleepLog = findViewById(R.id.idBtnSendData);
 
@@ -88,7 +90,6 @@ public class SleepLogs extends AppCompatActivity {
                             }
                         });
             }
+         **/
         }
-
-
 }

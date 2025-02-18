@@ -2,6 +2,7 @@ package com.example.healthassistant;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -11,13 +12,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
-
-
+    private FirebaseAuth mAuth;
     private Button login_btn;
+    private DatabaseReference databaseRef;
+
     private Button register_btn;
 
     @Override
@@ -27,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        // Write a message to the database
+        // Write a message to the database to confirm it works
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("message");
 
-        myRef.setValue("HELLO TEST123!");
+
         myRef.setValue("This is me testing, testing, testing again. ");
 
         //logic for once the user presses the login button
@@ -54,16 +58,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-
+        // Keeps the user signed in if they already have
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            Log.d("AuthUser", "User is already signed in: " + currentUser.getEmail());
+            startActivity(new Intent(MainActivity.this, Homescreen.class));
+            finish();
+        }
 
     }
 }

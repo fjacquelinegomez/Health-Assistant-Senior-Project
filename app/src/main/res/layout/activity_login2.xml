@@ -9,9 +9,22 @@
     tools:context=".LoginActivity">
 
 
+    <TextView
+        android:id="@+id/signUpRedirect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Sign Up"
+        android:textColor="#3F51B5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.115"
+        app:layout_constraintStart_toEndOf="@+id/haventmadeAnAccountYetText"
+        app:layout_constraintTop_toBottomOf="@+id/logInPassword"
+        app:layout_constraintVertical_bias="0.05" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/healthAssistantLogo"
         android:layout_width="136dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,7 +36,7 @@
         app:srcCompat="@drawable/medicalsupport" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/logInText"
         android:layout_width="306dp"
         android:layout_height="71dp"
         android:fontFamily="@font/poppins_medium"
@@ -36,7 +49,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/healthAssistantLogo"
         app:layout_constraintVertical_bias="0.053" />
 
     <EditText
@@ -53,7 +66,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/logInText"
         app:layout_constraintVertical_bias="0.089" />
 
     <EditText
@@ -74,8 +87,9 @@
         app:layout_constraintTop_toBottomOf="@+id/logInEmailAddress"
         app:layout_constraintVertical_bias="0.08" />
 
+
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/logInButton"
         android:layout_width="340dp"
         android:layout_height="67dp"
         android:backgroundTint="@color/black"
@@ -86,9 +100,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logInPassword"
-        app:layout_constraintVertical_bias="0.128" />
+        app:layout_constraintTop_toBottomOf="@+id/haventmadeAnAccountYetText"
+        app:layout_constraintVertical_bias="0.095" />
 
+    <TextView
+        android:id="@+id/haventmadeAnAccountYetText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Haven't made an account yet?"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.181"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logInPassword"
+        app:layout_constraintVertical_bias="0.05" />
 
     <ImageButton
         android:id="@+id/back_button"

@@ -31,6 +31,7 @@ public class SymptomLogs extends AppCompatActivity {
         //Button back = findViewById(R.id.symptomLogsBackButton);
         //back.setOnClickListener(v -> startActivity(new Intent(SymptomLogs.this, Homescreen.class)));
 
+        // Set up new row for symptom log table
         TableLayout tableLayout = findViewById(R.id.tableLayout);
 
         TableRow tableRow = new TableRow(this);

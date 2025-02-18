@@ -82,10 +82,10 @@
                 android:contentDescription="User Profile"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.99"
+                app:layout_constraintHorizontal_bias="0.985"
                 app:layout_constraintStart_toEndOf="@+id/helloText"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.429"
+                app:layout_constraintVertical_bias="0.419"
                 app:srcCompat="@drawable/user_profile_icon" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -321,5 +321,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sleepLogsCard"
         app:layout_constraintVertical_bias="0.2" />
+
+    <Button
+        android:id="@+id/pintest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="184dp"
+        android:layout_marginEnd="24dp"
+        android:text="Pin Test"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

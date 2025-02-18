@@ -31,6 +31,7 @@ public class SleepLogs extends AppCompatActivity {
         //Button back = findViewById(R.id.symptomLogsBackButton);
         //back.setOnClickListener(v -> startActivity(new Intent(SleepLogs.this, Homescreen.class)));
 
+        // Set up new row for sleep log table
         TableLayout tableLayout = findViewById(R.id.tableLayout);
 
         TableRow tableRow = new TableRow(this);
@@ -47,12 +48,10 @@ public class SleepLogs extends AppCompatActivity {
         sleepQualityText.setText("9");
         sleepQualityText.setPadding(20, 8, 8, 8);
 
-        // Add TextViews to the TableRow
         tableRow.addView(dateText);
         tableRow.addView(hoursSleptText);
         tableRow.addView(sleepQualityText);
 
-        // Add TableRow to TableLayout
         tableLayout.addView(tableRow);
     }
 }

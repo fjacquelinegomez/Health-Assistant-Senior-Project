@@ -19,6 +19,9 @@
             android:name=".SleepLogs"
             android:exported="false" />
         <activity
+            android:name=".PinTest"
+            android:exported="false" />
+        <activity
             android:name=".Settings"
             android:exported="false" />
         <activity

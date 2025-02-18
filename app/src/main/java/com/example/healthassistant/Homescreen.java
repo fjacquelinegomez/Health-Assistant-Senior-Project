@@ -3,6 +3,7 @@ package com.example.healthassistant;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
@@ -33,6 +34,7 @@ public class Homescreen extends AppCompatActivity {
         ImageButton appointments = findViewById(R.id.appointmentReminderButton);
         ImageButton sleepLogs = findViewById(R.id.sleepLogsButton);
         ImageButton settings = findViewById(R.id.userProfileButton);
+        Button test = findViewById(R.id.pintest);
 
         View.OnClickListener buttonClickListener = new View.OnClickListener() {
             @Override
@@ -53,6 +55,8 @@ public class Homescreen extends AppCompatActivity {
                     startActivity(new Intent(Homescreen.this, SleepLogs.class));
                 } else if (v.getId() == R.id.userProfileButton) {
                     startActivity(new Intent(Homescreen.this, Settings.class));
+                } else if (v.getId() == R.id.pintest) {
+                    startActivity(new Intent(Homescreen.this, PinTest.class));
                 }
             }
         };
@@ -65,5 +69,6 @@ public class Homescreen extends AppCompatActivity {
         appointments.setOnClickListener(buttonClickListener);
         sleepLogs.setOnClickListener(buttonClickListener);
         settings.setOnClickListener(buttonClickListener);
+        test.setOnClickListener(buttonClickListener);
     }
 }

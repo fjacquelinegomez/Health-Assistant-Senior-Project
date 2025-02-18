@@ -12,6 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthAssistant"
         tools:targetApi="35">
+        <!--
+        <activity
+            android:name=".MedicalHistory"
+            android:exported="false" />
+        -->
+        <activity
+            android:name=".MedicationManager2"
+            android:exported="false" />
         <activity
             android:name=".FoodPreferences_PC"
             android:exported="false" />

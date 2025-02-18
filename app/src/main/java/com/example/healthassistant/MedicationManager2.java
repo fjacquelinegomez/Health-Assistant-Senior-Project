@@ -2,8 +2,6 @@ package com.example.healthassistant;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,45 +9,45 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.healthassistant.databinding.ActivityAppointmentsBinding;
+import com.example.healthassistant.databinding.ActivityFoodManagerBinding;
+import com.example.healthassistant.databinding.ActivityMedicationManager2Binding;
 import com.example.healthassistant.databinding.ActivityMedicationManagerBinding;
 
-public class Appointments extends AppCompatActivity {
-    ActivityAppointmentsBinding binding;
+public class MedicationManager2 extends AppCompatActivity {
+    ActivityMedicationManager2Binding binding;
 
-    /**this was already created**/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_appointments);
-
-        /**section below is new**/
+        setContentView(R.layout.activity_medication_manager2);
 
         /**bottom bar navigation functionality**/
-        binding = ActivityAppointmentsBinding.inflate(getLayoutInflater());
+        binding = ActivityMedicationManager2Binding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
-                    startActivity(new Intent(Appointments.this, Homescreen.class));
+                    startActivity(new Intent(MedicationManager2.this, Homescreen.class));
                     break;
                 case R.id.searchMedication:
-                    startActivity(new Intent(Appointments.this, Search.class));
+                    startActivity(new Intent(MedicationManager2.this, Search.class));
                     break;
                 case R.id.foodManager:
-                    startActivity(new Intent(Appointments.this, FoodManager.class));
+                    startActivity(new Intent(MedicationManager2.this, FoodManager.class));
                     break;
                 case R.id.healthGoals:
-                    startActivity(new Intent(Appointments.this, HealthGoals.class));
+                    startActivity(new Intent(MedicationManager2.this, HealthGoals.class));
                     break;
                 case R.id.medicationManager:
-                    startActivity(new Intent(Appointments.this, MedicationManager.class));
+                    startActivity(new Intent(MedicationManager2.this, MedicationManager.class));
                     break;
+
             }
             return true;
         });
+
     }
 }

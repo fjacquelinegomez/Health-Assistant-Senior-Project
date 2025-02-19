@@ -6,6 +6,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -15,6 +17,14 @@ public class ProfileCustomization extends AppCompatActivity {
 
     private ImageButton btnMH, btnHG, btnDR, btnFP;
     private int current_step = 0;
+
+    private final ActivityResultLauncher<Intent> activityLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    current_step++;  // Move to the next step
+                    unlockNextStep();
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +58,8 @@ public class ProfileCustomization extends AppCompatActivity {
     private void openForm(int step, Class<?> activityClass) {
         if (current_step == step) {  // Ensure they can only open the next unlocked form
             Intent intent = new Intent(ProfileCustomization.this, activityClass);
-            startActivityForResult(intent, step);
+            activityLauncher.launch(intent);
+             // uses api at the top defined globally
         } else {
             Toast.makeText(this, "Please complete the previous step first!", Toast.LENGTH_SHORT).show();
         }

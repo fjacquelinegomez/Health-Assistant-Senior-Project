@@ -3,6 +3,10 @@ package com.example.healthassistant;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +27,15 @@ public class HealthGoals_PC extends AppCompatActivity {
             return insets;
         });
 
+        //logic to implement the spinner used in the Profile Customization - Health Goals page
+        Spinner spinner = findViewById(R.id.spinner_hg_pc);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.hg_items, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
     }
+
+
     public void onSubmitMedicalHistory(View view) { // Call this when user submits
         // Process the form data and save it (optional)
 

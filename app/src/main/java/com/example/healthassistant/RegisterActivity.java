@@ -37,10 +37,6 @@ public class RegisterActivity extends AppCompatActivity {
             return insets;
         });
 
-        auth = FirebaseAuth.getInstance();
-        emailAddress = findViewById(R.id.signUpEmailAddress);
-        password = findViewById(R.id.signUpPassword);
-
         //logic for once the user presses the back button
         ImageButton back_btn = findViewById(R.id.backButton);
         back_btn.setOnClickListener(new View.OnClickListener() {
@@ -50,6 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        // Logic that redirects users to the log in page if they already have an account
         TextView logInRedirectButton = findViewById(R.id.logInRedirect);
         logInRedirectButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,20 +55,29 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        //logic for once the user presses the next button
+        // Initializing registration/authentication fields
+        auth = FirebaseAuth.getInstance();
+        emailAddress = findViewById(R.id.signUpEmailAddress);
+        password = findViewById(R.id.signUpPassword);
+
+        //logic for once the user presses the next button (signs up)
         Button next_btn = findViewById(R.id.nextButton);
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Takes in email address and password
                 String user = emailAddress.getText().toString().trim();
                 String pass = password.getText().toString().trim();
 
+                // fields can't be empty
                 if(user.isEmpty()) {
                     emailAddress.setError("Email cannot be empty.");
                 }
                 if(pass.isEmpty()) {
                     password.setError("Password cannot be empty.");
                 } else {
+                    // Firebase Authentication database adds account
+                    // Checks if account exists already and if the fields are valid (must be an email and at least 5 characters long)
                     auth.createUserWithEmailAndPassword(user, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {

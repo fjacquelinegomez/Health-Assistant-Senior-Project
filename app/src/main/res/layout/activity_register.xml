@@ -8,21 +8,7 @@
     android:background="#FBE2E2"
     tools:context=".RegisterActivity">
 
-
-    <TextView
-        android:id="@+id/logInRedirect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Log In"
-        android:textColor="#3F51B5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.682"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.452" />
-
+    <!-- Misc stuff (extra texts) -->
     <TextView
         android:id="@+id/alreadyHaveAnAccountText"
         android:layout_width="wrap_content"
@@ -35,22 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.452" />
-
-    <Button
-        android:id="@+id/nextButton"
-        android:layout_width="306dp"
-        android:layout_height="56dp"
-        android:background="@android:color/black"
-        android:fontFamily="@font/poppins_bold"
-        android:text="Next"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.542"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.53" />
 
     <TextView
         android:id="@+id/registrationText"
@@ -67,6 +37,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.12" />
 
+    <!-- Text Fields -->
     <EditText
         android:id="@+id/signUpEmailAddress"
         android:layout_width="306dp"
@@ -108,6 +79,8 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="20dp" />
 
+    <!--Buttons-->
+
     <ImageButton
         android:id="@+id/backButton"
         android:layout_width="52dp"
@@ -123,6 +96,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.018" />
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="306dp"
+        android:layout_height="56dp"
+        android:background="@android:color/black"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Next"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.542"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.53" />
+
+    <TextView
+        android:id="@+id/logInRedirect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Log In"
+        android:textColor="#3F51B5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.682"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.452" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

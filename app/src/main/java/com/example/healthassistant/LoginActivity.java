@@ -39,14 +39,7 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
 
-        TextView signUpRedirectButton = findViewById(R.id.signUpRedirect);
-        signUpRedirectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-            }
-        });
-
+        // Logic for the back button
         ImageButton backbutton = findViewById(R.id.back_button);
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,20 +48,34 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // Redirects users to the sign up page if they haven't created an account yet
+        TextView signUpRedirectButton = findViewById(R.id.signUpRedirect);
+        signUpRedirectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+            }
+        });
+
+        // Initializing log in/authentication fields
         auth = FirebaseAuth.getInstance();
         logInEmail = findViewById(R.id.logInEmailAddress);
         logInPassword = findViewById(R.id.logInPassword);
 
-        //logic for once the user presses the next button
+        //logic for once the user presses the next button (log in)
         Button login_btn = findViewById(R.id.logInButton);
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Takes in email address and password
                 String email = logInEmail.getText().toString();
                 String password = logInPassword.getText().toString();
 
+                // Checks if an inputted email matches an email in the authentication database
                 if(!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     if(!password.isEmpty()) {
+                        // Checks if the inputted password matches the password associated
+                        // with the email in the authentication database
                         auth.signInWithEmailAndPassword(email, password)
                                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                     @Override
@@ -85,11 +92,14 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 });
                     } else {
+                        // password field can't be empty
                         logInPassword.setError("Password cannot be empty.");
                     }
                 } else if(email.isEmpty()) {
+                    // email field can't be empty
                     logInEmail.setError("Email cannot be empty");
                 } else {
+                    // email must be valid
                     logInEmail.setError("Please enter a valid email.");
                 }
             }

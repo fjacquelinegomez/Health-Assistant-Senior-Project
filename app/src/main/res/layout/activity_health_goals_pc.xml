@@ -128,7 +128,16 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5"/>
+
         <!--cards segment-->
+        <TextView
+            android:id="@+id/text_hg"
+            android:layout_width="316dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+
+            android:text="What are your current health goals?" />
+
         <LinearLayout
             android:id="@+id/cardsLayout"
             android:layout_width="wrap_content"
@@ -140,6 +149,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5">
+
+
+
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/allergiesCard"
                     android:layout_width="wrap_content"
@@ -157,7 +170,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
-
 
                             <Spinner
                                 android:id="@+id/spinner_hg_pc"
@@ -262,6 +274,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5"/>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

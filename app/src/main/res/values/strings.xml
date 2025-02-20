@@ -2,4 +2,21 @@
     <string name="app_name">HealthAssistant</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string-array name="hg_items">
+        <item>Drink More Water</item>
+        <item>Exercise Regularly</item>
+        <item>Improve sleep</item>
+        <item>Eat Healthier</item>
+        <item>Reduce Stress</item>
+        <item>Increase Daily Steps</item>
+        <item>Monitor Blood Pressure</item>
+        <item>Monitor Blood Sugar</item>
+        <item>Practice Mindfulness</item>
+        <item>Take Medication on Time</item>
+        <item>Monitor Weight</item>
+
+        <item>Add Custom Goal</item>
+    </string-array>
 </resources>

@@ -44,7 +44,7 @@ public class Homescreen extends AppCompatActivity {
                     startActivity(new Intent(Homescreen.this, FoodManager.class));
                     break;
                 case R.id.healthGoals:
-                    startActivity(new Intent(Homescreen.this, HealthGoals.class));
+                    startActivity(new Intent(Homescreen.this, HealthGoals_PC.class));
                     break;
                 case R.id.medicationManager:
                     startActivity(new Intent(Homescreen.this, MedicationManager.class));

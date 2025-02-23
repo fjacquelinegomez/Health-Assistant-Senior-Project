@@ -64,4 +64,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.2'
+
+    //used for dynamically creating cards
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
 }

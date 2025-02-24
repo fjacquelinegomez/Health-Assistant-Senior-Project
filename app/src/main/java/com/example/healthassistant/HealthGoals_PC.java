@@ -27,16 +27,9 @@ public class HealthGoals_PC extends AppCompatActivity {
             return insets;
         });
 
-        //logic to implement the spinner used in the Profile Customization - Health Goals page
-        Spinner spinner = findViewById(R.id.spinner_hg_pc);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.hg_items, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
 
     }
-
-
-    public void onSubmitMedicalHistory(View view) { // Call this when user submits
+    public void onSubmitHealthGoalsHistory (View view){ // Call this when user submits
         // Process the form data and save it (optional)
 
         // Indicate that the user successfully completed this step
@@ -44,5 +37,4 @@ public class HealthGoals_PC extends AppCompatActivity {
         setResult(RESULT_OK, resultIntent);
         finish(); // Close this activity and return to ProfileSetupActivity
     }
-
 }

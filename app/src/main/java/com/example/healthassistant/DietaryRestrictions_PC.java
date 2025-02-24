@@ -24,7 +24,7 @@ public class DietaryRestrictions_PC extends AppCompatActivity {
         });
 
     }
-    public void onSubmitMedicalHistory(View view) { // Call this when user submits
+    public void onSubmitDRHistory(View view) { // Call this when user submits
         // Process the form data and save it (optional)
 
         // Indicate that the user successfully completed this step

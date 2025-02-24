@@ -8,21 +8,7 @@
     tools:context=".HealthGoals_PC"
     android:background="#FBE2E2">
 
-    <!--maybe don't include nav bar for initial-->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bottom_background"
-        app:itemIconSize="35dp"
-        app:itemIconTint="@drawable/item_selector"
-        app:itemPaddingBottom="1dp"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_taskbar" />
+
 
     <!--header-->
     <androidx.cardview.widget.CardView
@@ -40,6 +26,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_percent="1.0">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -71,12 +58,12 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/HealthGoalsCard"
         app:layout_constraintVertical_bias="0.0"
-        android:orientation="vertical"
         app:layout_constraintWidth_percent="0.9">
         <!--space-->
 
@@ -92,32 +79,36 @@
                 android:id="@+id/noticeDescriptionText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="top"
                 android:alpha="0.5"
                 android:fontFamily="@font/poppins_bold"
                 android:justificationMode="inter_word"
+                android:paddingTop="15dp"
                 android:text="Select a goal category to generate a plan that will help you accomplish your goal."
                 android:textColor="@color/black"
-                android:layout_gravity="top"
-                android:paddingTop="15dp"
                 android:textSize="18sp" />
         </LinearLayout>
         <!--space-->
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"/>
-            <!--Sleep log button-->
+            android:layout_weight="0.5" />
 
-        <LinearLayout
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:layout_height="match_parent">
+
+            <!--Sleep log button-->
 
             <ImageButton
                 android:id="@+id/medicalHistoryButton"
-                android:layout_width="167dp"
+                android:layout_width="150dp"
                 android:layout_height="140dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="20dp"
                 android:background="#FFC7BC"
                 android:contentDescription="MedicalHistory"
                 android:scaleType="fitCenter"
@@ -127,16 +118,169 @@
                 android:id="@+id/medical_profilecustom_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/medicalHistoryButton"
+                android:layout_alignStart="@id/medicalHistoryButton"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="9dp"
                 android:fontFamily="@font/poppins_medium"
                 android:text="Medical History"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_horizontal"
-                />
-        </LinearLayout>
+                android:textSize="16sp" />
+
+            <!--Stress log button-->
+
+            <ImageButton
+                android:id="@+id/stressLogButton"
+                android:layout_width="150dp"
+                android:layout_height="140dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="208dp"
+                android:layout_marginTop="20dp"
+                android:background="#FFC7BC"
+                android:contentDescription="StressLog"
+                android:enabled="false"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/stress" />
+
+            <TextView
+                android:id="@+id/stress_profilecustom_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/stressLogButton"
+                android:layout_alignStart="@+id/stressLogButton"
+                android:layout_marginStart="55dp"
+                android:layout_marginTop="9dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Stress"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <!--Weight log button-->
 
 
+            <ImageButton
+                android:id="@+id/WeightLogButton"
+                android:layout_width="150dp"
+                android:layout_height="140dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="224dp"
+                android:background="#FFC7BC"
+                android:contentDescription="StressLog"
+                android:enabled="false"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/weight_scale" />
+
+            <TextView
+                android:id="@+id/weight_profilecustom_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/WeightLogButton"
+                android:layout_alignStart="@+id/WeightLogButton"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="9dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Weight"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <!--Cholesterol log button-->
+
+
+            <!--Blood Sugar log button-->
+            <ImageButton
+                android:id="@+id/CholesterolLogButton"
+                android:layout_width="150dp"
+                android:layout_height="140dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="208dp"
+                android:layout_marginTop="224dp"
+                android:background="#FFC7BC"
+                android:contentDescription="WeightLog"
+                android:enabled="false"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/cholesterol" />
+
+            <TextView
+                android:id="@+id/chol_profilecustom_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/CholesterolLogButton"
+                android:layout_alignStart="@+id/CholesterolLogButton"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="9dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Cholesterol"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+
+            <!--Blood Pressure log button-->
+            <ImageButton
+                android:id="@+id/BloodSLogButton"
+                android:layout_width="150dp"
+                android:layout_height="140dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="423dp"
+                android:background="#FFC7BC"
+                android:contentDescription="Blood Sugar Log"
+                android:enabled="false"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/sugar_blood_level" />
+
+
+            <TextView
+                android:id="@+id/bloods_profilecustom_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/BloodSLogButton"
+                android:layout_alignStart="@+id/BloodSLogButton"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="9dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Blood Sugar"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/BloodPLogButton"
+                android:layout_width="150dp"
+                android:layout_height="140dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="208dp"
+                android:layout_marginTop="423dp"
+                android:background="#FFC7BC"
+                android:contentDescription="Blood Sugar Log"
+                android:enabled="false"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/blood_pressure" />
+
+            <TextView
+                android:id="@+id/bloodp_profilecustom_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/BloodPLogButton"
+                android:layout_alignStart="@+id/BloodPLogButton"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="9dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Blood Pressure"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onSubmitHealthGoalsHistory"
+                android:text="Done" />
+        </RelativeLayout>
 
 
     </LinearLayout>

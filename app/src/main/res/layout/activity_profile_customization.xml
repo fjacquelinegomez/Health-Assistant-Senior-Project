@@ -29,23 +29,25 @@
 
 
     "<!--" Subtitle underneath title "-->"
+
+
+    "<!--" Medical History card "-->"
+
     <TextView
         android:id="@+id/subtitle_profilecustom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
-        android:textColor="@color/black"
         android:text="Let's get started with your Profile Customization. \n Click on Medical History first 😊 "
+        android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.592"
+        app:layout_constraintHorizontal_bias="0.727"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.166" />
+        app:layout_constraintVertical_bias="0.189" />
 
-
-    "<!--" Medical History card "-->"
     <androidx.cardview.widget.CardView
         android:id="@+id/medicalhistoryCard"
         android:layout_width="166dp"

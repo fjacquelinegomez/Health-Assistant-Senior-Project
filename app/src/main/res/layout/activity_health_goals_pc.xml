@@ -102,32 +102,32 @@
             <!--Sleep log button-->
 
             <ImageButton
-                android:id="@+id/medicalHistoryButton"
+                android:id="@+id/SleepLogButton"
                 android:layout_width="150dp"
                 android:layout_height="140dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="20dp"
-                android:background="#FFC7BC"
+                android:background="@drawable/roundcorner"
                 android:contentDescription="MedicalHistory"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/medical_kit" />
+                app:srcCompat="@drawable/sleep" />
+
+            <!--Stress log button-->
 
             <TextView
                 android:id="@+id/medical_profilecustom_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/medicalHistoryButton"
-                android:layout_alignStart="@id/medicalHistoryButton"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="9dp"
+                android:layout_below="@id/SleepLogButton"
+                android:layout_alignStart="@id/SleepLogButton"
+                android:layout_marginStart="54dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Medical History"
+                android:text="Sleep"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
-
-            <!--Stress log button-->
 
             <ImageButton
                 android:id="@+id/stressLogButton"
@@ -137,7 +137,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="208dp"
                 android:layout_marginTop="20dp"
-                android:background="#FFC7BC"
+                android:background="@drawable/roundcorner"
                 android:contentDescription="StressLog"
                 android:enabled="false"
                 android:scaleType="fitCenter"
@@ -167,7 +167,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="224dp"
-                android:background="#FFC7BC"
+                android:background="@drawable/roundcorner"
                 android:contentDescription="StressLog"
                 android:enabled="false"
                 android:scaleType="fitCenter"
@@ -198,7 +198,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="208dp"
                 android:layout_marginTop="224dp"
-                android:background="#FFC7BC"
+                android:background="@drawable/roundcorner"
                 android:contentDescription="WeightLog"
                 android:enabled="false"
                 android:scaleType="fitCenter"
@@ -227,7 +227,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="423dp"
-                android:background="#FFC7BC"
+                android:background="@drawable/roundcorner"
                 android:contentDescription="Blood Sugar Log"
                 android:enabled="false"
                 android:scaleType="fitCenter"
@@ -255,7 +255,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="208dp"
                 android:layout_marginTop="423dp"
-                android:background="#FFC7BC"
+                android:background="@drawable/roundcorner"
                 android:contentDescription="Blood Sugar Log"
                 android:enabled="false"
                 android:scaleType="fitCenter"
@@ -276,9 +276,14 @@
 
             <Button
                 android:id="@+id/btn_done"
-                android:layout_width="wrap_content"
+                android:layout_width="278dp"
                 android:layout_height="wrap_content"
                 android:onClick="onSubmitHealthGoalsHistory"
+                android:background="@android:color/black"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="650dp"
+                android:layout_marginStart="40dp"
                 android:text="Done" />
         </RelativeLayout>
 

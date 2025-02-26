@@ -5,15 +5,420 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FBE2E2"
     tools:context=".FoodPreferences_PC">
 
+    <!-- Header -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/FoodPreferencesCard"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        app:cardBackgroundColor="#FCBCAE"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="1.0">
 
-    <Button
-        android:id="@+id/btn_done"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onSubmitFPHistory"
-        android:text="Done"
-        tools:layout_editor_absoluteX="138dp"
-        tools:layout_editor_absoluteY="314dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="294dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/medicalHistoryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Food Preferences"
+                    android:textColor="#000000"
+                    android:textSize="28sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!--notice text portion-->
+
+
+
+    <!-- Checkbox List -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/FoodPreferencesCard"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+
+            <TextView
+                android:id="@+id/noticeDescriptionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alpha="0.5"
+                android:fontFamily="@font/poppins_bold"
+                android:justificationMode="inter_word"
+                android:paddingTop="15dp"
+                android:text="This section is prepared to understand your nutrition habits and food preferences."
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:layout_marginTop="20dp" />
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:justificationMode="inter_word"
+                android:paddingTop="15dp"
+                android:text="How often do you eat throughout the day?"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/checkboxContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                app:flexWrap="wrap"
+                app:justifyContent="flex_start">
+
+                <CheckBox
+                    android:id="@+id/checkbox_breakfast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Breakfast" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_dinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Dinner" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_lunch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Lunch" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_night"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Night" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_snacks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Snacks throughout midday" />
+            </com.google.android.flexbox.FlexboxLayout>
+
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:justificationMode="inter_word"
+                android:paddingTop="15dp"
+                android:text="How often do you eat breakfast throughout the week?"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton android:id="@+id/radio_none"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="None"/>
+
+                <RadioButton android:id="@+id/radio_one_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="1 - 2 days"/>
+
+                <RadioButton android:id="@+id/radio_three_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="3 - 5 days"/>
+
+                <RadioButton android:id="@+id/radio_six_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="6 - 7 days"/>
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:justificationMode="inter_word"
+                android:paddingTop="15dp"
+                android:text="Which do you prefer for breakfast?"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/checkboxContainer2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                app:flexWrap="wrap"
+                app:justifyContent="flex_start">
+
+                <CheckBox
+                    android:id="@+id/checkbox_pancakes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Pancakes, waffle, jam" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_eggs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Eggs" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_ham"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Ham, sausages" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_tomatoes_breakfast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Tomatoes, cucumber, salad" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_sandwiches"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Sandwiches" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_fruits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Fruits" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_cheese"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Cheese" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_olives"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Olives" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_croissants"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Bread, croissants" />
+            </com.google.android.flexbox.FlexboxLayout>
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:justificationMode="inter_word"
+                android:paddingTop="15dp"
+                android:text="Which do you prefer for lunch and dinner?"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/checkboxContainer3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                app:flexWrap="wrap"
+                app:justifyContent="flex_start">
+
+                <CheckBox
+                    android:id="@+id/checkbox_salad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Salad" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_meat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Chicken" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_pork"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Pork" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_tomatoes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Tomatoes, cucumber, salad" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_veggies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Vegetables" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_sandwiches_lunch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Sandwiches" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_snacks_lunch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Snacks" />
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:justificationMode="inter_word"
+                android:paddingTop="15dp"
+                android:text="What type of eater are you in general?"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton android:id="@+id/radio_big_eater"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Big eater"/>
+
+                <RadioButton android:id="@+id/radio_light_eater"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Light eater"/>
+
+                <RadioButton android:id="@+id/radio_moderate_eater"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Moderate eater"/>
+
+                <RadioButton android:id="@+id/radio_quick_easy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Quick and easy"/>
+            </RadioGroup>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:justificationMode="inter_word"
+                android:paddingTop="15dp"
+                android:text="Which of these best describe your eating habits?"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/checkboxContainer4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_start">
+
+                <CheckBox
+                    android:id="@+id/checkbox_omnivore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Omnivore" />
+
+
+
+
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+
+
+
+            <Button
+                android:id="@+id/btn_done"
+                android:layout_width="267dp"
+                android:layout_height="52dp"
+                android:background="@android:color/black"
+                android:fontFamily="@font/poppins_bold"
+                android:onClick="onSubmitFPHistory"
+                android:text="Done"
+                android:textColor="@android:color/white"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

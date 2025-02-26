@@ -4,7 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
-    <string-array name="hg_items">
+    <string-array name="hg_items"> Select your Health Goals
         <item>Drink More Water</item>
         <item>Exercise Regularly</item>
         <item>Improve sleep</item>
@@ -16,7 +16,6 @@
         <item>Practice Mindfulness</item>
         <item>Take Medication on Time</item>
         <item>Monitor Weight</item>
-
         <item>Add Custom Goal</item>
     </string-array>
 </resources>

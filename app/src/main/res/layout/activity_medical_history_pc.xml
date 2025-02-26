@@ -8,21 +8,7 @@
     tools:context=".MedicalHistory_PC"
     android:background="#FBE2E2">
 
-    <!--maybe don't include nav bar for initial-->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bottom_background"
-        app:itemIconSize="35dp"
-        app:itemIconTint="@drawable/item_selector"
-        app:itemPaddingBottom="1dp"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_taskbar" />
+
 
     <!--header-->
     <androidx.cardview.widget.CardView
@@ -69,20 +55,20 @@
 
     <!--body-->
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        android:layout_width="370dp"
+        android:layout_height="756dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/medicalHistoryCard"
         app:layout_constraintVertical_bias="0.0"
-        android:orientation="vertical"
         app:layout_constraintWidth_percent="0.9">
         <!--space-->
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"/>
+            android:layout_weight="0.5" />
         <!--notice text portion-->
         <LinearLayout
             android:id="@+id/noticeTextLayout"
@@ -90,56 +76,60 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="5dp">
+
                 <TextView
                     android:id="@+id/noticeText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:alpha="0.5"
                     android:fontFamily="@font/poppins_medium"
                     android:text="Notice"
                     android:textColor="#000000"
-                    android:textSize="20sp"
-                    android:alpha="0.5" />
+                    android:textSize="20sp" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:alpha="0.5"
-                    android:src="@drawable/alert_notice"
-                    android:paddingStart="5dp"/>
+                    android:paddingStart="5dp"
+                    android:src="@drawable/alert_notice" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/noticeDescriptionText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:alpha="0.5"
                 android:fontFamily="@font/poppins_medium"
                 android:text="The information you provide will help the app generate food reccommendations tailored to your health condition and medications"
                 android:textColor="#000000"
-                android:textSize="18sp"
-                android:justificationMode="inter_word"
-                android:alpha="0.5" />
+                android:textSize="18sp" />
         </LinearLayout>
         <!--space-->
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"/>
+            android:layout_weight="0.5" />
         <!--cards segmentr-->
         <LinearLayout
             android:id="@+id/cardsLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
             <!--allergies segmentr-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5">
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/allergiesCard"
                     android:layout_width="wrap_content"
@@ -147,33 +137,37 @@
                     android:layout_gravity="center"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="30dp">
+
                     <RelativeLayout
                         android:id="@+id/allergiesRelativeLayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15dp">
+
                         <LinearLayout
                             android:id="@+id/allergiesTextEditLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/poppins_bold"
+                                android:paddingStart="20dp"
                                 android:text="Allergies"
                                 android:textColor="#000000"
-                                android:textSize="22dp"
-                                android:layout_weight="2"
-                                android:paddingStart="20dp"
-                                android:layout_gravity="center"/>
+                                android:textSize="22dp" />
+
                             <ImageButton
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_weight="0.5"
-                                android:src="@drawable/edit_medication"
-                                android:backgroundTint="@android:color/white"/>
+                                android:backgroundTint="@android:color/white"
+                                android:src="@drawable/edit_medication" />
                         </LinearLayout>
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
@@ -183,6 +177,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5">
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/medicalConditionsCard"
                     android:layout_width="wrap_content"
@@ -191,33 +186,37 @@
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="30dp"
                     app:layout_constraintVertical_bias="0.0">
+
                     <RelativeLayout
                         android:id="@+id/medicalConditionsRelativeLayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15dp">
+
                         <LinearLayout
                             android:id="@+id/medicalConditionsTextEditLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/poppins_bold"
+                                android:paddingStart="20dp"
                                 android:text="Medical Conditions"
                                 android:textColor="#000000"
-                                android:textSize="22dp"
-                                android:layout_weight="2"
-                                android:paddingStart="20dp"
-                                android:layout_gravity="center"/>
+                                android:textSize="22dp" />
+
                             <ImageButton
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_weight="0.5"
-                                android:src="@drawable/edit_medication"
-                                android:backgroundTint="@android:color/white"/>
+                                android:backgroundTint="@android:color/white"
+                                android:src="@drawable/edit_medication" />
                         </LinearLayout>
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
@@ -227,6 +226,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5">
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/medicationsHistoryCard"
                     android:layout_width="wrap_content"
@@ -234,33 +234,37 @@
                     android:layout_gravity="center"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="30dp">
+
                     <RelativeLayout
                         android:id="@+id/medicationsHistoryRelativeLayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15dp">
+
                         <LinearLayout
                             android:id="@+id/medicationsHistoryTextEditLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/poppins_bold"
+                                android:paddingStart="20dp"
                                 android:text="Medications"
                                 android:textColor="#000000"
-                                android:textSize="22dp"
-                                android:layout_weight="2"
-                                android:paddingStart="20dp"
-                                android:layout_gravity="center"/>
+                                android:textSize="22dp" />
+
                             <ImageButton
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_weight="0.5"
-                                android:src="@drawable/edit_medication"
-                                android:backgroundTint="@android:color/white"/>
+                                android:backgroundTint="@android:color/white"
+                                android:src="@drawable/edit_medication" />
                         </LinearLayout>
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
@@ -270,6 +274,17 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"/>
+            android:layout_weight="0.5" />
+
+        <Button
+            android:id="@+id/btn_done"
+            android:layout_width="278dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@android:color/black"
+            android:fontFamily="@font/poppins_bold"
+            android:onClick="onSubmitMedicalHistory"
+            android:text="Next"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

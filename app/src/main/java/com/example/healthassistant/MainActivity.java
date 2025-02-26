@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.FirebaseFirestore;
+//import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
@@ -40,26 +40,26 @@ public class MainActivity extends AppCompatActivity {
         myRef.setValue("This is me testing, testing, testing again. ");
 
         //logic for once the user presses the login button
-        login_btn=findViewById(R.id.login_button);
+        login_btn = findViewById(R.id.login_button);
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
 
         //logic for once the user presses the register button
-        register_btn=findViewById(R.id.register_button);
+        register_btn = findViewById(R.id.register_button);
         register_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,RegisterActivity.class);
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });
 
-        // Testing firestore connection
+        /* Testing firestore connection
         FirebaseFirestore firestore_db = FirebaseFirestore.getInstance();
         firestore_db.collection("test")
                 .add(new HashMap<String, Object>() {{
@@ -90,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
         // Upload medications to medication database (still a WIP)
         //uploadMedicationsToFirestore();
     }
-
-    // Upload medications to medication database by parsing through JSON file (still a WIP)
+*/
+        // Upload medications to medication database by parsing through JSON file (still a WIP)
     /*
     private void uploadMedicationsToFirestore() {
         try {
@@ -139,4 +139,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
      */
+    }
 }

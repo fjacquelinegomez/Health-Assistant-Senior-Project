@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthAssistant"
         tools:targetApi="35">
+        <activity
+            android:name=".AddMedication"
+            android:exported="false" />
         <!--
         <activity
             android:name=".MedicalHistory"

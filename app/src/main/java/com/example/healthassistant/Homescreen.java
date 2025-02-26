@@ -24,11 +24,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Homescreen extends AppCompatActivity {
 
+    //used for bottom bar
     ActivityHomescreenBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //bottom bar
         binding = ActivityHomescreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -53,10 +56,27 @@ public class Homescreen extends AppCompatActivity {
             return false;
         });
 
-        ImageButton button = (ImageButton) findViewById(R.id.appointmentReminderButton);
-        button.setOnClickListener(new View.OnClickListener() {
+        //apointments button
+        ImageButton buttonAppoint = (ImageButton) findViewById(R.id.appointmentReminderButton);
+        buttonAppoint.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(Homescreen.this, Appointments.class));
+            }
+        });
+
+        //sleep tracker button
+        ImageButton buttonSleep = (ImageButton) findViewById(R.id.sleepLogsButton);
+        buttonSleep.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(Homescreen.this, SleepLogs.class));
+            }
+        });
+
+        //symptoms tracker button
+        ImageButton buttonSymp = (ImageButton) findViewById(R.id.symptomLogsButton);
+        buttonSymp.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(Homescreen.this, SymptomLogs.class));
             }
         });
 

@@ -88,7 +88,6 @@ public class SleepLogs extends AppCompatActivity {
                             }
                         });
             }
+
         }
-
-
 }

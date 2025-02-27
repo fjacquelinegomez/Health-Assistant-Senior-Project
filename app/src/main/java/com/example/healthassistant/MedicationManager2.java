@@ -25,7 +25,7 @@ public class MedicationManager2 extends AppCompatActivity {
     ActivityMedicationManager2Binding binding;
     private RecyclerView medicationsRecyclerView;
     private MedicationAdapter medicationAdapter;
-    private List<Medication> medicationList;
+    private List<Medication> medicationList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,6 @@ public class MedicationManager2 extends AppCompatActivity {
         medicationsRecyclerView = binding.medicationsRecyclerView; // Ensure this ID matches your XML layout
 
         // Initialize the medication list and adapter
-        medicationList = new ArrayList<>(); // Create the list of medications
         medicationAdapter = new MedicationAdapter(medicationList); // Create the adapter
         medicationsRecyclerView.setAdapter(medicationAdapter); // Set the adapter to the RecyclerView
 
@@ -86,8 +85,11 @@ public class MedicationManager2 extends AppCompatActivity {
         int totalPills = intent.getIntExtra("TOTAL_PILLS", 0);
 
         if (expireDate != null) {
-            medicationList.add(new Medication(name, expireDate, totalPills));
-            medicationAdapter.notifyDataSetChanged();  // Update RecyclerView
+            Medication newMedication = new Medication(name, expireDate, totalPills);
+            medicationList.add(newMedication); // Add new medication
+            medicationAdapter.notifyItemInserted(medicationList.size() - 1); // Notify adapter
+            medicationsRecyclerView.scrollToPosition(medicationList.size() - 1); // Scroll to the latest item
+
         }
     }
 }

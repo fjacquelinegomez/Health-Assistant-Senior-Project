@@ -283,7 +283,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="650dp"
-                android:layout_marginStart="40dp"
+                android:layout_marginStart="45dp"
                 android:text="Done" />
         </RelativeLayout>
 

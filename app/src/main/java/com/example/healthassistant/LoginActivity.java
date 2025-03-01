@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -12,17 +11,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.MultiFactor;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
@@ -39,70 +35,73 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Logic for the back button
+        // Back button logic
         ImageButton backbutton = findViewById(R.id.back_button);
-        backbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                finish();
-            }
-        });
+        backbutton.setOnClickListener(v -> finish());
 
-        // Redirects users to the sign up page if they haven't created an account yet
+        // Redirect to the sign-up page if the user doesn't have an account yet
         TextView signUpRedirectButton = findViewById(R.id.signUpRedirect);
-        signUpRedirectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-            }
-        });
+        signUpRedirectButton.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
 
-        // Initializing log in/authentication fields
+        // Initialize FirebaseAuth and authentication fields
         auth = FirebaseAuth.getInstance();
         logInEmail = findViewById(R.id.logInEmailAddress);
         logInPassword = findViewById(R.id.logInPassword);
 
-        //logic for once the user presses the next button (log in)
+        // Logic for login button click
         Button login_btn = findViewById(R.id.logInButton);
-        login_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Takes in email address and password
-                String email = logInEmail.getText().toString();
-                String password = logInPassword.getText().toString();
+        login_btn.setOnClickListener(v -> {
+            String email = logInEmail.getText().toString();
+            String password = logInPassword.getText().toString();
 
-                // Checks if an inputted email matches an email in the authentication database
-                if(!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    if(!password.isEmpty()) {
-                        // Checks if the inputted password matches the password associated
-                        // with the email in the authentication database
-                        auth.signInWithEmailAndPassword(email, password)
-                                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                                    @Override
-                                    public void onSuccess(AuthResult authResult) {
-                                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(LoginActivity.this, Homescreen.class));
-                                        finish();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
-                                        Log.e("LoginError", "Login failed: ", e);
-                                    }
-                                });
-                    } else {
-                        // password field can't be empty
-                        logInPassword.setError("Password cannot be empty.");
-                    }
-                } else if(email.isEmpty()) {
-                    // email field can't be empty
-                    logInEmail.setError("Email cannot be empty");
+            // Validate email and password
+            if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                if (!password.isEmpty()) {
+                    // Attempt login with email and password
+                    auth.signInWithEmailAndPassword(email, password)
+                            .addOnSuccessListener(authResult -> handleLogin(authResult.getUser()))
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                                Log.e("LoginError", "Login failed: ", e);
+                            });
                 } else {
-                    // email must be valid
-                    logInEmail.setError("Please enter a valid email.");
+                    logInPassword.setError("Password cannot be empty.");
                 }
+            } else if (email.isEmpty()) {
+                logInEmail.setError("Email cannot be empty");
+            } else {
+                logInEmail.setError("Please enter a valid email.");
             }
         });
+    }
+
+    private void handleLogin(FirebaseUser user) {
+        if (user == null) {
+            Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Check if MFA is enabled for the user
+        MultiFactor multiFactor = user.getMultiFactor();
+        if (!multiFactor.getEnrolledFactors().isEmpty()) {
+            // MFA is enabled, retrieve MFA session
+            multiFactor.getSession()
+                    .addOnSuccessListener(multiFactorSession -> {
+                        // Redirect to MFA screen
+                        Intent intent = new Intent(LoginActivity.this, Login_MFA.class);
+                        intent.putExtra("SESSION_ID", multiFactorSession);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("MFA", "Failed to get MFA session: " + e.getMessage());
+                        Toast.makeText(this, "MFA session error. Try again later.", Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            // MFA not enabled, proceed to the Home screen
+            Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(LoginActivity.this, Homescreen.class));
+            finish();
+        }
     }
 }

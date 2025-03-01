@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth auth;
@@ -37,60 +38,65 @@ public class RegisterActivity extends AppCompatActivity {
             return insets;
         });
 
-        //logic for once the user presses the back button
+        // Logic for the back button
         ImageButton back_btn = findViewById(R.id.backButton);
-        back_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                finish();
-            }
-        });
+        back_btn.setOnClickListener(v -> finish());
 
-        // Logic that redirects users to the log in page if they already have an account
+        // Redirect users to the login page if they already have an account
         TextView logInRedirectButton = findViewById(R.id.logInRedirect);
-        logInRedirectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-            }
-        });
+        logInRedirectButton.setOnClickListener(v -> startActivity(new Intent(RegisterActivity.this, LoginActivity.class)));
 
         // Initializing registration/authentication fields
         auth = FirebaseAuth.getInstance();
         emailAddress = findViewById(R.id.signUpEmailAddress);
         password = findViewById(R.id.signUpPassword);
 
-        //logic for once the user presses the next button (signs up)
+        // Logic for once the user presses the next button (sign up)
         Button next_btn = findViewById(R.id.nextButton);
-        next_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Takes in email address and password
-                String user = emailAddress.getText().toString().trim();
-                String pass = password.getText().toString().trim();
+        next_btn.setOnClickListener(v -> {
+            // Takes in email address and password
+            String user = emailAddress.getText().toString().trim();
+            String pass = password.getText().toString().trim();
 
-                // fields can't be empty
-                if(user.isEmpty()) {
-                    emailAddress.setError("Email cannot be empty.");
-                }
-                if(pass.isEmpty()) {
-                    password.setError("Password cannot be empty.");
-                } else {
-                    // Firebase Authentication database adds account
-                    // Checks if account exists already and if the fields are valid (must be an email and at least 5 characters long)
-                    auth.createUserWithEmailAndPassword(user, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(RegisterActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(RegisterActivity.this, RegisterActivity2.class));
-                            } else {
-                                Toast.makeText(RegisterActivity.this, "Registration Failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                Log.e("RegisterError", "Registration Failed: ", task.getException());
+            // Fields can't be empty
+            if(user.isEmpty()) {
+                emailAddress.setError("Email cannot be empty.");
+            }
+            if(pass.isEmpty()) {
+                password.setError("Password cannot be empty.");
+            } else {
+                // Firebase Authentication database adds account
+                // Checks if account exists already and if the fields are valid (must be an email and at least 5 characters long)
+                auth.createUserWithEmailAndPassword(user, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(RegisterActivity.this, "Registration Successful. Please check your inbox to verify your email.", Toast.LENGTH_SHORT).show();
+
+                            FirebaseUser user = task.getResult().getUser();
+
+                            if (user != null) {
+                                // Send email verification
+                                user.sendEmailVerification().addOnCompleteListener(emailVerificationTask -> {
+                                    if (emailVerificationTask.isSuccessful()) {
+                                        // Inform user to verify email
+                                        Toast.makeText(RegisterActivity.this, "Verification email sent. Please verify your email to continue.", Toast.LENGTH_LONG).show();
+
+                                        // Redirect user to the login screen or inform them to check their inbox
+                                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                        finish();
+                                    } else {
+                                        // Error while sending verification email
+                                        Toast.makeText(RegisterActivity.this, "Error sending verification email: " + emailVerificationTask.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                });
                             }
+                        } else {
+                            Toast.makeText(RegisterActivity.this, "Registration Failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Log.e("RegisterError", "Registration Failed: ", task.getException());
                         }
-                    });
-                }
+                    }
+                });
             }
         });
     }

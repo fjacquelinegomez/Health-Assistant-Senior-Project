@@ -342,13 +342,19 @@
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <RadioButton android:id="@+id/radio_big_eater"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_medium"
                     android:text="Big eater"/>
+
+                <RadioButton android:id="@+id/radio_quick_easy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Quick and easy"/>
 
                 <RadioButton android:id="@+id/radio_light_eater"
                     android:layout_width="wrap_content"
@@ -361,12 +367,6 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_medium"
                     android:text="Moderate eater"/>
-
-                <RadioButton android:id="@+id/radio_quick_easy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="Quick and easy"/>
             </RadioGroup>
 
 
@@ -388,19 +388,205 @@
                     app:flexWrap="wrap"
                     app:justifyContent="flex_start">
 
-                <CheckBox
-                    android:id="@+id/checkbox_omnivore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="Omnivore" />
+
+                    <CheckBox
+                        android:id="@+id/checkbox_omnivore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Omnivore" />
+
+                    <CheckBox
+                        android:id="@+id/checkbox_vegetarian"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Vegetarian" />
+
+
+                    <CheckBox
+                        android:id="@+id/checkbox_vegan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Vegan" />
+
+
+                    <CheckBox
+                        android:id="@+id/checkbox_lightfat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Light fat" />
+
+
+                    <CheckBox
+                        android:id="@+id/checkbox_neverfull"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Never full without meat" />
 
 
 
-
+                    <CheckBox
+                        android:id="@+id/checkbox_ketogenic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Ketogenic" />
 
             </com.google.android.flexbox.FlexboxLayout>
 
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:justificationMode="inter_word"
+                android:paddingTop="15dp"
+                android:text="Do you add salt to your food?"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton android:id="@+id/radio_always"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Always"/>
+
+                <RadioButton android:id="@+id/radio_usually"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Usually"/>
+
+                <RadioButton android:id="@+id/radio_sometimes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Sometimes"/>
+
+                <RadioButton android:id="@+id/radio_never"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Never"/>
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:justificationMode="inter_word"
+                android:paddingTop="15dp"
+                android:text="How would you describe your diet?"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton android:id="@+id/radio_healthy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Healthy and balanced"/>
+
+                <RadioButton android:id="@+id/radio_poor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Poor"/>
+
+                <RadioButton android:id="@+id/radio_okay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="OK"/>
+
+                <RadioButton android:id="@+id/radio_other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Other"/>
+            </RadioGroup>
+
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:justificationMode="inter_word"
+                android:paddingTop="15dp"
+                android:text="Which of the following drinks do you consume the most?"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/checkboxContainer5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                app:flexWrap="wrap"
+                app:justifyContent="flex_start">
+
+
+                <CheckBox
+                    android:id="@+id/checkbox_water"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Water" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_spark_water"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Sparkling water" />
+
+
+                <CheckBox
+                    android:id="@+id/checkbox_milk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Milk" />
+
+
+                <CheckBox
+                    android:id="@+id/checkbox_soft_drinks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Soft drinks" />
+
+
+                <CheckBox
+                    android:id="@+id/checkbox_alcohol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Alcohol" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_juice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Juice" />
+
+            </com.google.android.flexbox.FlexboxLayout>
 
 
 

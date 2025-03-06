@@ -79,6 +79,13 @@ public class Homescreen extends AppCompatActivity {
                 startActivity(new Intent(Homescreen.this, SymptomLogs.class));
             }
         });
+        Button test = findViewById(R.id.pintest);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Homescreen.this, PinTest.class));
+        }
+        });
 
     }
 }

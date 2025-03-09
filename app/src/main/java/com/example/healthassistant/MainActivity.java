@@ -59,6 +59,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Keeps the user signed in if they already have
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            Log.d("AuthUser", "User is already signed in: " + currentUser.getEmail());
+            startActivity(new Intent(MainActivity.this, Homescreen.class));
+            finish();
+        }
+
         /* Testing firestore connection
         FirebaseFirestore firestore_db = FirebaseFirestore.getInstance();
         firestore_db.collection("test")
@@ -77,15 +86,6 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        // Keeps the user signed in if they already have
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            Log.d("AuthUser", "User is already signed in: " + currentUser.getEmail());
-            startActivity(new Intent(MainActivity.this, Homescreen.class));
-            finish();
-        }
 
         // Upload medications to medication database (still a WIP)
         //uploadMedicationsToFirestore();

@@ -81,7 +81,7 @@ public class MedicationManager2 extends AppCompatActivity {
 
         // Existing bottom navigation code...
         Intent intent = getIntent();
-        String name = intent.getStringExtra("NAME");
+        String name = intent.getStringExtra("medicationName"); // References medication name passed in by search
         String expireDate = intent.getStringExtra("EXPIRE_DATE");
         int totalPills = intent.getIntExtra("TOTAL_PILLS", 0);
 

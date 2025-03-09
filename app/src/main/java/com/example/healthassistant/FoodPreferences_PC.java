@@ -224,7 +224,7 @@ public class FoodPreferences_PC extends AppCompatActivity {
         // Indicate that the user successfully completed this step
         Intent resultIntent = new Intent();
         setResult(RESULT_OK, resultIntent);
-        finish(); // Close this activity and return to ProfileSetupActivity
+        finish(); // Close this activity and return to ProfileCustomization
     }
 
 }

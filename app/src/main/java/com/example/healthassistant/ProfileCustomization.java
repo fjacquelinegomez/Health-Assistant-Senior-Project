@@ -2,29 +2,37 @@ package com.example.healthassistant;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ProfileCustomization extends AppCompatActivity {
 
     private ImageButton btnMH, btnHG, btnDR, btnFP;
-    private int current_step = 0;
+    private Button btnContinue;
+    private boolean isMedicalHistoryCompleted = false;
+    private ActivityResultLauncher<Intent> activityLauncher;
+    private TextView greeting;
 
-    private final ActivityResultLauncher<Intent> activityLauncher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == RESULT_OK) {
-                    current_step++;  // Move to the next step
-                    unlockNextStep();
-                }
-            });
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,71 +45,110 @@ public class ProfileCustomization extends AppCompatActivity {
             return insets;
         });
 
+        //initialize all the buttons
+
         btnMH = findViewById(R.id.medicalHistoryButton);
         btnHG = findViewById(R.id.healthGoalsButton);
         btnDR = findViewById(R.id.dietRestrictionButton);
         btnFP = findViewById(R.id.foodPreferenceButton);
+        btnContinue = findViewById(R.id.btnContinue);
+        greeting = findViewById(R.id.medicalHistoryText);
 
-        //disable all buttons until medical history is completed
-        lockButton(btnHG);
-        lockButton(btnDR);
-        lockButton(btnFP);
+        // disable all buttons except for MedicalHistory
+        setButtonsEnabled(false);
 
-        // sequence of when to go to next page
-        btnMH.setOnClickListener(view -> openForm(0, MedicalHistory_PC.class));
-        btnHG.setOnClickListener(view -> openForm(1, HealthGoals_PC.class));
-        btnDR.setOnClickListener(view -> openForm(2, DietaryRestrictions_PC.class));
-        btnFP.setOnClickListener(view -> openForm(3, FoodPreferences_PC.class));
+        // Initially disable all buttons except Medical History
+        setButtonsEnabled(false);
 
-    }
+        // Register result callback
+        activityLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        isMedicalHistoryCompleted = true;  // Mark as completed
+                        setButtonsEnabled(true);  // Unlock everything
+                    }
+                }
+        );
 
-    private void openForm(int step, Class<?> activityClass) {
-        if (current_step == step) {  // Ensure they can only open the next unlocked form
-            Intent intent = new Intent(ProfileCustomization.this, activityClass);
+        // Medical History Button Logic
+        btnMH.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileCustomization.this, MedicalHistory_PC.class);
             activityLauncher.launch(intent);
-             // uses api at the top defined globally
-        } else {
-            Toast.makeText(this, "Please complete the previous step first!", Toast.LENGTH_SHORT).show();
-        }
-    }
+        });
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == current_step) {
-            current_step++;  // Move to the next step
-            unlockNextStep();
-        }
-    }
-
-    private void unlockNextStep() {
-        switch (current_step) {
-            case 1:
-                unlockButton(btnHG);
-                break;
-            case 2:
-                unlockButton(btnDR);
-                break;
-            case 3:
-                unlockButton(btnFP);
-                break;
-            case 4:
-                // Once all steps are complete, navigate to the home screen
+        // Continue Button Logic
+        btnContinue.setOnClickListener(v -> {
+            if (isMedicalHistoryCompleted) {
                 startActivity(new Intent(ProfileCustomization.this, Homescreen.class));
-                finish(); // Close this setup activity
-                break;
+            } else {
+                Toast.makeText(this, "Please complete your Medical History first!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        //logic when a user presses health goals
+        btnHG.setOnClickListener(v ->{
+            Intent intent = new Intent(ProfileCustomization.this, HealthGoals_PC.class);
+            activityLauncher.launch(intent);
+        });
+
+        //logic when a user presses food preferences
+        btnFP.setOnClickListener(v ->{
+            Intent intent = new Intent(ProfileCustomization.this, FoodPreferences_PC.class);
+            activityLauncher.launch(intent);
+        });
+
+        //logic when a user presses dietary restrictions
+        btnDR.setOnClickListener(v ->{
+            Intent intent = new Intent(ProfileCustomization.this, DietaryRestrictions_PC.class);
+            activityLauncher.launch(intent);
+        });
+
+
+        // Firebase logic to retrieve and display the user's first name
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null) {
+            String uid = user.getUid();
+            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
+
+            databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        String fullName = snapshot.child("fullName").getValue(String.class);
+                        if (fullName != null && !fullName.isEmpty()) {
+                            String firstName = fullName.split(" ")[0];  // Extract first name
+                            greeting.setText(String.format("Hello %s!", firstName));
+                        }
+                    } else {
+                        greeting.setText("Hello!");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(ProfileCustomization.this, "Failed to load name", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
+
     }
 
-    private void lockButton(ImageButton button) {
-        button.setEnabled(false);
-        button.setAlpha(0.5f);
+    // Helper method to enable or disable buttons
+    private void setButtonsEnabled(boolean isEnabled) {
+        btnHG.setEnabled(isEnabled);
+        btnDR.setEnabled(isEnabled);
+        btnFP.setEnabled(isEnabled);
+        btnContinue.setEnabled(isEnabled);
+
+        // Optional: Make the disabled buttons look visually "dimmed"
+        float alpha = isEnabled ? 1.0f : 0.5f;
+        btnHG.setAlpha(alpha);
+        btnDR.setAlpha(alpha);
+        btnFP.setAlpha(alpha);
+        btnContinue.setAlpha(alpha);
     }
-
-    private void unlockButton(ImageButton button) {
-        button.setEnabled(true);
-        button.setAlpha(1.0f);
-    }
-
-
 }

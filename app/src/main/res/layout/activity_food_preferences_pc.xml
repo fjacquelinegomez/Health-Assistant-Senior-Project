@@ -13,7 +13,7 @@
         android:id="@+id/FoodPreferencesCard"
         android:layout_width="0dp"
         android:layout_height="110dp"
-        app:cardBackgroundColor="#FCBCAE"
+        app:cardBackgroundColor="#F1E1EF"
         app:cardCornerRadius="20dp"
         app:cardElevation="15dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,11 +24,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:gravity="start"
+            android:paddingTop="35dp"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="294dp"
+                android:gravity="center"
                 android:layout_height="wrap_content">
 
                 <TextView

@@ -18,10 +18,21 @@
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <!--search box-->
+
+        <!-- search box -->
         <android.widget.SearchView
+            android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <!-- recycler view -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="604dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+            app:layout_constraintTop_toBottomOf="@id/searchView" />
     </LinearLayout>
 
     <!--header-->
@@ -71,6 +82,14 @@
                     android:text="Search Medications"
                     android:textColor="#000000"
                     android:textSize="28sp" />
+
+                <!-- Temporary back button -->
+                <Button
+                    android:id="@+id/back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:text="Back" />
             </LinearLayout>
 
             <View

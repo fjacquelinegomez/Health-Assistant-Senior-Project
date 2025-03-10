@@ -7,6 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".AddMedication">
 
+    <!-- Dynamic Medication Text(s) -->
+    <TextView
+        android:id="@+id/medicationNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/expireAndCountLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.368" />
+
     <LinearLayout
         android:id="@+id/expireAndCountLayout"
         android:layout_width="match_parent"

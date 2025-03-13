@@ -76,6 +76,7 @@
             tools:layout_editor_absoluteY="258dp" />
     </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/addMedicationButtonLayout"
         android:layout_width="0dp"

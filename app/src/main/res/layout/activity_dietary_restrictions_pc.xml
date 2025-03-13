@@ -5,15 +5,267 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DietaryRestrictions_PC">
+    tools:context=".DietaryRestrictions_PC"
+    android:background="#FBE2E2"
+    >
 
-    <Button
-        android:id="@+id/btn_done"
-        android:layout_width="wrap_content"
+    <!--header-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/dietaryRestrictionsCard"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="0dp"
+        app:cardBackgroundColor="#FCBCAE"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintWidth_percent="1.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.05"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/dietaryRestrictionsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Dietary Restrictions"
+                    android:textColor="#000000"
+                    android:textSize="28sp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ScrollView
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:onClick="onSubmitDRHistory"
-        android:text="Done"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="421dp" />
+        app:layout_constraintTop_toBottomOf="@id/dietaryRestrictionsCard"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintVertical_bias="0.0">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Select the checkboxes in each category that apply to your dietary needs and restrictions."
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:alpha="0.5"
+                android:paddingTop="15dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/question_background"
+                android:padding="12dp"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Food Allergies"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:paddingTop="10dp" />
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/checkboxContainerAllergies"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_start">
+                    <CheckBox
+                        android:id="@+id/checkboxPeanut"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Peanut" />
+                    <CheckBox
+                        android:id="@+id/checkboxTreenuts"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Tree Nuts" />
+                    <CheckBox
+                        android:id="@+id/checkboxDairy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Dairy" />
+                    <CheckBox
+                        android:id="@+id/checkboxEgg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Egg" />
+                    <CheckBox
+                        android:id="@+id/checkboxShellfish"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Shellfish" />
+                    <CheckBox
+                        android:id="@+id/checkboxFish"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Fish" />
+                    <CheckBox
+                        android:id="@+id/checkboxSoy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Soy" />
+                    <CheckBox
+                        android:id="@+id/checkboxGlutin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Gluten" />
+                    <CheckBox
+                        android:id="@+id/checkboxWheat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Wheat" />
+                    <CheckBox
+                        android:id="@+id/checkboxSesame"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Sesame" />
+                    <CheckBox
+                        android:id="@+id/checkboxOtherAllergies"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Other" />
+                </com.google.android.flexbox.FlexboxLayout>
+                <EditText
+                    android:id="@+id/editTextText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/question_background"
+                android:padding="12dp"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Diets"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:paddingTop="10dp" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/checkboxContainerDiets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_start">
+                    <CheckBox
+                        android:id="@+id/checkboxVegetarian"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Vegetarian" />
+                    <CheckBox
+                        android:id="@+id/checkboxVegan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Vegan" />
+                    <CheckBox
+                        android:id="@+id/checkboxPescatarian"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Pescatarian" />
+                    <CheckBox
+                        android:id="@+id/checkboxSodium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Low Sodium" />
+                    <CheckBox
+                        android:id="@+id/checkboxSugar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Low Sugar" />
+                    <CheckBox
+                        android:id="@+id/checkboxFat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Low Fat" />
+                    <CheckBox
+                        android:id="@+id/checkboxFODMAP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Low FODMAP" />
+                    <CheckBox
+                        android:id="@+id/checkboxRenal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Renal Diet" />
+                    <CheckBox
+                        android:id="@+id/checkboxKetogenic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Ketogenic Diet" />
+                    <CheckBox
+                        android:id="@+id/checkboxOtherDiets"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Other" />
+                </com.google.android.flexbox.FlexboxLayout>
+
+                <EditText
+                    android:id="@+id/editTextText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

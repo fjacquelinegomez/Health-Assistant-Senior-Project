@@ -869,21 +869,37 @@
                     android:textSize="16sp"/>
 
             </com.google.android.flexbox.FlexboxLayout>
+
+
+
         </LinearLayout>
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_done"
-                android:layout_width="267dp"
+                android:layout_width="250dp"
                 android:layout_height="52dp"
+                android:layout_marginTop="16dp"
                 android:background="@android:color/black"
                 android:fontFamily="@font/poppins_bold"
                 android:onClick="onSubmitFPHistory"
                 android:text="Done"
-                android:textColor="@android:color/white"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginStart="46dp"
+                android:textColor="@android:color/white" />
+
+
+
+
+        </LinearLayout>
+
+
 
         </LinearLayout>
     </ScrollView>

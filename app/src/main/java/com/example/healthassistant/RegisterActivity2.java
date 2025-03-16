@@ -63,8 +63,6 @@ public class RegisterActivity2 extends AppCompatActivity {
         });
 
 
-
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -73,6 +71,7 @@ public class RegisterActivity2 extends AppCompatActivity {
     }
 
 
+    //method for capturing the data from the input fields
     private void saveNames(){
         String uName = fullname.getText().toString().trim();
         String uUsername = username.getText().toString().trim();

@@ -279,7 +279,7 @@
                 android:layout_width="153dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="650dp"
+                android:layout_marginTop="640dp"
                 android:background="@android:color/black"
                 android:fontFamily="@font/poppins_bold"
                 android:onClick="onSubmitHealthGoalsHistory"
@@ -292,7 +292,7 @@
                 android:layout_width="153dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="195dp"
-                android:layout_marginTop="650dp"
+                android:layout_marginTop="640dp"
                 android:background="#808080"
                 android:fontFamily="@font/poppins_bold"
 

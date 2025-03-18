@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera.any" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera.any" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthAssistant"
         tools:targetApi="35">
+        <activity
+            android:name=".MFAVerify"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterMFASetup2"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterMFASetup"
+            android:exported="false" />
         <activity
             android:name=".AddMedication"
             android:exported="false" />
@@ -82,11 +92,10 @@
             android:exported="false" />
         <activity
             android:name=".BarcodeScannerActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

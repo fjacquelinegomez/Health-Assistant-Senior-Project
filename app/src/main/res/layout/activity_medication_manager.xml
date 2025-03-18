@@ -552,26 +552,30 @@
                     </LinearLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+    <LinearLayout
+        android:id="@+id/currentMedicationButtonLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintWidth_percent="0.9"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintVertical_bias="1.0">
             <!--button directs to current medications-->
             <Button
                 android:id="@+id/currentMedicationButton"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Current medication"
                 android:textAllCaps="true"
                 android:fontFamily="@font/poppins_bold"
                 android:textColor="#000000"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/refillMedicationCard"
-                app:layout_constraintWidth_percent="0.9"
-                app:layout_constraintVertical_bias="0.0"
-                android:textSize="15sp"
-                android:layout_gravity="center|center_vertical"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+                android:textSize="15sp" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

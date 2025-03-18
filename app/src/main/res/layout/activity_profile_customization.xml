@@ -35,7 +35,7 @@
                 android:layout_gravity="center">
 
                 <TextView
-                    android:id="@+id/medicalHistoryText"
+                    android:id="@+id/headerText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -66,7 +66,7 @@
 
 
         <TextView
-            android:id="@+id/noticeDescriptionText"
+            android:id="@+id/welcomeTextView"
             android:layout_width="match_parent"
             android:layout_height="119dp"
             android:layout_marginTop="20dp"

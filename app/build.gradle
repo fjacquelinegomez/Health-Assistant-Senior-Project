@@ -73,4 +73,9 @@ dependencies {
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.2'
 
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
+    //for mfa
+    implementation 'com.hbb20:ccp:2.7.2'
+    implementation 'io.github.chaosleung:pinview:1.4.4'
+
 }

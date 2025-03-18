@@ -4,7 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
-    <string-array name="hg_items"> Select your Health Goals
+    <string-array name="hg_items">Select your Health Goals
         <item>Drink More Water</item>
         <item>Exercise Regularly</item>
         <item>Improve sleep</item>

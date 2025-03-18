@@ -1,9 +1,12 @@
 package com.example.healthassistant;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -30,8 +33,11 @@ public class Settings extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        Button back = findViewById(R.id.settingsBackButton);
+        ImageButton back = findViewById(R.id.settingsBackButton);
         Button logOut = findViewById(R.id.logOutButton);
+        //profile customization
+        TextView profileCustomizationText = findViewById(R.id.clickablePC);
+
 
         View.OnClickListener buttonClickListener = new View.OnClickListener() {
             @Override
@@ -43,6 +49,17 @@ public class Settings extends AppCompatActivity {
                     Toast.makeText(Settings.this, "Log Out Successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Settings.this, MainActivity.class));
                     finish();
+                }
+                else if (v.getId() == R.id.clickablePC) {
+                    // Set the flag in SharedPreferences before starting the activity
+                    SharedPreferences sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putBoolean("FROM_SETTINGS", true);
+                    editor.apply();
+
+                    // Now start the ProfileCustomizationActivity
+                    Intent intent = new Intent(Settings.this, ProfileCustomization.class);
+                    startActivity(intent);
                 }
             }
         };

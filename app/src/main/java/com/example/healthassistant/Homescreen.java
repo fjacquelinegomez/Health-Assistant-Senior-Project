@@ -87,5 +87,13 @@ public class Homescreen extends AppCompatActivity {
         }
         });
 
+        //settings button
+        ImageButton buttonSettings = (ImageButton) findViewById(R.id.userProfileButton);
+        buttonSettings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(Homescreen.this, Settings.class));
+            }
+        });
+
     }
 }

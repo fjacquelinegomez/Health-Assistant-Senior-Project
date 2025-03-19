@@ -1,7 +1,9 @@
 package com.example.healthassistant;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -135,6 +137,24 @@ public class ProfileCustomization extends AppCompatActivity {
             });
         }
 
+        //When selected from settings
+        SharedPreferences sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        boolean fromSettings = sharedPref.getBoolean("FROM_SETTINGS", false);
+
+        // Initialize the views
+        TextView welcomeTextView = findViewById(R.id.welcomeTextView);
+        //TextView headerTextView = findViewById(R.id.headerText);
+
+        // Check if the views are not null
+        if (welcomeTextView != null) {
+                //&& headerTextView != null) {
+            if (fromSettings) {
+                welcomeTextView.setText("Select anything you would like to edit.");
+                //headerTextView.setText("Profile Customization");
+            }
+        } else {
+            Log.e("ProfileCustomization", "Views not found: welcomeTextView or headerTextView is null");
+        }
     }
 
     // Helper method to enable or disable buttons

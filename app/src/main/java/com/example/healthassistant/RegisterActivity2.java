@@ -93,7 +93,8 @@ public class RegisterActivity2 extends AppCompatActivity {
                     Toast.makeText(this, "Data saved successfully!", Toast.LENGTH_SHORT).show();
 
                     // Navigate to Home Screen after data is saved
-                    Intent intent = new Intent(RegisterActivity2.this, ProfileCustomization.class);
+                    //Intent intent = new Intent(RegisterActivity2.this, ProfileCustomization.class);
+                    Intent intent = new Intent(RegisterActivity2.this, RegisterMFASetup.class);
                     startActivity(intent);
                     finish();  // Close RegisterActivity2
                 })

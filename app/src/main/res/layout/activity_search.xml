@@ -81,15 +81,20 @@
                     android:fontFamily="@font/poppins_bold"
                     android:text="Search Medications"
                     android:textColor="#000000"
-                    android:textSize="28sp" />
+                    android:textSize="28sp"
+                    android:lines="1"
+                    app:autoSizeMaxTextSize="28sp"
+                    app:autoSizeMinTextSize="14sp"
+                    app:autoSizeStepGranularity="2sp"
+                    app:autoSizeTextType="uniform"/>
 
                 <!-- Temporary back button -->
-                <Button
+                <!-- <Button
                     android:id="@+id/back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
-                    android:text="Back" />
+                    android:text="Back" /> -->
             </LinearLayout>
 
             <View

@@ -106,7 +106,7 @@
             android:layout_margin="8dp">
 
             <ImageButton
-                android:id="@+id/imageButton13"
+                android:id="@+id/editTableSymptoms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -134,7 +134,7 @@
             android:layout_margin="8dp">
 
             <ImageButton
-                android:id="@+id/imageButton14"
+                android:id="@+id/createLogSymptom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -162,7 +162,7 @@
             android:layout_margin="8dp">
 
             <ImageButton
-                android:id="@+id/imageButton15"
+                android:id="@+id/analyzeSymptom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"

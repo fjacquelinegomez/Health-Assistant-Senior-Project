@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -20,10 +22,19 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.healthassistant.databinding.ActivityHomescreenBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class Homescreen extends AppCompatActivity {
 
+
+    private TextView greeting;
     //used for bottom bar
     ActivityHomescreenBinding binding;
 
@@ -34,6 +45,12 @@ public class Homescreen extends AppCompatActivity {
         //bottom bar
         binding = ActivityHomescreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // initialize the greeting text at the top so it displays the user's first name
+        greeting = findViewById(R.id.nameText);
+
+
+
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -86,6 +103,51 @@ public class Homescreen extends AppCompatActivity {
                 startActivity(new Intent(Homescreen.this, PinTest.class));
         }
         });
+
+
+        // Firebase logic to retrieve and display the user's first name
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null) {
+            String uid = user.getUid();
+            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
+
+            databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        String fullName = snapshot.child("fullName").getValue(String.class);
+                        if (fullName != null && !fullName.isEmpty()) {
+                            String firstName = fullName.split(" ")[0];  // Extract first name
+                            greeting.setText(firstName);
+                        }
+                    } else {
+                        greeting.setText("friend!");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(Homescreen.this, "Failed to load name", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+
+        //settings button
+        ImageButton buttonSettings = (ImageButton) findViewById(R.id.userProfileButton);
+        buttonSettings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(Homescreen.this, Settings.class));
+            }
+        });
+
+
+
+
+
+
 
     }
 }

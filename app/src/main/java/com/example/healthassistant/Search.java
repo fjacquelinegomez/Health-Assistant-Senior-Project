@@ -26,17 +26,50 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import com.example.healthassistant.databinding.ActivityFoodManagerBinding;
+import com.example.healthassistant.databinding.ActivitySearchBinding;
+
+
 public class Search extends AppCompatActivity {
     private SearchView search;
     private RecyclerView recyclerView;
     private MedicationSearchAdapter adapter;
     private List<Medication> medicationList = new ArrayList<>();
 
+    ActivitySearchBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_search);
+
+        /**bottom bar navigation functionality**/
+        binding = ActivitySearchBinding.inflate(getLayoutInflater());
+
+        setContentView(binding.getRoot());
+
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+                    switch (item.getItemId()) {
+                        case R.id.home:
+                            startActivity(new Intent(Search.this, Homescreen.class));
+                            break;
+                        case R.id.searchMedication:
+                            startActivity(new Intent(Search.this, Search.class));
+                            break;
+                        case R.id.foodManager:
+                            startActivity(new Intent(Search.this, FoodManager.class));
+                            break;
+                        case R.id.healthGoals:
+                            startActivity(new Intent(Search.this, HealthGoals.class));
+                            break;
+                        case R.id.medicationManager:
+                            startActivity(new Intent(Search.this, MedicationManager.class));
+                            break;
+
+                    }
+            return true;
+        });
 
         // Initializes the search and recycler view (+ adapter)
         search = findViewById(R.id.searchView);
@@ -52,6 +85,7 @@ public class Search extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         //searchMedication("ibuprofen"); //Used to test if searching with RxNormApi is working as intended
 
         // Search bar functionality

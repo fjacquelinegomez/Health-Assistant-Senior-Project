@@ -1,13 +1,17 @@
 package com.example.healthassistant;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -15,8 +19,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -138,7 +145,77 @@ public class FoodPreferences_PC extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        // Load stored data if available
+        loadFoodPreferencesData();
+    }
 
+    private void loadFoodPreferencesData() {
+        databaseRef.addValueEventListener(new ValueEventListener() {
+        //databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    breakfast.setChecked(Boolean.TRUE.equals(snapshot.child("Breakfast").getValue(Boolean.class)));
+                    dinner.setChecked(Boolean.TRUE.equals(snapshot.child("Dinner").getValue(Boolean.class)));
+                    lunch.setChecked(Boolean.TRUE.equals(snapshot.child("Lunch").getValue(Boolean.class)));
+                    night.setChecked(Boolean.TRUE.equals(snapshot.child("Night").getValue(Boolean.class)));
+                    snacks.setChecked(Boolean.TRUE.equals(snapshot.child("Snacks").getValue(Boolean.class)));
+
+                    none.setChecked(Boolean.TRUE.equals(snapshot.child("None").getValue(Boolean.class)));
+                    one_day.setChecked(Boolean.TRUE.equals(snapshot.child("One Day").getValue(Boolean.class)));
+                    three_day.setChecked(Boolean.TRUE.equals(snapshot.child("Three Day").getValue(Boolean.class)));
+                    six_day.setChecked(Boolean.TRUE.equals(snapshot.child("Six Day").getValue(Boolean.class)));
+
+                    pancakes.setChecked(Boolean.TRUE.equals(snapshot.child("Pancakes").getValue(Boolean.class)));
+                    eggs.setChecked(Boolean.TRUE.equals(snapshot.child("Eggs").getValue(Boolean.class)));
+                    ham.setChecked(Boolean.TRUE.equals(snapshot.child("Ham").getValue(Boolean.class)));
+                    tomatoe.setChecked(Boolean.TRUE.equals(snapshot.child("Tomatoes").getValue(Boolean.class)));
+                    sandwiches.setChecked(Boolean.TRUE.equals(snapshot.child("Sandwiches").getValue(Boolean.class)));
+                    fruits.setChecked(Boolean.TRUE.equals(snapshot.child("Fruits").getValue(Boolean.class)));
+                    cheese.setChecked(Boolean.TRUE.equals(snapshot.child("Cheese").getValue(Boolean.class)));
+                    olives.setChecked(Boolean.TRUE.equals(snapshot.child("Olives").getValue(Boolean.class)));
+                    croissants.setChecked(Boolean.TRUE.equals(snapshot.child("Croissants").getValue(Boolean.class)));
+
+                    salad.setChecked(Boolean.TRUE.equals(snapshot.child("Salad").getValue(Boolean.class)));
+                    meat.setChecked(Boolean.TRUE.equals(snapshot.child("Meat").getValue(Boolean.class)));
+                    pork.setChecked(Boolean.TRUE.equals(snapshot.child("Pork").getValue(Boolean.class)));
+                    cucumber.setChecked(Boolean.TRUE.equals(snapshot.child("Cucumber").getValue(Boolean.class)));
+                    veggies.setChecked(Boolean.TRUE.equals(snapshot.child("Veggies").getValue(Boolean.class)));
+                    sandwich_lunch.setChecked(Boolean.TRUE.equals(snapshot.child("Sandwich Lunch").getValue(Boolean.class)));
+                    snacks_lunch.setChecked(Boolean.TRUE.equals(snapshot.child("Snacks Lunch").getValue(Boolean.class)));
+
+                    big_eater.setChecked(Boolean.TRUE.equals(snapshot.child("Big Eater").getValue(Boolean.class)));
+                    quick_eater.setChecked(Boolean.TRUE.equals(snapshot.child("Quick Eater").getValue(Boolean.class)));
+                    light_eater.setChecked(Boolean.TRUE.equals(snapshot.child("Light Eater").getValue(Boolean.class)));
+                    moderate_eater.setChecked(Boolean.TRUE.equals(snapshot.child("Moderate Eater").getValue(Boolean.class)));
+
+                    omnivore.setChecked(Boolean.TRUE.equals(snapshot.child("Omnivore").getValue(Boolean.class)));
+                    vegetarian.setChecked(Boolean.TRUE.equals(snapshot.child("Vegetarian").getValue(Boolean.class)));
+                    vegan.setChecked(Boolean.TRUE.equals(snapshot.child("Vegan").getValue(Boolean.class)));
+                    light_fat.setChecked(Boolean.TRUE.equals(snapshot.child("Light fat").getValue(Boolean.class)));
+                    never_full.setChecked(Boolean.TRUE.equals(snapshot.child("Never Full").getValue(Boolean.class)));
+                    ketogenic.setChecked(Boolean.TRUE.equals(snapshot.child("Ketogenic").getValue(Boolean.class)));
+
+                    healthy.setChecked(Boolean.TRUE.equals(snapshot.child("Healthy").getValue(Boolean.class)));
+                    poor.setChecked(Boolean.TRUE.equals(snapshot.child("Poor").getValue(Boolean.class)));
+                    okay.setChecked(Boolean.TRUE.equals(snapshot.child("Okay").getValue(Boolean.class)));
+                    other.setChecked(Boolean.TRUE.equals(snapshot.child("Other").getValue(Boolean.class)));
+
+                    water.setChecked(Boolean.TRUE.equals(snapshot.child("Water").getValue(Boolean.class)));
+                    spark_water.setChecked(Boolean.TRUE.equals(snapshot.child("Spark Water").getValue(Boolean.class)));
+                    milk.setChecked(Boolean.TRUE.equals(snapshot.child("Milk").getValue(Boolean.class)));
+                    soft_drinks.setChecked(Boolean.TRUE.equals(snapshot.child("Soft Drink").getValue(Boolean.class)));
+                    alcohol.setChecked(Boolean.TRUE.equals(snapshot.child("Alcohol").getValue(Boolean.class)));
+                    juice.setChecked(Boolean.TRUE.equals(snapshot.child("Juice").getValue(Boolean.class)));
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Failed to load dietary restrictions", error.toException());
+            }
+        });
     }
     public void onSubmitFPHistory(View view) { // Call this when user submits
         // Create a map to store the selected food preferences
@@ -196,6 +273,7 @@ public class FoodPreferences_PC extends AppCompatActivity {
         foodPreferences.put("Poor", poor.isChecked());
         foodPreferences.put("Okay", okay.isChecked());
         foodPreferences.put("Other", other.isChecked());
+
         foodPreferences.put("Water", water.isChecked());
         foodPreferences.put("Spark Water", spark_water.isChecked());
         foodPreferences.put("Milk", milk.isChecked());
@@ -206,19 +284,32 @@ public class FoodPreferences_PC extends AppCompatActivity {
 
 
 
-        String logId = databaseRef.push().getKey();
-        if (logId != null) {
-            databaseRef.child(logId).setValue(foodPreferences)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(FoodPreferences_PC.this, "Preferences saved!", Toast.LENGTH_SHORT).show();
-                            setResult(RESULT_OK, new Intent());
-                            finish();
-                        } else {
-                            Toast.makeText(FoodPreferences_PC.this, "Failed to save preferences.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
+//        String logId = databaseRef.push().getKey();
+//        if (logId != null) {
+//            databaseRef.child(logId).setValue(foodPreferences)
+//                    .addOnCompleteListener(task -> {
+//                        if (task.isSuccessful()) {
+//                            Toast.makeText(FoodPreferences_PC.this, "Preferences saved!", Toast.LENGTH_SHORT).show();
+//                            setResult(RESULT_OK, new Intent());
+//                            finish();
+//                        } else {
+//                            Toast.makeText(FoodPreferences_PC.this, "Failed to save preferences.", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//        }
+
+        //changed this
+        databaseRef.setValue(foodPreferences) // Remove push() to store data under a fixed location
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(FoodPreferences_PC.this, "Preferences saved!", Toast.LENGTH_SHORT).show();
+                        setResult(RESULT_OK, new Intent());
+                        finish();
+                    } else {
+                        Toast.makeText(FoodPreferences_PC.this, "Failed to save preferences.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
 
 
         // Indicate that the user successfully completed this step

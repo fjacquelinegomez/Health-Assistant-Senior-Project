@@ -1,12 +1,17 @@
 package com.example.healthassistant;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -14,10 +19,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DietaryRestrictions_PC extends AppCompatActivity {
@@ -78,7 +87,46 @@ public class DietaryRestrictions_PC extends AppCompatActivity {
             Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
             finish();
         }
+        // Load stored data if available
+        loadDietaryRestrictionsData();
 
+    }
+    private void loadDietaryRestrictionsData() {
+        databaseRef.addValueEventListener(new ValueEventListener() {
+        //databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    peanut.setChecked(Boolean.TRUE.equals(snapshot.child("Peanut").getValue(Boolean.class)));
+                    treenuts.setChecked(Boolean.TRUE.equals(snapshot.child("Tree Nuts").getValue(Boolean.class)));
+                    dairy.setChecked(Boolean.TRUE.equals(snapshot.child("Dairy").getValue(Boolean.class)));
+                    egg.setChecked(Boolean.TRUE.equals(snapshot.child("Egg").getValue(Boolean.class)));
+                    shellfish.setChecked(Boolean.TRUE.equals(snapshot.child("Shellfish").getValue(Boolean.class)));
+                    fish.setChecked(Boolean.TRUE.equals(snapshot.child("Fish").getValue(Boolean.class)));
+                    soy.setChecked(Boolean.TRUE.equals(snapshot.child("Soy").getValue(Boolean.class)));
+                    gluten.setChecked(Boolean.TRUE.equals(snapshot.child("Gluten").getValue(Boolean.class)));
+                    wheat.setChecked(Boolean.TRUE.equals(snapshot.child("Wheat").getValue(Boolean.class)));
+                    sesame.setChecked(Boolean.TRUE.equals(snapshot.child("Sesame").getValue(Boolean.class)));
+                    other1.setChecked(Boolean.TRUE.equals(snapshot.child("OtherAllergies").getValue(Boolean.class)));
+
+                    veg.setChecked(Boolean.TRUE.equals(snapshot.child("Vegetarian").getValue(Boolean.class)));
+                    vegan.setChecked(Boolean.TRUE.equals(snapshot.child("Vegan").getValue(Boolean.class)));
+                    pesca.setChecked(Boolean.TRUE.equals(snapshot.child("Pescatarian").getValue(Boolean.class)));
+                    low_sodium.setChecked(Boolean.TRUE.equals(snapshot.child("Low Sodium").getValue(Boolean.class)));
+                    low_sugar.setChecked(Boolean.TRUE.equals(snapshot.child("Low Sugar").getValue(Boolean.class)));
+                    low_fat.setChecked(Boolean.TRUE.equals(snapshot.child("Low Fat").getValue(Boolean.class)));
+                    low_fodmap.setChecked(Boolean.TRUE.equals(snapshot.child("Low FODMAP").getValue(Boolean.class)));
+                    renal_diet.setChecked(Boolean.TRUE.equals(snapshot.child("Renal Diet").getValue(Boolean.class)));
+                    keo_diet.setChecked(Boolean.TRUE.equals(snapshot.child("Ketogenic Diet").getValue(Boolean.class)));
+                    other2.setChecked(Boolean.TRUE.equals(snapshot.child("OtherDiets").getValue(Boolean.class)));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Failed to load dietary restrictions", error.toException());
+            }
+        });
     }
     public void onSubmitDRHistory(View view) { // Call this when user submits
         Map<String, Boolean> dietaryRestrictions = new HashMap<>();
@@ -107,19 +155,17 @@ public class DietaryRestrictions_PC extends AppCompatActivity {
         dietaryRestrictions.put("Ketogenic Diet", keo_diet.isChecked());
         dietaryRestrictions.put("OtherDiets", other2.isChecked());
 
-        String logId = databaseRef.push().getKey();
-        if (logId != null) {
-            databaseRef.child(logId).setValue(dietaryRestrictions)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(DietaryRestrictions_PC.this, "Restrictions saved!", Toast.LENGTH_SHORT).show();
-                            setResult(RESULT_OK, new Intent());
-                            finish();
-                        } else {
-                            Toast.makeText(DietaryRestrictions_PC.this, "Failed to save restrictions.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
+        //changed this
+        databaseRef.setValue(dietaryRestrictions) // Remove push() to store data under a fixed location
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(DietaryRestrictions_PC.this, "Restrictions saved!", Toast.LENGTH_SHORT).show();
+                        setResult(RESULT_OK, new Intent());
+                        finish();
+                    } else {
+                        Toast.makeText(DietaryRestrictions_PC.this, "Failed to save restrictions.", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
 

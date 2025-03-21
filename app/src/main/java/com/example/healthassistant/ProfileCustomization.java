@@ -31,6 +31,10 @@ public class ProfileCustomization extends AppCompatActivity {
     private ImageButton btnMH, btnHG, btnDR, btnFP;
     private Button btnContinue;
     private boolean isMedicalHistoryCompleted = false;
+    //new
+    private boolean isHealthGoalsCompleted;
+    private boolean isDietaryRestrictionsCompleted;
+    private boolean isFoodPreferencesCompleted;
     private ActivityResultLauncher<Intent> activityLauncher;
     private TextView greeting;
 
@@ -54,13 +58,22 @@ public class ProfileCustomization extends AppCompatActivity {
         btnDR = findViewById(R.id.dietRestrictionButton);
         btnFP = findViewById(R.id.foodPreferenceButton);
         btnContinue = findViewById(R.id.btnContinue);
-        greeting = findViewById(R.id.medicalHistoryText);
+        greeting = findViewById(R.id.headerText);
 
-        // disable all buttons except for MedicalHistory
-        setButtonsEnabled(false);
+        SharedPreferences sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        boolean fromSettings = sharedPref.getBoolean("FROM_SETTINGS", false);
+        TextView welcomeTextView = findViewById(R.id.welcomeTextView);
+        TextView headerText = findViewById(R.id.headerText);  // This line was incorrect
 
-        // Initially disable all buttons except Medical History
-        setButtonsEnabled(false);
+        if (fromSettings) {
+            welcomeTextView.setText("Select anything you would like to edit.");
+            headerText.setText("Profile Customization");
+            isMedicalHistoryCompleted = true;
+            isHealthGoalsCompleted = true;
+            isDietaryRestrictionsCompleted = true; //was false
+            isFoodPreferencesCompleted = true;
+            updateButtonStates();  // Unlock everything
+        }
 
         // Register result callback
         activityLauncher = registerForActivityResult(
@@ -104,6 +117,7 @@ public class ProfileCustomization extends AppCompatActivity {
         //logic when a user presses dietary restrictions
         btnDR.setOnClickListener(v ->{
             Intent intent = new Intent(ProfileCustomization.this, DietaryRestrictions_PC.class);
+            //intent.putExtra("DIETARY_RESTRICTIONS_COMPLETED", isDietaryRestrictionsCompleted);
             activityLauncher.launch(intent);
         });
 
@@ -115,17 +129,33 @@ public class ProfileCustomization extends AppCompatActivity {
         if (user != null) {
             String uid = user.getUid();
             DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
-
-            databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
+            //databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         String fullName = snapshot.child("fullName").getValue(String.class);
                         if (fullName != null && !fullName.isEmpty()) {
                             String firstName = fullName.split(" ")[0];  // Extract first name
-                            greeting.setText(String.format("Hello %s!", firstName));
+                            // Only set greeting if it hasn't been set yet (check if it's the default text)
+                            if (greeting.getText().toString().equals("Hello!")) {
+                                greeting.setText(String.format("Hello %s!", firstName));
+                            }
+                            // Fetch completion status
+                            isMedicalHistoryCompleted = snapshot.child("medicalHistoryCompleted").getValue(Boolean.class) != null &&
+                                    snapshot.child("medicalHistoryCompleted").getValue(Boolean.class);
+                            isHealthGoalsCompleted = snapshot.child("healthGoalsCompleted").getValue(Boolean.class) != null &&
+                                    snapshot.child("healthGoalsCompleted").getValue(Boolean.class);
+                            isDietaryRestrictionsCompleted = snapshot.child("dietaryRestrictionsCompleted").getValue(Boolean.class) != null &&
+                                    snapshot.child("dietaryRestrictionsCompleted").getValue(Boolean.class);
+                            isFoodPreferencesCompleted = snapshot.child("foodPreferencesCompleted").getValue(Boolean.class) != null &&
+                                    snapshot.child("foodPreferencesCompleted").getValue(Boolean.class);
+
+                            // Update button states based on completion status
+                            //updateButtonStates();
                         }
-                    } else {
+                    }
+                    else {
                         greeting.setText("Hello!");
                     }
                 }
@@ -136,26 +166,8 @@ public class ProfileCustomization extends AppCompatActivity {
                 }
             });
         }
-
-        //When selected from settings
-        SharedPreferences sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-        boolean fromSettings = sharedPref.getBoolean("FROM_SETTINGS", false);
-
-        // Initialize the views
-        TextView welcomeTextView = findViewById(R.id.welcomeTextView);
-        //TextView headerTextView = findViewById(R.id.headerText);
-
-        // Check if the views are not null
-        if (welcomeTextView != null) {
-                //&& headerTextView != null) {
-            if (fromSettings) {
-                welcomeTextView.setText("Select anything you would like to edit.");
-                //headerTextView.setText("Profile Customization");
-            }
-        } else {
-            Log.e("ProfileCustomization", "Views not found: welcomeTextView or headerTextView is null");
-        }
     }
+
 
     // Helper method to enable or disable buttons
     private void setButtonsEnabled(boolean isEnabled) {
@@ -170,5 +182,20 @@ public class ProfileCustomization extends AppCompatActivity {
         btnDR.setAlpha(alpha);
         btnFP.setAlpha(alpha);
         btnContinue.setAlpha(alpha);
+    }
+    // Enable or disable buttons based on individual completion status
+    private void updateButtonStates() {
+        btnMH.setEnabled(true); // Medical history is always enabled
+        btnHG.setEnabled(isMedicalHistoryCompleted); // Enable Health Goals only if Medical History is done
+        btnDR.setEnabled(isMedicalHistoryCompleted); // Enable Dietary Restrictions only if Medical History is done
+        btnFP.setEnabled(isMedicalHistoryCompleted); // Enable Food Preferences only if Medical History is done
+        btnContinue.setEnabled(isMedicalHistoryCompleted); // Continue only if Medical History is done
+
+        // Update button opacity to visually indicate status
+        btnMH.setAlpha(1.0f);
+        btnHG.setAlpha(isMedicalHistoryCompleted ? 1.0f : 0.5f);
+        btnDR.setAlpha(isMedicalHistoryCompleted ? 1.0f : 0.5f);
+        btnFP.setAlpha(isMedicalHistoryCompleted ? 1.0f : 0.5f);
+        btnContinue.setAlpha(isMedicalHistoryCompleted ? 1.0f : 0.5f);
     }
 }

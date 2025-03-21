@@ -36,7 +36,7 @@ public class Settings extends AppCompatActivity {
         ImageButton back = findViewById(R.id.settingsBackButton);
         Button logOut = findViewById(R.id.logOutButton);
         //profile customization
-        TextView profileCustomizationText = findViewById(R.id.clickablePC);
+        TextView profileCustom = findViewById(R.id.clickablePC);
 
 
         View.OnClickListener buttonClickListener = new View.OnClickListener() {
@@ -65,5 +65,6 @@ public class Settings extends AppCompatActivity {
         };
         back.setOnClickListener(buttonClickListener);
         logOut.setOnClickListener(buttonClickListener);
+        profileCustom.setOnClickListener(buttonClickListener);
     }
 }

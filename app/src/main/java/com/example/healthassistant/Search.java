@@ -112,7 +112,7 @@ public class Search extends AppCompatActivity {
 
         // Back button functionality
         // FIXME: temporary spot, find a better spot to put this
-        Button back = findViewById(R.id.back);
+        /*Button back = findViewById(R.id.back);
         View.OnClickListener buttonClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +121,7 @@ public class Search extends AppCompatActivity {
                 }
             }
         };
-        back.setOnClickListener(buttonClickListener);
+        back.setOnClickListener(buttonClickListener);*/
     }
 
     // Grabs the user's inputted search and requests information about the medication from RxNorm

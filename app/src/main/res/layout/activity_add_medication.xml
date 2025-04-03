@@ -253,6 +253,21 @@
                 android:lines="5"
                 android:scrollbars="vertical" />
         </LinearLayout>
+
+        <!-- Delete Button (can only be accessed when editing) -->
+        <Button
+            android:id="@+id/deleteMedicationButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Delete Medication"
+            android:textAllCaps="true"
+            android:background="#DC0000"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <!-- Buttons -->
@@ -277,7 +292,7 @@
             android:background="#DC0000"
             android:fontFamily="@font/poppins_bold"
             android:textColor="#FFFFFF"
-            android:textSize="15sp" />
+            android:textSize="15sp"/>
 
         <Button
             android:id="@+id/addMedicationButton"
@@ -289,7 +304,8 @@
             android:fontFamily="@font/poppins_bold"
             android:textColor="#FFFFFF"
             android:textSize="15sp"
-            android:layout_marginStart="15dp" />
+            android:layout_marginStart="15dp"
+            android:visibility="visible"/>
 
         <Button
             android:id="@+id/saveMedicationButton"
@@ -301,7 +317,8 @@
             android:fontFamily="@font/poppins_bold"
             android:textColor="#FFFFFF"
             android:textSize="15sp"
-            android:layout_marginStart="15dp" />
+            android:layout_marginStart="15dp"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -43,6 +43,11 @@ public class AddMedication extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_medication);
 
+        // initializing buttons
+        Button saveMedicationButton = findViewById(R.id.saveMedicationButton);
+        Button addMedicationButton = findViewById(R.id.addMedicationButton);
+        Button deleteMedicationButton = findViewById(R.id.deleteMedicationButton);
+
         // Mostly just UI component initialization (it's messy sorry ;-;)
         // Cancel button logic
         Button cancelButton = findViewById(R.id.cancelButton);
@@ -111,9 +116,13 @@ public class AddMedication extends AppCompatActivity {
         // This checks if the userMed Id being passed in exists or not
         // If it does exist the user is editing a med, if not then they're adding a med
         if (medicationId != null) {
-            Log.e("editMedication", "Medication Id: " + medicationId);
-            DocumentReference medRef = database.collection("userMedications").document(medicationId);
-            medRef.get().addOnSuccessListener(document -> {
+            // Switches the buttons out, save and delete are only able to be accessed when editing
+            saveMedicationButton.setVisibility(View.VISIBLE);
+            deleteMedicationButton.setVisibility(View.VISIBLE);
+            addMedicationButton.setVisibility(View.GONE);
+
+            DocumentReference userMedRef = database.collection("userMedications").document(medicationId);
+            userMedRef.get().addOnSuccessListener(document -> {
                 // Populating the fields to what the user saved to before
                 expireInput.setText(document.getString("expirationDate"));
                 notesInput.setText(document.getString("additionalNotes"));
@@ -124,11 +133,22 @@ public class AddMedication extends AppCompatActivity {
                 setSpinnerSelection(medicationFormSpinner, document.getString("medicationForm"));
                 setSpinnerSelection(frequencyCountSpinner, String.valueOf(document.getLong("frequencyCount")));
                 setSpinnerSelection(frequencyUnitSpinner, document.getString("frequencyUnit"));
+
+                // Grabs the medication name from the medication document referenced in userMed doc
+                DocumentReference medRef = document.getDocumentReference("medicationRef");
+                // Fetches the medication document being referenced
+                if (medRef != null) {
+                    medRef.get().addOnSuccessListener(medDocument ->{
+                        if (medDocument.exists()) {
+                            String medicationNameEdit = medDocument.getString("Name");
+                            TextView medicationNameEditTextView = findViewById(R.id.medicationNameText);
+                            medicationNameEditTextView.setText(medicationNameEdit);
+                        }
+                    });
+                }
             });
         }
-
-        Button saveMedicationButton = findViewById(R.id.saveMedicationButton);
-        // Save button logic (when editing)
+        // Save button logic (when users are editing their medication entry)
         saveMedicationButton.setOnClickListener(v -> {
             // Grabs user's input
             String medicationForm  = selectedMedicationForm;
@@ -164,7 +184,13 @@ public class AddMedication extends AppCompatActivity {
             this.startActivity(intent);
         });
 
-        Button addMedicationButton = findViewById(R.id.addMedicationButton);
+        // Delete button logic, will delete the medication from the user's medication manager (and database)
+        deleteMedicationButton.setOnClickListener(v -> {
+            database.collection("userMedications").document(medicationId).delete();
+            Intent intent = new Intent(AddMedication.this, MedicationManager2.class);
+            startActivity(intent);
+        });
+
         // The logic for when the user clicks the "Add Medication" Button after filling in fields
         // Should save their medication to their database and medication manager
         addMedicationButton.setOnClickListener(v -> {

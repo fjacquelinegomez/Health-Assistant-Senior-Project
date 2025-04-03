@@ -50,6 +50,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Vi
             intent.putExtra("medicationId", medication.getId()); // passes in the userMed document
             context.startActivity(intent);
         });
+
         /*
         // Delete button functionality
         holder.deleteButton.setOnClickListener(v -> {

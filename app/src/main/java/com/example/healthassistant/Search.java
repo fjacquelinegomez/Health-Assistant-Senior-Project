@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -138,6 +139,13 @@ public class Search extends AppCompatActivity {
                 // If it's successful then it goes through the formatted JSON file and stores the medication(s) in a list
                 if (response.isSuccessful() && response.body() != null) {
                     List<Medication> medications = new ArrayList<>();
+
+                    // Checks if medication exists in the RxNorm API
+                    if (response.body().getDrugGroup() == null || response.body().getDrugGroup().getConceptGroup() == null) {
+                        Toast.makeText(Search.this, "Medication not found!", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    // Goes through the API response and parses the data
                     for (RxNormApiResponse.ConceptGroup group: response.body().getDrugGroup().getConceptGroup()) {
                         if (group.getConceptProperties() != null) {
                             medications.addAll(group.getConceptProperties());
@@ -150,10 +158,12 @@ public class Search extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                     Log.d("SearchMedication", "Medications list size after population: " + medicationList.size());
 
+                    /*
                     // Logcat message for debugging purposes
                     for (Medication med : medications) {
                         Log.d("SearchMedication", "Medication: " + med.getName() + med.getRxcui());
                     }
+                     */
                 }
             }
             // Called if the request fails

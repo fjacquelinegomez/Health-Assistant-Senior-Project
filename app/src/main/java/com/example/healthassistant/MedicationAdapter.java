@@ -2,6 +2,8 @@ package com.example.healthassistant;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,16 +40,23 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
         Medication medication = medicationList.get(position);
         holder.medicationName.setText(medication.getName());
-        holder.expirationDate.setText("Expires: " + medication.getExpireDate());
+        holder.expirationDate.setText("Expires: " + medication.getExpirationDate());
         //holder.medicationCount.setText(medication.getDosesTaken() + "/" + medication.getTotalPills() + " " + medication.getDosageForm() + " taken");
         holder.medicationCount.setText("0/" + medication.getTotalPills() + " [dosage form] taken");
 
-
+        // Edit button functionality
+        holder.editButton.setOnClickListener(v -> {
+            Intent intent = new Intent(context, AddMedication.class);
+            intent.putExtra("medicationId", medication.getId()); // passes in the userMed document
+            context.startActivity(intent);
+        });
+        /*
         // Delete button functionality
         holder.deleteButton.setOnClickListener(v -> {
             // Remove item from Firebase and the list
             ((MedicationManager2) context).deleteMedicationFromFirestore(medication, position);
         });
+         */
     }
 
 
@@ -61,7 +70,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Vi
         public TextView medicationName;
         public TextView expirationDate;
         public TextView medicationCount;
-        public ImageView deleteButton; // Assuming there's a delete button in the layout
+        public ImageView editButton;
 
 
         public ViewHolder(View itemView) {
@@ -69,7 +78,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Vi
             medicationName = itemView.findViewById(R.id.medicationName);
             expirationDate = itemView.findViewById(R.id.medicationExpiration);
             medicationCount = itemView.findViewById(R.id.medicationCount);
-            deleteButton = itemView.findViewById(R.id.medicationEdit); // Delete button in your item layout
+            editButton = itemView.findViewById(R.id.medicationEdit);
         }
     }
 }

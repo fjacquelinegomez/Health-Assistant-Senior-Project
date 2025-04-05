@@ -18,7 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import medication.RetrofitService;
 import medication.RxNormApiResponse;
@@ -139,6 +141,7 @@ public class Search extends AppCompatActivity {
                 // If it's successful then it goes through the formatted JSON file and stores the medication(s) in a list
                 if (response.isSuccessful() && response.body() != null) {
                     List<Medication> medications = new ArrayList<>();
+                    Set<String> uniqueMedications = new HashSet<>();
 
                     // Checks if medication exists in the RxNorm API
                     if (response.body().getDrugGroup() == null || response.body().getDrugGroup().getConceptGroup() == null) {
@@ -148,7 +151,18 @@ public class Search extends AppCompatActivity {
                     // Goes through the API response and parses the data
                     for (RxNormApiResponse.ConceptGroup group: response.body().getDrugGroup().getConceptGroup()) {
                         if (group.getConceptProperties() != null) {
-                            medications.addAll(group.getConceptProperties());
+                            // Goes through the parsed data
+                            for (Medication med : group.getConceptProperties()) {
+                                // Cleans up the medication name a bit
+                                String cleanedName = cleanMedicationName(med.getName());
+                                med.setName(cleanedName);
+
+                                // Ensures that there aren't any duplicate medication names
+                                if (!uniqueMedications.contains(cleanedName)) {
+                                    uniqueMedications.add(cleanedName);
+                                    medications.add(med);
+                                }
+                            }
                         }
                     }
 
@@ -172,5 +186,33 @@ public class Search extends AppCompatActivity {
                 Log.d("SearchMedication", "Error: " + t.getMessage());
             }
         });
+    }
+
+    // Cleans up the name being returned by RxNorm
+    // If brand name is provided in the name then I would take it, if not the most cleaned down version
+    private String cleanMedicationName(String medication) {
+        // Cleans up the name as much as possible with ReGex
+        // https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html -> used this as a key
+        // https://regex101.com -> used this to analyze the medication names and what exactly needed to be cleaned
+        String cleanedName = medication.replaceAll("\\d+ (MG/ML)?(/\\d+ MG?)?\\s*(Oral Tablet|Oral Powder|Effervescent Oral Tablet|Reformulated\\s*\\w*)?", "").trim();
+
+        // Noticed a lot of product names were in brackets []
+        // So this will look at any medication names with brackets and try to pull the brand name from there
+        String productName = "";
+        if (cleanedName.contains("[")) {
+            // Finds the positions of [ and ] in the string
+            int start = cleanedName.indexOf("[");
+            int end = cleanedName.indexOf("]", start);
+            // Extracts the substring in the positions between the [ and ]
+            if (start != -1 && end != -1) {
+                productName = cleanedName.substring(start+1, end).trim();
+            }
+
+            // Returns product name as the final result instead of the previous cleaned up name (if it exists)
+            if (!productName.isEmpty()) {
+                return productName;
+            }
+        }
+        return cleanedName;
     }
 }

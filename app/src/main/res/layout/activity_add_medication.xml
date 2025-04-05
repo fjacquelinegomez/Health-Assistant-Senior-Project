@@ -9,18 +9,37 @@
     tools:context=".AddMedication">
 
     <!-- Dynamic Medication Text(s) -->
-    <TextView
-        android:id="@+id/medicationNameText"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/medicationManagerCard"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_medium"
-        android:text="TextView"
-        android:textSize="30dp"
+        app:cardBackgroundColor="#d9d9d9"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="15dp"
+        android:minHeight="200dp"
         app:layout_constraintBottom_toTopOf="@+id/medicationInputLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.21" />
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintWidth_percent="1.0">
+
+        <TextView
+            android:id="@+id/medicationNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="TextView"
+            android:textSize="30dp"
+            app:layout_constraintBottom_toTopOf="@+id/medicationInputLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.21"
+            android:layout_gravity="center"/>
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
         android:id="@+id/medicationInputLayout"
@@ -30,7 +49,7 @@
         app:layout_constraintBottom_toTopOf="@+id/addMedicationButtonLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/medicationNameText"
+        app:layout_constraintTop_toBottomOf="@+id/medicationManagerCard"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp">
 

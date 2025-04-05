@@ -43,10 +43,12 @@ public class AddMedication extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_medication);
 
-        // initializing buttons
+        // initializing buttons and other UI components
         Button saveMedicationButton = findViewById(R.id.saveMedicationButton);
         Button addMedicationButton = findViewById(R.id.addMedicationButton);
         Button deleteMedicationButton = findViewById(R.id.deleteMedicationButton);
+        TextView pillsTakenText = findViewById(R.id.pillsTakenText);
+        EditText pillsTakenInput = findViewById(R.id.pillsTakenInput);
 
         // Mostly just UI component initialization (it's messy sorry ;-;)
         // Cancel button logic
@@ -121,6 +123,10 @@ public class AddMedication extends AppCompatActivity {
             deleteMedicationButton.setVisibility(View.VISIBLE);
             addMedicationButton.setVisibility(View.GONE);
 
+            // Users can edit how many pills they've taken
+            pillsTakenText.setVisibility(View.VISIBLE);
+            pillsTakenInput.setVisibility(View.VISIBLE);
+
             DocumentReference userMedRef = database.collection("userMedications").document(medicationId);
             userMedRef.get().addOnSuccessListener(document -> {
                 // Populating the fields to what the user saved to before
@@ -128,6 +134,7 @@ public class AddMedication extends AppCompatActivity {
                 notesInput.setText(document.getString("additionalNotes"));
                 // Have to convert the fields we stored as int to a string
                 dosageInput.setText(String.valueOf(document.getLong("dosageAmount")));
+                pillsTakenInput.setText(String.valueOf(document.getLong("pillsTaken")));
                 totalPillsInput.setText(String.valueOf(document.getLong("totalPills")));
                 // Setting the spinners to the correct positions
                 setSpinnerSelection(medicationFormSpinner, document.getString("medicationForm"));
@@ -156,6 +163,7 @@ public class AddMedication extends AppCompatActivity {
             String frequencyCountText = selectedFrequencyCount;
             String frequencyUnit = selectedFrequencyUnit;
             String expirationDate = expireInput.getText().toString();
+            String pillsTakenNewText = pillsTakenInput.getText().toString();
             String totalPillsText = totalPillsInput.getText().toString();
             String additionalNotes = notesInput.getText().toString();
 
@@ -164,15 +172,18 @@ public class AddMedication extends AppCompatActivity {
             // Converts to int to make it legible in the database
             int dosageAmount = Integer.parseInt(dosageAmountText);
             int frequencyCount = Integer.parseInt(frequencyCountText);
+            int pillsTaken = Integer.parseInt(pillsTakenNewText);
             int totalPills = Integer.parseInt(totalPillsText);
 
             // Creates a hashmap of the users new edited values
+            // forgot that i could've done update instead of put...
             Map<String, Object> userMedData = new HashMap<>();
             userMedData.put("medicationForm", medicationForm);
             userMedData.put("dosageAmount", dosageAmount);
             userMedData.put("frequencyCount", frequencyCount);
             userMedData.put("frequencyUnit", frequencyUnit);
             userMedData.put("expirationDate", expirationDate);
+            userMedData.put("pillsTaken", pillsTaken);
             userMedData.put("totalPills", totalPills);
             userMedData.put("additionalNotes", additionalNotes);
 
@@ -263,6 +274,7 @@ public class AddMedication extends AppCompatActivity {
         userMedData.put("frequencyCount", frequencyCount);
         userMedData.put("frequencyUnit", frequencyUnit);
         userMedData.put("expirationDate", expirationDate);
+        userMedData.put("pillsTaken", 0);
         userMedData.put("totalPills", totalPills);
         userMedData.put("additionalNotes", additionalNotes);
 

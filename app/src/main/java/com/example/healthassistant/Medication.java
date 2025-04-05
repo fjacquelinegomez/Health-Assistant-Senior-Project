@@ -15,6 +15,7 @@ public class Medication {
     private int dosageAmount;
     private String frequency;
     private String expirationDate;
+    private int pillsTaken;
     private int totalPills;
     private String additionalNotes;
     /*
@@ -29,9 +30,11 @@ public class Medication {
 
     // Constructor
     //public Medication(String name, String expireDate, int totalPills, int dosesTaken, String dosageForm, String key) {
-    public Medication(String name, String expirationDate, int totalPills, String Id) {
+    public Medication(String name, String medicationForm, String expirationDate, int pillsTaken, int totalPills, String Id) {
         this.name = name;
+        this.medicationForm = medicationForm;
         this.expirationDate = expirationDate;
+        this.pillsTaken = pillsTaken;
         this.totalPills = totalPills;
         this.Id = Id;
     }
@@ -49,6 +52,7 @@ public class Medication {
         SimpleDateFormat formattedDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         return formattedDate.format(expirationDate);
     }
+    public int getPillsTaken() { return pillsTaken; }
     public int getTotalPills() { return totalPills; }
     public String getAdditionalNotes() { return additionalNotes; }
 
@@ -60,6 +64,7 @@ public class Medication {
     public void setDosageAmount(int dosageAmount) { this.dosageAmount = dosageAmount; }
     public void setFrequency(String frequency) { this.frequency = frequency; }
     public void setExpirationDate(String expirationDate) { this.expirationDate = expirationDate; }
+    public void setPillsTaken(int pillsTaken) {this.pillsTaken = pillsTaken; }
     public void setTotalPills(int totalPills) { this.totalPills = totalPills; }
     public void setAdditionalNotes(String additionalNotes) { this.additionalNotes = additionalNotes; }
 

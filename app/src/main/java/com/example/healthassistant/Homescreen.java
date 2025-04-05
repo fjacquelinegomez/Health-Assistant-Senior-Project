@@ -2,7 +2,10 @@ package com.example.healthassistant;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,14 +32,26 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
 public class Homescreen extends AppCompatActivity {
-
-
     private TextView greeting;
     //used for bottom bar
     ActivityHomescreenBinding binding;
+
+    // Initializing variables for notifications
+    private FirebaseFirestore database;
+    private NotificationHelper notificationHelper;
+    private static int notificationCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +63,6 @@ public class Homescreen extends AppCompatActivity {
 
         // initialize the greeting text at the top so it displays the user's first name
         greeting = findViewById(R.id.nameText);
-
-
-
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -134,7 +146,6 @@ public class Homescreen extends AppCompatActivity {
             });
         }
 
-
         //settings button
         ImageButton buttonSettings = (ImageButton) findViewById(R.id.userProfileButton);
         buttonSettings.setOnClickListener(new View.OnClickListener() {
@@ -143,11 +154,126 @@ public class Homescreen extends AppCompatActivity {
             }
         });
 
+        // Initializing Firestore and NotificationHelper
+        database = FirebaseFirestore.getInstance();
+        notificationHelper = new NotificationHelper(this);
 
+        // Sends notifications to users if their medication is expiring or needs to be refilled (will only send if user clicks on homescreen tho)
+        checkMedicationsExpiration();
+        checkMedicationsRefill();
+    }
 
+    // Goes through the user's current medications and check if they're close to expiring (7 days)
+    // Sends a notification if it is close to expiring
+    private void checkMedicationsExpiration() {
+        // Gets the current user
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String currentUserId = auth.getCurrentUser().getUid();
 
+        // Creates reference to the userMedications collection
+        CollectionReference userMedicationRef = database.collection("userMedications");
 
+        // Pulls the user's current medications from Firestore
+        //database.collection("userMedications")
+        userMedicationRef.whereEqualTo("userID", currentUserId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Loops through all of the user's current medications
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String expirationDate = document.getString("expirationDate");
+                            DocumentReference medRef = document.getDocumentReference("medicationRef");
 
+                            // Checks if current medication is expiring soon
+                            if (isExpiringSoon(expirationDate)) {
+                                // Grabs the name of the medication
+                                medRef.get().addOnSuccessListener(medSnapshot -> {
+                                    if (medSnapshot.exists()) {
+                                        String medicationName = medSnapshot.getString("Name");
+                                        String message = "Your medication " + medicationName + " is expiring soon!";
 
+                                        // Checks if user turned on notification permissions
+                                        if (notificationHelper.checkNotificationPermission(Homescreen.this, 101)) {
+                                            // Sends the expiration notification
+                                            int notificationId = notificationCounter++; // Gives each expired medication a unique notif Id so notifs don't replace old ones
+                                            notificationHelper.showNotification("Your Medication Expiring Soon", message, notificationId);
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+    }
+
+    // Calculates if the medication is expiring soon, returns true if it's about to expire in 7 days
+    private boolean isExpiringSoon(String expirationDate) {
+        // Matches the date format to the way the expiration date is stored on Firestore
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+        // .parse requires us to catch the exception btw
+        try {
+            // Finds how much time is between the expiration date and the current date
+            Date formattedExpirationDate = sdf.parse(expirationDate);
+            Date currentDate = new Date();
+            long diffInMillis = formattedExpirationDate.getTime() - currentDate.getTime();
+            long diffInDays = TimeUnit.MILLISECONDS.toDays(diffInMillis);
+
+            // If the date is less than or equal to 7 days, it's expiring soon (or already is) returns true (is expiring)
+            return diffInDays <= 7;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false; // If date can't be parsed
+    }
+
+    // Goes through the user's current medications and check if they're close to needing a refill (10 pills left)
+    private void checkMedicationsRefill() {
+        // Gets the current user
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String currentUserId = auth.getCurrentUser().getUid();
+
+        // Creates reference to the userMedications collection
+        CollectionReference userMedicationRef = database.collection("userMedications");
+
+        // Pulls the user's current medications from Firestore
+        //database.collection("userMedications")
+        userMedicationRef.whereEqualTo("userID", currentUserId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Loops through all of the user's current medications
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            // Grabs values from the database
+                            int totalPills = document.getLong("totalPills").intValue();
+                            int pillsTaken = document.getLong("pillsTaken").intValue();
+                            DocumentReference medRef = document.getDocumentReference("medicationRef");
+
+                            // Checks if current medication needs to be refilled soon
+                            if (isRefillNeeded(totalPills, pillsTaken)) {
+                                // Grabs the name of the medication
+                                medRef.get().addOnSuccessListener(medSnapshot -> {
+                                    if (medSnapshot.exists()) {
+                                        String medicationName = medSnapshot.getString("Name");
+                                        String message = "Your medication " + medicationName + " needs to be refilled soon!";
+
+                                        // Checks if user turned on notification permissions
+                                        if (notificationHelper.checkNotificationPermission(Homescreen.this, 101)) {
+                                            // Sends the refill notification
+                                            int notificationId = notificationCounter++; // Gives each expired medication a unique notif Id so notifs don't replace old ones
+                                            notificationHelper.showNotification("Your Medication Running Low", message, notificationId);
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+    }
+
+    // Calculates if the medication needs to be refilled soon, returns true if there's only 10 pills left
+    private boolean isRefillNeeded(int totalPills, int pillsTaken) {
+        int pillsLeft = totalPills - pillsTaken;
+        return pillsLeft <= 10;
     }
 }

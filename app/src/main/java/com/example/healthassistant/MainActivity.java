@@ -92,18 +92,4 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         }); */
     }
-
-    // https://developer.android.com/develop/ui/views/notifications/build-notification
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Medication Expiration Channel";
-            String description = "Channel for medication expiration notifications";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("medication_expiration_channel", name, importance);
-            channel.setDescription(description);
-
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
 }

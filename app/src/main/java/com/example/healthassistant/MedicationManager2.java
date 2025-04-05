@@ -86,8 +86,10 @@ public class MedicationManager2 extends AppCompatActivity {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     // Grabs all the user's inputted information about the medication
                     int totalPills = document.getLong("totalPills").intValue();
+                    int pillsTaken = document.getLong("pillsTaken").intValue();
                     String userKey = document.getId();
                     String expirationDate = document.getString("expirationDate");
+                    String medicationForm = document.getString("medicationForm");
 
                     // Grabs the reference of the medication for extra information (medication name)
                     DocumentReference medRef = document.getDocumentReference("medicationRef");
@@ -96,7 +98,7 @@ public class MedicationManager2 extends AppCompatActivity {
                             if (medTask.isSuccessful() && medTask.getResult().exists()) {
                                 String name = medTask.getResult().getString("Name");
 
-                                Medication medication = new Medication(name, expirationDate, totalPills, userKey);
+                                Medication medication = new Medication(name, medicationForm, expirationDate, pillsTaken, totalPills, userKey);
                                 medicationList.add(medication);
                                 medicationAdapter.notifyDataSetChanged();
                             } else {

@@ -92,11 +92,6 @@ public class SymptomLogs extends AppCompatActivity {
         });
 
 
-        String[] symptoms = {"Headache", "Fever", "Cough", "Fatigue", "Other"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, symptoms);
-        AutoCompleteTextView inputSymp = findViewById(R.id.inputSymp);
-        inputSymp.setAdapter(adapter);
-
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

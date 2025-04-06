@@ -184,8 +184,12 @@ public class Homescreen extends AppCompatActivity {
                             String expirationDate = document.getString("expirationDate");
                             DocumentReference medRef = document.getDocumentReference("medicationRef");
 
+                            // Create a Medication object
+                            Medication medication = new Medication();
+                            medication.setExpirationDate(expirationDate);
+
                             // Checks if current medication is expiring soon
-                            if (isExpiringSoon(expirationDate)) {
+                            if (medication.isExpiringSoon(expirationDate)) {
                                 // Grabs the name of the medication
                                 medRef.get().addOnSuccessListener(medSnapshot -> {
                                     if (medSnapshot.exists()) {
@@ -204,27 +208,6 @@ public class Homescreen extends AppCompatActivity {
                         }
                     }
                 });
-    }
-
-    // Calculates if the medication is expiring soon, returns true if it's about to expire in 7 days
-    private boolean isExpiringSoon(String expirationDate) {
-        // Matches the date format to the way the expiration date is stored on Firestore
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-
-        // .parse requires us to catch the exception btw
-        try {
-            // Finds how much time is between the expiration date and the current date
-            Date formattedExpirationDate = sdf.parse(expirationDate);
-            Date currentDate = new Date();
-            long diffInMillis = formattedExpirationDate.getTime() - currentDate.getTime();
-            long diffInDays = TimeUnit.MILLISECONDS.toDays(diffInMillis);
-
-            // If the date is less than or equal to 7 days, it's expiring soon (or already is) returns true (is expiring)
-            return diffInDays <= 7;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return false; // If date can't be parsed
     }
 
     // Goes through the user's current medications and check if they're close to needing a refill (10 pills left)
@@ -249,8 +232,13 @@ public class Homescreen extends AppCompatActivity {
                             int pillsTaken = document.getLong("pillsTaken").intValue();
                             DocumentReference medRef = document.getDocumentReference("medicationRef");
 
+                            // Create a Medication object
+                            Medication medication = new Medication();
+                            medication.setTotalPills(totalPills);
+                            medication.setPillsTaken(pillsTaken);
+
                             // Checks if current medication needs to be refilled soon
-                            if (isRefillNeeded(totalPills, pillsTaken)) {
+                            if (medication.isRefillNeeded(totalPills, pillsTaken)) {
                                 // Grabs the name of the medication
                                 medRef.get().addOnSuccessListener(medSnapshot -> {
                                     if (medSnapshot.exists()) {
@@ -269,11 +257,5 @@ public class Homescreen extends AppCompatActivity {
                         }
                     }
                 });
-    }
-
-    // Calculates if the medication needs to be refilled soon, returns true if there's only 10 pills left
-    private boolean isRefillNeeded(int totalPills, int pillsTaken) {
-        int pillsLeft = totalPills - pillsTaken;
-        return pillsLeft <= 10;
     }
 }

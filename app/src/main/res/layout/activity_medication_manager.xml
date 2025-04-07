@@ -400,8 +400,9 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:id="@+id/expiringLeftButton"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:src="@drawable/move_to_previous_medication"
                             android:layout_weight="1"
                             android:layout_gravity="center_vertical" />
@@ -409,6 +410,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/medication_image"
+                            app:layout_constraintStart_toEndOf="@id/expiringLeftButton"
                             android:layout_weight="1" />
                         <LinearLayout
                             android:id="@+id/expiringMedicationInfoLayout"
@@ -416,8 +418,10 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:layout_weight="1"
+                            app:layout_constraintEnd_toStartOf="@id/expiringRightButton"
                             android:paddingTop="10dp">
                             <TextView
+                                android:id="@+id/expiringMedicationName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Medication Name"
@@ -426,6 +430,7 @@
                                 android:layout_marginBottom="-10dip"
                                 android:textColor="#000000" />
                             <TextView
+                                android:id="@+id/expiringExpirationDate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Expires: 00/00/0000"
@@ -435,8 +440,9 @@
                                 android:paddingTop="7dp" />
                         </LinearLayout>
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:id="@+id/expiringRightButton"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:src="@drawable/move_forward_in_medication"
                             android:layout_weight="1"
                             android:layout_gravity="center_vertical" />
@@ -509,6 +515,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <ImageView
+                            android:id="@+id/refillLeftButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/move_to_previous_medication"
@@ -527,6 +534,7 @@
                             android:layout_weight="1"
                             android:paddingTop="10dp">
                             <TextView
+                                android:id="@+id/refillMedicationName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Medication Name"
@@ -535,6 +543,7 @@
                                 android:layout_marginBottom="-10dip"
                                 android:textColor="#000000" />
                             <TextView
+                                android:id="@+id/refillDosage"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="000/0 [dosage form] taken"
@@ -544,6 +553,7 @@
                                 android:paddingTop="7dp" />
                         </LinearLayout>
                         <ImageView
+                            android:id="@+id/refillRightButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/move_forward_in_medication"

@@ -8,183 +8,218 @@
     android:layout_height="match_parent"
     tools:context=".SymptomLogs"
     tools:ignore="ExtraText">
-    //upper shape
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleX="2.1"
-        android:scaleY="1.8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/upper_icon" />
-    // Title
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_bold"
-        android:scaleX="2"
-        android:scaleY="2"
-        android:text="Symptom Logs"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.313"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.079" />
-    // icon
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/symptom_log_icon" />
-    //table
-    <LinearLayout
+
+    <!-- bottom toolbar -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView4"
-        app:layout_constraintVertical_bias="0.221"
-        tools:layout_editor_absoluteX="0dp">
-
-        <TableLayout
-            android:id="@+id/tableLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:stretchColumns="1"
-            android:background="#FFD5DC"
-            android:divider="?android:attr/dividerVertical"
-            android:showDividers="middle"
-            android:dividerPadding="4dp">
-
-            <TableRow>
-
-                <TextView
-                    android:padding="8dp"
-                    android:text="Date"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:padding="8dp"
-                    android:text="Symptoms"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:padding="8dp"
-                    android:text="Rate"
-                    android:textStyle="bold" />
-            </TableRow>
-
-
-        </TableLayout>
-
-    </LinearLayout>
-    //button layout
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:background="@drawable/bottom_background"
+        app:itemIconSize="35dp"
+        app:itemIconTint="@drawable/item_selector"
+        app:itemPaddingBottom="1dp"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="0dp"
+        app:menu="@menu/bottom_taskbar" />
+
+
+    <!-- header -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/sympCardHeader"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="-12dp"
+        app:cardBackgroundColor="#FF9EB1"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.911">
-        //makes text layer over button
-        <FrameLayout
-            android:layout_width="wrap_content"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintWidth_percent="1.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.05"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/appointmentsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Symptoms Logs"
+                    android:textColor="#000000"
+                    android:textSize="25sp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"/>
+
+                <ImageButton
+                    android:id="@+id/userProfileButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="65dp"
+                    android:background="#FF9EB1"
+                    android:src="@drawable/user_profile_icon"
+                    android:contentDescription="User Profile"
+                    android:layout_weight="0.25"/>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sympCardHeader"
+        tools:context=".SleepLogsActivity">
+
+
+        <!-- Table Layout for Sleep Logs -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView"
+            android:layout_weight="1">
+
+
+            <TableLayout
+                android:id="@+id/sympLogTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:shrinkColumns="*"
+                android:stretchColumns="*">
+
+                <!-- Table Header -->
+                <TableRow>
+
+                    <TextView
+                        android:background="@drawable/cell_shape_header_symptoms"
+                        android:top="5dp"
+                        android:bottom="5dp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:textSize="17sp"
+                        android:textColor="#000"
+                        android:text="Date" />
+
+                    <TextView
+                        android:background="@drawable/cell_shape_header_symptoms"
+                        android:top="5dp"
+                        android:bottom="5dp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:textSize="17sp"
+                        android:textColor="#000"
+                        android:text="Symptoms" />
+
+                    <TextView
+                        android:background="@drawable/cell_shape_header_symptoms"
+                        android:top="5dp"
+                        android:bottom="5dp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:textSize="17sp"
+                        android:textColor="#000"
+                        android:text="Rating" />
+                </TableRow>
+
+            </TableLayout>
+        </ScrollView>
+
+        <!-- Input Fields for New Log Entry -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/imageButton13"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/inputSympDate"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:contentDescription="This is an icon for the health assistant"
-                android:foreground="@null"
-                android:stateListAnimator="@null"
-                app:srcCompat="@drawable/rounder_button" />
-
-            <TextView
-                android:id="@+id/buttonText3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:fontFamily="@font/poppins_medium"
-                android:gravity="center"
-                android:text="Edit Table"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </FrameLayout>
+                android:hint="Enter Date (MM-DD-YYYY)"
+                android:inputType="date"
+                android:padding="8dp" />
 
-        <FrameLayout
-            android:layout_width="wrap_content"
+            <AutoCompleteTextView
+                android:id="@+id/inputSymp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="Enter Symptoms"
+                android:completionThreshold="1"
+                android:inputType="text"
+                android:padding="8dp" />
+
+            <EditText
+                android:id="@+id/inputRating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="Enter Rating (Good/Okay/Tired)"
+                android:padding="8dp" />
+        </LinearLayout>
+
+        <!-- Buttons Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/imageButton14"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/btnSympCreateLog"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:contentDescription="This is an icon for the health assistant"
-                android:foreground="@null"
-                android:stateListAnimator="@null"
-                app:srcCompat="@drawable/rounder_button" />
+                android:layout_marginTop="8dp"
+                android:background="#ffdcd5"
+                android:fontFamily="@font/poppins_bold"
 
-            <TextView
-                android:id="@+id/buttonText2"
-                android:layout_width="wrap_content"
+                android:text="Add to table" />
+
+            <Button
+                android:id="@+id/btnSympEditTable"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/poppins_medium"
-                android:gravity="center"
-                android:text="Create a log"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </FrameLayout>
+                android:layout_marginTop="8dp"
+                android:background="#ffdcd5"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Edit Table" />
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp">
-
-            <ImageButton
-                android:id="@+id/imageButton15"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/btnAnalyzeSymp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:contentDescription="This is an icon for the health assistant"
-                android:foreground="@null"
-                android:stateListAnimator="@null"
-                app:srcCompat="@drawable/rounder_button" />
-
-            <TextView
-                android:id="@+id/buttonText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/poppins_medium"
-                android:gravity="center"
-                android:text="Analyze Symptoms"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </FrameLayout>
-
+                android:layout_marginTop="8dp"
+                android:background="#ffdcd5"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Analyze Symptoms" />
+        </LinearLayout>
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

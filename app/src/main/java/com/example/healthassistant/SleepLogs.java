@@ -3,6 +3,7 @@ package com.example.healthassistant;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,61 +12,81 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.healthassistant.databinding.ActivityAppointmentsBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SleepLogs extends AppCompatActivity {
-    private EditText editSleepLogs;
+
+    private EditText inputDate, inputHoursSlept, inputRating;
+    private TableLayout sleepLogTable;
     private DatabaseReference databaseRef;
+    private String userId;
+
+    ActivityAppointmentsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sleep_logs);
 
-        editSleepLogs = findViewById(R.id.sleep_log_tester);
-        View buttonSaveSleepLog = findViewById(R.id.idBtnSendData);
-        TableLayout tableLayout = findViewById(R.id.tableLayout);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+        // Initialize Firebase
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("sleepLogs");
 
-        // Check if the user is signed in
-        if (user != null) {
-            String uid = user.getUid(); // Get the user UID from the Firebase Auth database
-            databaseRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("sleep_time");
-            buttonSaveSleepLog.setOnClickListener(v -> saveSleepLog());
-        } else {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
+        // Initialize UI Elements
+        inputDate = findViewById(R.id.inputDate);
+        inputHoursSlept = findViewById(R.id.inputHoursSlept);
+        inputRating = findViewById(R.id.inputRating);
+        sleepLogTable = findViewById(R.id.sleepLogTable);
 
-        // Adding a sample sleep log row
-        TableRow tableRow = new TableRow(this);
+        Button btnCreateLog = findViewById(R.id.btnCreateLog);
+        btnCreateLog.setOnClickListener(view -> createLog());
 
-        TextView dateText = new TextView(this);
-        dateText.setText("02/12/2024");
-        dateText.setPadding(20, 8, 8, 8);
 
-        TextView hoursSleptText = new TextView(this);
-        hoursSleptText.setText("7.5 hrs");
-        hoursSleptText.setPadding(20, 8, 8, 8);
+        /**bottom bar navigation functionality**/
+        binding = ActivityAppointmentsBinding.inflate(getLayoutInflater());
 
-        TextView sleepQualityText = new TextView(this);
-        sleepQualityText.setText("9");
-        sleepQualityText.setPadding(20, 8, 8, 8);
+        setContentView(binding.getRoot());
 
-        tableRow.addView(dateText);
-        tableRow.addView(hoursSleptText);
-        tableRow.addView(sleepQualityText);
-        tableLayout.addView(tableRow);
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.home:
+                    startActivity(new Intent(SleepLogs.this, Homescreen.class));
+                    break;
+                case R.id.searchMedication:
+                    startActivity(new Intent(SleepLogs.this, Search.class));
+                    break;
+                case R.id.foodManager:
+                    startActivity(new Intent(SleepLogs.this, FoodManager.class));
+                    break;
+                case R.id.healthGoals:
+                    startActivity(new Intent(SleepLogs.this, HealthGoals.class));
+                    break;
+                case R.id.medicationManager:
+                    startActivity(new Intent(SleepLogs.this, MedicationManager.class));
+                    break;
+            }
+            return true;
+        });
+
+
+
+        loadSleepLogs(); // Load data when the activity starts
 
 
         // Adjust padding for system bars
@@ -78,28 +99,107 @@ public class SleepLogs extends AppCompatActivity {
         });
     }
 
-    private void saveSleepLog() {
-        // Logic for when the user submits their sleep time, saving it in Firebase Realtime Database
-        String sleepLog = editSleepLogs.getText().toString().trim();
+    // Create Log Function
+    private void createLog() {
+        String date = inputDate.getText().toString().trim();
+        String hoursSlept = inputHoursSlept.getText().toString().trim();
+        String rating = inputRating.getText().toString().trim();
 
-        if (TextUtils.isEmpty(sleepLog)) {
-            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(date) || TextUtils.isEmpty(hoursSlept) || TextUtils.isEmpty(rating)) {
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Create a unique key for each log
         String logId = databaseRef.push().getKey();
-        LogSleep logsleep = new LogSleep(sleepLog); // Ensure LogSleep is correctly defined elsewhere
 
-        if (logId != null) {
-            databaseRef.child(logId).setValue(logsleep)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(SleepLogs.this, "Sleep log saved!", Toast.LENGTH_SHORT).show();
-                            editSleepLogs.setText(""); // Clear input field
-                        } else {
-                            Toast.makeText(SleepLogs.this, "Failed to save log", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
+        // Create log entry
+        Map<String, String> logEntry = new HashMap<>();
+        logEntry.put("date", date);
+        logEntry.put("hoursSlept", hoursSlept);
+        logEntry.put("rating", rating);
+
+        // Save to Firebase
+        databaseRef.child(logId).setValue(logEntry)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Log created successfully", Toast.LENGTH_SHORT).show();
+                    loadSleepLogs(); // Refresh the table
+                    clearInputFields();
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed to create log", Toast.LENGTH_SHORT).show());
+    }
+
+    // Clear Input Fields
+    private void clearInputFields() {
+        inputDate.setText("");
+        inputHoursSlept.setText("");
+        inputRating.setText("");
+    }
+
+    // Load Logs from Firebase
+    private void loadSleepLogs() {
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sleepLogTable.removeAllViews(); // Clear table before loading new data
+
+                // Add table headers
+                TableRow headerRow = new TableRow(SleepLogs.this);
+                headerRow.addView(createTextView("Date"));
+                headerRow.addView(createTextView("Hours Slept"));
+                headerRow.addView(createTextView("Rating"));
+                sleepLogTable.addView(headerRow);
+
+                for (DataSnapshot logSnapshot : snapshot.getChildren()) {
+                    String logId = logSnapshot.getKey();
+                    String date = logSnapshot.child("date").getValue(String.class);
+                    String hoursSlept = logSnapshot.child("hoursSlept").getValue(String.class);
+                    String rating = logSnapshot.child("rating").getValue(String.class);
+
+                    TableRow row = new TableRow(SleepLogs.this);
+                    row.addView(createTextView(date));
+                    row.addView(createTextView(hoursSlept));
+                    row.addView(createTextView(rating));
+
+                    // Add Delete Button
+                    Button deleteButton = new Button(SleepLogs.this);
+                    deleteButton.setText("Delete");
+                    deleteButton.setOnClickListener(view -> deleteLog(logId));
+                    row.addView(deleteButton);
+
+                    sleepLogTable.addView(row);
+                }
+            }
+
+
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(SleepLogs.this, "Failed to load logs", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // Helper Method: Create a TextView for Table Rows
+    private TextView createTextView(String text) {
+        TextView textView = new TextView(this);
+        textView.setText(text);
+        textView.setPadding(8, 8, 8, 8);
+        textView.setGravity(Gravity.CENTER);
+        return textView;
+    }
+
+    // Delete Log Function
+    private void deleteLog(String logId) {
+        databaseRef.child(logId).removeValue()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Log deleted", Toast.LENGTH_SHORT).show();
+                    loadSleepLogs(); // Refresh the table
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed to delete log", Toast.LENGTH_SHORT).show());
     }
 }
+

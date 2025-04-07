@@ -3,96 +3,118 @@ package com.example.healthassistant;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.MultiFactorSession;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.hbb20.CountryCodePicker;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class RegisterMFASetup2 extends AppCompatActivity {
-    TextInputEditText phoneNumber;
-    //TextInputLayout phoneNumber;
-    CountryCodePicker countryCodePicker;
+    private TextInputEditText phoneNumber;
+    private CountryCodePicker countryCodePicker;
+    private FirebaseAuth auth;
+    private MultiFactorSession multiFactorSession;
+    private String phoneNo;
+    private String verificationId;
+    private PhoneAuthProvider.ForceResendingToken resendingToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register_mfasetup2);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
 
-        // Correct way to reference TextInputLayout and TextInputEditText
+        // Initialize UI components
         TextInputLayout phoneNumberLayout = findViewById(R.id.signupPhoneNumberTextInputLayout);
         phoneNumber = findViewById(R.id.signupPhoneNumberEditText);
         countryCodePicker = findViewById(R.id.countryCodePick);
+        Button phoneNextButton = findViewById(R.id.signupPhoneNextButton);
 
-        // Check if phoneNumber is null
-        if (phoneNumber == null) {
-            Log.e("MFA", "phoneNumber EditText is NULL! Check ID in XML.");
-        }
+        phoneNextButton.setOnClickListener(v -> {
+            if (!validatePhoneNumber()) return;
 
-        final Button phoneNextButton = findViewById(R.id.signupPhoneNextButton);
-        phoneNextButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (!validatePhoneNumber()) {
-                    return;
-                }
-                Log.d("MFA", "Number validated");
+            String userEnteredPhoneNumber = Objects.requireNonNull(phoneNumber.getText()).toString().trim();
+            phoneNo = "+" + countryCodePicker.getSelectedCountryCode() + userEnteredPhoneNumber;
+            Log.d("MFA", "Final phone number: " + phoneNo);
 
-                // Get values passed from previous screens
-                String _fullName = getIntent().getStringExtra("fullName");
-                String _username = getIntent().getStringExtra("username");
-
-                // Get phone number correctly
-                String _getUserEnteredPhoneNumber = Objects.requireNonNull(phoneNumber.getText()).toString().trim();
-
-                if (countryCodePicker != null) {
-                    Log.d("MFA", "CountryCodePicker are properly initialized");
-                } else {
-                    Log.e("MFA", "CountryCodePicker is NULL!");
-                }
-                // Build full phone number ERROR LIES HERE
-                //String _phoneNo = "+" + countryCodePicker.getFullNumber() + _getUserEnteredPhoneNumber;
-                String _phoneNo = "+" + countryCodePicker.getSelectedCountryCode() + _getUserEnteredPhoneNumber;
-                Log.d("MFA", "Final phone number: " + _phoneNo);
-
-                Intent intent = new Intent(getApplicationContext(), MFAVerify.class);
-                intent.putExtra("fullName", _fullName);
-                intent.putExtra("username", _username);
-                intent.putExtra("phoneNo", _phoneNo);
-
-                startActivity(intent);
-                finish();
+            if (user != null) {
+                user.getMultiFactor().getSession()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                multiFactorSession = task.getResult();
+                                sendVerificationCode(phoneNo);
+                            } else {
+                                Log.e("MFA", "Failed to get MultiFactorSession", task.getException());
+                                Toast.makeText(this, "Error: Unable to get MFA session", Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
     }
 
-    public boolean validatePhoneNumber() {
+    private void sendVerificationCode(String phoneNumber) {
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(auth)
+                .setPhoneNumber(phoneNumber)
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setMultiFactorSession(multiFactorSession)
+                .setActivity(this)
+                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(PhoneAuthCredential credential) {
+                        Log.d("MFA", "Auto verification completed");
+                    }
+
+                    @Override
+                    public void onVerificationFailed(FirebaseException e) {
+                        Log.e("MFA", "Verification failed", e);
+                        Toast.makeText(RegisterMFASetup2.this, "Verification failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+                        RegisterMFASetup2.this.verificationId = verificationId;
+                        resendingToken = token;
+
+                        Log.d("MFA", "Code sent successfully");
+
+                        Intent intent = new Intent(RegisterMFASetup2.this, MFAVerify.class);
+                        intent.putExtra("verificationId", verificationId);
+                        intent.putExtra("phoneNo", phoneNo);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .build();
+
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+
+    private boolean validatePhoneNumber() {
         String phoneNumberString = Objects.requireNonNull(phoneNumber.getText()).toString().trim();
-        // Example validation: check if the phone number is empty or not valid
         if (phoneNumberString.isEmpty()) {
             phoneNumber.setError("Phone number cannot be empty");
             return false;
         }
-        // Example validation: check if the phone number is valid (simple check for length)
         if (phoneNumberString.length() < 10) {
             phoneNumber.setError("Please enter a valid phone number");
             return false;
         }
-        return true; // Valid phone number
+        return true;
     }
 }
+

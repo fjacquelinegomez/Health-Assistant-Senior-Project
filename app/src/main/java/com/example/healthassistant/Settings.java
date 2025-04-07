@@ -52,13 +52,14 @@ public class Settings extends AppCompatActivity {
                 }
                 else if (v.getId() == R.id.clickablePC) {
                     // Set the flag in SharedPreferences before starting the activity
-                    SharedPreferences sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putBoolean("FROM_SETTINGS", true);
-                    editor.apply();
+//                    SharedPreferences sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sharedPref.edit();
+//                    editor.putBoolean("FROM_SETTINGS", true);
+//                    editor.apply();
 
                     // Now start the ProfileCustomizationActivity
                     Intent intent = new Intent(Settings.this, ProfileCustomization.class);
+                    intent.putExtra("FROM_SETTINGS", true); // Pass the flag
                     startActivity(intent);
                 }
             }

@@ -282,40 +282,30 @@ public class FoodPreferences_PC extends AppCompatActivity {
         foodPreferences.put("Juice", juice.isChecked());
 
 
-
-
-//        String logId = databaseRef.push().getKey();
-//        if (logId != null) {
-//            databaseRef.child(logId).setValue(foodPreferences)
-//                    .addOnCompleteListener(task -> {
-//                        if (task.isSuccessful()) {
-//                            Toast.makeText(FoodPreferences_PC.this, "Preferences saved!", Toast.LENGTH_SHORT).show();
-//                            setResult(RESULT_OK, new Intent());
-//                            finish();
-//                        } else {
-//                            Toast.makeText(FoodPreferences_PC.this, "Failed to save preferences.", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//        }
-
         //changed this
-        databaseRef.setValue(foodPreferences) // Remove push() to store data under a fixed location
+//        databaseRef.setValue(foodPreferences) // Remove push() to store data under a fixed location
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        Toast.makeText(FoodPreferences_PC.this, "Preferences saved!", Toast.LENGTH_SHORT).show();
+//                        setResult(RESULT_OK, new Intent());
+//                        finish();
+//                    } else {
+//                        Toast.makeText(FoodPreferences_PC.this, "Failed to save preferences.", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                });
+
+        // Update existing values without overwriting the entire object
+        databaseRef.updateChildren((Map<String, Object>) (Map) foodPreferences)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(FoodPreferences_PC.this, "Preferences saved!", Toast.LENGTH_SHORT).show();
-                        setResult(RESULT_OK, new Intent());
+                        Toast.makeText(FoodPreferences_PC.this, "Preferences updated!", Toast.LENGTH_SHORT).show();
+                        Intent resultIntent = new Intent();
+                        setResult(RESULT_OK, resultIntent);
                         finish();
                     } else {
-                        Toast.makeText(FoodPreferences_PC.this, "Failed to save preferences.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FoodPreferences_PC.this, "Failed to update preferences.", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
-
-        // Indicate that the user successfully completed this step
-        Intent resultIntent = new Intent();
-        setResult(RESULT_OK, resultIntent);
-        finish(); // Close this activity and return to ProfileCustomization
     }
-
 }

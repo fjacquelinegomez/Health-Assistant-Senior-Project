@@ -3,6 +3,7 @@ package com.example.healthassistant;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,6 +49,17 @@ public class RegisterActivity2 extends AppCompatActivity {
             String uid = user.getUid(); // captures the user UID from the auth. database
             databaseRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
             btnSaveNames.setOnClickListener(v -> saveNames());
+
+            //nNEW
+            user.sendEmailVerification()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            // Inform the user to check their email and verify
+                            Log.d("MFA", "Verification email sent.");
+                        } else {
+                            Log.e("MFA", "Failed to send verification email.");
+                        }
+                    });
         } else {
             Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
             finish();

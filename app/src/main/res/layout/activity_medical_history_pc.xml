@@ -63,19 +63,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/medicalHistoryCard"
         app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintWidth_percent="0.9">
-        <!--space-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5" />
+        app:layout_constraintWidth_percent="0.9"
+        >
+
         <!--notice text portion-->
         <LinearLayout
             android:id="@+id/noticeTextLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:orientation="vertical">
+            android:layout_weight="0.15"
+            android:orientation="vertical"
+            android:gravity="center_vertical"> <!-- Vertical and Horizontal Centering -->
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -88,10 +86,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:alpha="0.5"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/poppins_bold"
                     android:text="Notice"
                     android:textColor="#000000"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -107,28 +105,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.5"
-                android:fontFamily="@font/poppins_medium"
+                android:fontFamily="@font/poppins_bold"
                 android:text="The information you provide will help the app generate food reccommendations tailored to your health condition and medications"
                 android:textColor="#000000"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:gravity="center_vertical"/> <!-- Vertically center the description text -->/>
         </LinearLayout>
-        <!--space-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5" />
         <!--cards segmentr-->
         <LinearLayout
             android:id="@+id/cardsLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_weight="0.15"
+            android:orientation="vertical"
+            android:gravity="center_vertical"> <!-- Vertical and Horizontal Centering -->
             <!--allergies segmentr-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5">
+                android:layout_weight="0.1">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/allergiesCard"
@@ -162,6 +157,7 @@
                                 android:textSize="22dp" />
 
                             <ImageButton
+                                android:id="@+id/allergiesButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -176,7 +172,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5">
+                android:layout_weight="0.1">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/medicalConditionsCard"
@@ -211,6 +207,7 @@
                                 android:textSize="22dp" />
 
                             <ImageButton
+                                android:id="@+id/conditionsButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -221,61 +218,62 @@
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
-            <!--medications segmentr-->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5">
+<!--            &lt;!&ndash;medications segmentr&ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="0.1">-->
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/medicationsHistoryCard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="30dp">
+<!--                <androidx.cardview.widget.CardView-->
+<!--                    android:id="@+id/medicationsHistoryCard"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    app:cardBackgroundColor="@color/white"-->
+<!--                    app:cardCornerRadius="30dp">-->
 
-                    <RelativeLayout
-                        android:id="@+id/medicationsHistoryRelativeLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="15dp">
+<!--                    <RelativeLayout-->
+<!--                        android:id="@+id/medicationsHistoryRelativeLayout"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:padding="15dp">-->
 
-                        <LinearLayout
-                            android:id="@+id/medicationsHistoryTextEditLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+<!--                        <LinearLayout-->
+<!--                            android:id="@+id/medicationsHistoryTextEditLayout"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="horizontal">-->
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="2"
-                                android:fontFamily="@font/poppins_bold"
-                                android:paddingStart="20dp"
-                                android:text="Medications"
-                                android:textColor="#000000"
-                                android:textSize="22dp" />
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_gravity="center"-->
+<!--                                android:layout_weight="2"-->
+<!--                                android:fontFamily="@font/poppins_bold"-->
+<!--                                android:paddingStart="20dp"-->
+<!--                                android:text="Medications"-->
+<!--                                android:textColor="#000000"-->
+<!--                                android:textSize="22dp" />-->
 
-                            <ImageButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="0.5"
-                                android:backgroundTint="@android:color/white"
-                                android:src="@drawable/edit_medication" />
-                        </LinearLayout>
-                    </RelativeLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
+<!--                            <ImageButton-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_gravity="center_vertical"-->
+<!--                                android:layout_weight="0.5"-->
+<!--                                android:backgroundTint="@android:color/white"-->
+<!--                                android:src="@drawable/edit_medication" />-->
+<!--                        </LinearLayout>-->
+<!--                    </RelativeLayout>-->
+<!--                </androidx.cardview.widget.CardView>-->
+<!--            </LinearLayout>-->
         </LinearLayout>
-        <!--space-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5" />
-
+    <LinearLayout
+        android:id="@+id/buttonLayoutMedicalHist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:gravity="center_horizontal"
+        >
         <Button
             android:id="@+id/btn_done"
             android:layout_width="278dp"
@@ -284,7 +282,10 @@
             android:background="@android:color/black"
             android:fontFamily="@font/poppins_bold"
             android:onClick="onSubmitMedicalHistory"
-            android:text="Next"
-            android:textColor="@android:color/white" />
+            android:text="Done"
+            android:textColor="@android:color/white"
+           />
+    </LinearLayout>
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

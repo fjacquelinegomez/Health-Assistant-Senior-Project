@@ -77,5 +77,11 @@ dependencies {
     //for mfa
     implementation 'com.hbb20:ccp:2.7.2'
     implementation 'io.github.chaosleung:pinview:1.4.4'
+    implementation 'com.google.firebase:firebase-auth:21.1.0'
 
+//    //for other sections
+//    implementation 'com.google.android:flexbox:3.0.0'
+
+    //implementation 'com.google.firebase:firebase-auth-mfa:22.0.0'
+    //implementation 'com.google.firebase:firebase-auth-ktx'
 }

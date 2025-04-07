@@ -5,17 +5,16 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DietaryRestrictions_PC"
-    android:background="#FBE2E2"
-    >
+    tools:context=".MedicalHistoryAllergies_PC"
+    android:background="#FBE2E2">
 
-    <!--header-->
+<!--header-->
     <androidx.cardview.widget.CardView
-        android:id="@+id/dietaryRestrictionsCard"
+        android:id="@+id/allergiesMedicalHistCard"
         android:layout_width="0dp"
         android:layout_height="110dp"
         android:layout_marginTop="0dp"
-        app:cardBackgroundColor="#FFDBBB"
+        app:cardBackgroundColor="#d9d9d9"
         app:cardCornerRadius="20dp"
         app:cardElevation="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,7 +24,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_percent="1.0">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -40,11 +38,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
                 <TextView
-                    android:id="@+id/dietaryRestrictionsText"
+                    android:id="@+id/allergiesMedicalHistText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="Dietary Restrictions"
+                    android:text="Allergies"
                     android:textColor="#000000"
                     android:textSize="28sp"
                     android:layout_weight="1"
@@ -58,15 +56,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/dietaryRestrictionsCard"
+        app:layout_constraintTop_toBottomOf="@id/allergiesMedicalHistCard"
         app:layout_constraintBottom_toBottomOf="parent">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="vertical">
-
+<!--description-->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,14 +71,13 @@
                 android:fontFamily="@font/poppins_bold"
                 android:justificationMode="inter_word"
                 android:paddingTop="15dp"
-                android:text="Select the checkboxes in each category that apply to your dietary needs and restrictions."
+                android:text="Select any of the checkboxes below, you may also specify an allergy that is not listed by checking Other and typing your allergy."
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"/>
-
-            <!--food allergies-->
+<!--food allergies-->
             <LinearLayout
                 android:layout_width="383dp"
                 android:layout_height="wrap_content"
@@ -176,7 +172,7 @@
                         android:text="Soy"
                         android:textSize="16sp" />
                     <CheckBox
-                        android:id="@+id/checkboxGluten"
+                        android:id="@+id/checkboxGlutin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_medium"
@@ -212,7 +208,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Checkbox for Other food allergies -->
                     <CheckBox
                         android:id="@+id/checkboxFoodAllerOther"
                         android:layout_width="wrap_content"
@@ -224,7 +219,6 @@
                         android:padding="8dp"
                         android:textSize="16sp"/>
 
-                    <!-- Input section for adding other food allergies -->
                     <LinearLayout
                         android:id="@+id/foodAllerOtherInputLayout"
                         android:layout_width="match_parent"
@@ -253,9 +247,252 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="8dp">
-                        <!-- Dynamically added allergens will be added here -->
                     </LinearLayout>
                 </LinearLayout>
+            </LinearLayout>
+<!--medication allergies - antibio-->
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:background="@drawable/question_background"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_width="383dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:paddingTop="10dp"
+                    android:text="Medication Allergies - Antibiotics"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/checkboxContainerMedAllergiesAnti"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_start">
+                    <CheckBox
+                        android:id="@+id/checkboxPenicillin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Penicillin"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
+                        android:padding="8dp"
+                        android:textSize="16sp"/>
+                    <CheckBox
+                        android:id="@+id/checkboxCephalosporins"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Cephalosporins (e.g., Cephalexin, Ceftriaxone)"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
+                        android:padding="8dp"
+                        android:textSize="16sp"/>
+                    <CheckBox
+                        android:id="@+id/checkboxSulfa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Sulfa drugs (e.g., Sulfamethoxazole/Trimethoprim or Bactrim)"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
+                        android:padding="8dp"
+                        android:textSize="16sp"/>
+                    <CheckBox
+                        android:id="@+id/checkboxMacrolides"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Macrolides (e.g., Azithromycin, Erythromycin)"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
+                        android:padding="8dp"
+                        android:textSize="16sp"/>
+                    <CheckBox
+                        android:id="@+id/checkboxFluoroquinolones"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Fluoroquinolones (e.g., Ciprofloxacin, Levofloxacin)"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
+                        android:padding="8dp"
+                        android:textSize="16sp"/>
+                </com.google.android.flexbox.FlexboxLayout>
+            </LinearLayout>
+<!--Medication Allergies - Pain Relievers-->
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:background="@drawable/question_background"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_width="383dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:paddingTop="10dp"
+                    android:text="Medication Allergies - Pain Relievers"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/checkboxContainerMedAllergiesPain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_start">
+                    <CheckBox
+                        android:id="@+id/checkboxAspirin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Aspirin"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
+                        android:padding="8dp"
+                        android:textSize="16sp"/>
+                    <CheckBox
+                        android:id="@+id/checkboxNSAIDs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="NSAIDs (e.g., Ibuprofen, Naproxen)"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
+                        android:padding="8dp"
+                        android:textSize="16sp"/>
+                    <CheckBox
+                        android:id="@+id/checkboxAcetaminophen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Acetaminophen"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
+                        android:padding="8dp"
+                        android:textSize="16sp"/>
+                    <CheckBox
+                        android:id="@+id/checkboxOpioids"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Opioids (e.g., Codeine, Morphine, Oxycodone)"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
+                        android:padding="8dp"
+                        android:textSize="16sp"/>
+                </com.google.android.flexbox.FlexboxLayout>
+            </LinearLayout>
+<!--Medication Allergies - Cardiovascular-->
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:background="@drawable/question_background"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_width="383dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:paddingTop="10dp"
+                    android:text="Medication Allergies - Cardiovascular"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/checkboxContainerMedAllergiesCardio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_start">
+                    <CheckBox
+                        android:id="@+id/checkboxACE"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="ACE Inhibitors (e.g., Lisinopril)"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
+                        android:padding="8dp"
+                        android:textSize="16sp"/>
+                    <CheckBox
+                        android:id="@+id/checkboxBeta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Beta Blockers (e.g., Metoprolol — rare allergies but some sensitivity)"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
+                        android:padding="8dp"
+                        android:textSize="16sp"/>
+                </com.google.android.flexbox.FlexboxLayout>
+            </LinearLayout>
+<!--Medication Allergies - Anticonvulsants / Psych-->
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:background="@drawable/question_background"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_width="383dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:paddingTop="10dp"
+                    android:text="Medication Allergies - Neurological"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/checkboxContainerMedAllergiesNeuro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_start">
+                    <CheckBox
+                        android:id="@+id/checkboxCarb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Carbamazepine (Tegretol)"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
+                        android:padding="8dp"
+                        android:textSize="16sp"/>
+                    <CheckBox
+                        android:id="@+id/checkboxPhen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Phenytoin (Dilantin)"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
+                        android:padding="8dp"
+                        android:textSize="16sp"/>
+                    <CheckBox
+                        android:id="@+id/checkboxLamo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Lamotrigine (Lamictal)"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
+                        android:padding="8dp"
+                        android:textSize="16sp"/>
+                </com.google.android.flexbox.FlexboxLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -265,124 +502,63 @@
                 android:padding="12dp"
                 android:layout_width="383dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                >
+                android:layout_marginStart="15dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_bold"
                     android:paddingTop="10dp"
-                    android:text="Diets"
+                    android:text="Other Medication Allergens"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
                 <com.google.android.flexbox.FlexboxLayout
-                    android:id="@+id/checkboxContainerDiets"
+                    android:id="@+id/checkboxContainerMedAllergiesOther"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:flexWrap="wrap"
                     app:justifyContent="flex_start">
-
                     <CheckBox
-                        android:id="@+id/checkboxVegetarian"
+                        android:id="@+id/checkboxInsulin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_medium"
-                        android:text="Vegetarian"
+                        android:text="Insulin"
                         android:minHeight="48dp"
                         android:minWidth="48dp"
                         android:padding="8dp"
                         android:textSize="16sp"/>
-
                     <CheckBox
-                        android:id="@+id/checkboxVegan"
+                        android:id="@+id/checkboxHeparin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_medium"
-                        android:text="Vegan"
+                        android:text="Heparin"
                         android:minHeight="48dp"
                         android:minWidth="48dp"
                         android:padding="8dp"
                         android:textSize="16sp"/>
-
                     <CheckBox
-                        android:id="@+id/checkboxPescatarian"
+                        android:id="@+id/checkboxContrast"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_medium"
-                        android:text="Pescatarian"
+                        android:text="Contrast dye"
                         android:minHeight="48dp"
                         android:minWidth="48dp"
                         android:padding="8dp"
                         android:textSize="16sp"/>
-
                     <CheckBox
-                        android:id="@+id/checkboxSodium"
+                        android:id="@+id/checkboxAnesthetics"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_medium"
-                        android:text="Low Sodium"
+                        android:text="Local anesthetics (e.g., Lidocaine)"
                         android:minHeight="48dp"
                         android:minWidth="48dp"
                         android:padding="8dp"
                         android:textSize="16sp"/>
-
-                    <CheckBox
-                        android:id="@+id/checkboxSugar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="Low Sugar"
-                        android:minHeight="48dp"
-                        android:minWidth="48dp"
-                        android:padding="8dp"
-                        android:textSize="16sp"/>
-
-                    <CheckBox
-                        android:id="@+id/checkboxFat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="Low Fat"
-                        android:minHeight="48dp"
-                        android:minWidth="48dp"
-                        android:padding="8dp"
-                        android:textSize="16sp"/>
-
-                    <CheckBox
-                        android:id="@+id/checkboxFODMAP"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="Low FODMAP"
-                        android:minHeight="48dp"
-                        android:minWidth="48dp"
-                        android:padding="8dp"
-                        android:textSize="16sp"/>
-
-                    <CheckBox
-                        android:id="@+id/checkboxRenal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="Renal Diet"
-                        android:minHeight="48dp"
-                        android:minWidth="48dp"
-                        android:padding="8dp"
-                        android:textSize="16sp"/>
-
-                    <CheckBox
-                        android:id="@+id/checkboxKetogenic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="Ketogenic Diet"
-                        android:minHeight="48dp"
-                        android:minWidth="48dp"
-                        android:padding="8dp"
-                        android:textSize="16sp"/>
-
                 </com.google.android.flexbox.FlexboxLayout>
 
                 <LinearLayout
@@ -390,9 +566,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Checkbox for Other food allergies -->
                     <CheckBox
-                        android:id="@+id/checkboxDietsOther"
+                        android:id="@+id/checkboxAllergensOther"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_medium"
@@ -402,51 +577,44 @@
                         android:padding="8dp"
                         android:textSize="16sp"/>
 
-                    <!-- Input section for adding other food allergies -->
                     <LinearLayout
-                        android:id="@+id/dietsOtherInputLayout"
+                        android:id="@+id/allergensOtherInputLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:visibility="gone">
 
                         <EditText
-                            android:id="@+id/editTextDietsOther"
+                            android:id="@+id/editTextAllergensOther"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:hint="Enter item" />
 
                         <Button
-                            android:id="@+id/addItemButtonDiets"
+                            android:id="@+id/addItemButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Add" />
                     </LinearLayout>
 
-                    <!-- This is where dynamically added food allergies will be listed -->
+                    <!-- This is where dynamically added allergens will be listed -->
                     <LinearLayout
-                        android:id="@+id/dietsContainer"
+                        android:id="@+id/allergensContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="8dp">
-                        <!-- Dynamically added allergens will be added here -->
                     </LinearLayout>
                 </LinearLayout>
-
-
             </LinearLayout>
-
-
+<!--button-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal">
-
-
                 <Button
                     android:id="@+id/btn_done"
                     android:layout_width="250dp"
@@ -456,6 +624,7 @@
                     android:layout_marginBottom="50dp"
                     android:background="@android:color/black"
                     android:fontFamily="@font/poppins_bold"
+                    android:onClick="onDoneButtonPressed"
                     android:text="Done"
                     android:textColor="@android:color/white" />
             </LinearLayout>

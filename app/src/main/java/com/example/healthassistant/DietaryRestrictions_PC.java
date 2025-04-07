@@ -1,178 +1,292 @@
+//other checkboxes are unfinished, must save inputted items to firebase
 package com.example.healthassistant;
-
-import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class DietaryRestrictions_PC extends AppCompatActivity {
-    
-    private DatabaseReference databaseRef;
-    
-    private CheckBox peanut, treenuts, dairy, egg, shellfish, fish, soy, gluten, wheat, sesame, other1;
-    private CheckBox veg, vegan, pesca, low_sodium, low_sugar, low_fat, low_fodmap, renal_diet, keo_diet, other2;
+
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+    private String userId;
+
+    private Button btnDone;
+    private CheckBox checkboxPeanut, checkboxTreenuts, checkboxDairy, checkboxEgg, checkboxShellfish, checkboxFish, checkboxSoy, checkboxGluten, checkboxWheat, checkboxSesame;
+    private CheckBox checkboxVegetarian, checkboxVegan, checkboxPescatarian, checkboxSodium, checkboxSugar, checkboxFat, checkboxFODMAP, checkboxRenal, checkboxKetogenic;
+    private CheckBox checkboxFoodAllerOther, checkboxDietsOther;
+    private EditText editTextFoodAllerOther, editTextDietsOther;
+    private LinearLayout foodAllerContainer, dietsContainer;
+    private boolean isLoading = false; // Flag for loading state
+
+    private List<String> foodAllergies = new ArrayList<>();
+    private List<String> diets = new ArrayList<>();
+    private List<String> otherFoodAllergies = new ArrayList<>();
+    private List<String> otherDiets = new ArrayList<>();
+
+    private LinearLayout otherInputLayoutFood, otherInputLayoutDiets;
+    private EditText otherEditTextFood, otherEditTextDiets;
+    private Button addItemButtonFood, addItemButtonDiets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_dietary_restrictions_pc);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-        // imports for the Firebase Authentication + Realtime Database
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+        // Initialize Firebase
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
-        // initialize all the checkbox ID's
-        // 1st question
-        peanut = findViewById(R.id.checkboxPeanut);
-        treenuts = findViewById(R.id.checkboxTreenuts);
-        dairy = findViewById(R.id.checkboxDairy);
-        egg = findViewById(R.id.checkboxEgg);
-        shellfish = findViewById(R.id.checkboxShellfish);
-        fish = findViewById(R.id.checkboxFish);
-        soy = findViewById(R.id.checkboxSoy);
-        gluten = findViewById(R.id.checkboxGlutin);
-        wheat = findViewById(R.id.checkboxWheat);
-        sesame = findViewById(R.id.checkboxSesame);
-        other1 = findViewById(R.id.checkboxOtherAllergies);
-
-        // 2nd question
-        veg = findViewById(R.id.checkboxVegetarian);
-        vegan = findViewById(R.id.checkboxVegan);
-        pesca = findViewById(R.id.checkboxPescatarian);
-        low_sodium = findViewById(R.id.checkboxSodium);
-        low_sugar = findViewById(R.id.checkboxSugar);
-        low_fat = findViewById(R.id.checkboxFat);
-        low_fodmap = findViewById(R.id.checkboxFODMAP);
-        renal_diet = findViewById(R.id.checkboxRenal);
-        keo_diet = findViewById(R.id.checkboxKetogenic);
-        other2 = findViewById(R.id.checkboxOtherDiets);
-
-
-        //checks to see if the user is logged in, otherwise it won't save the data as Food_Preferences_PC
-
-        if (user != null){
-            String uid = user.getUid(); // captures the user UID from the auth. database
-            databaseRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("Food_Preferences_PC");
+        // Get current user ID
+        if (mAuth.getCurrentUser() != null) {
+            userId = mAuth.getCurrentUser().getUid();
         } else {
             Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
             finish();
+            return;
         }
-        // Load stored data if available
-        loadDietaryRestrictionsData();
 
-    }
-    private void loadDietaryRestrictionsData() {
-        databaseRef.addValueEventListener(new ValueEventListener() {
-        //databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    peanut.setChecked(Boolean.TRUE.equals(snapshot.child("Peanut").getValue(Boolean.class)));
-                    treenuts.setChecked(Boolean.TRUE.equals(snapshot.child("Tree Nuts").getValue(Boolean.class)));
-                    dairy.setChecked(Boolean.TRUE.equals(snapshot.child("Dairy").getValue(Boolean.class)));
-                    egg.setChecked(Boolean.TRUE.equals(snapshot.child("Egg").getValue(Boolean.class)));
-                    shellfish.setChecked(Boolean.TRUE.equals(snapshot.child("Shellfish").getValue(Boolean.class)));
-                    fish.setChecked(Boolean.TRUE.equals(snapshot.child("Fish").getValue(Boolean.class)));
-                    soy.setChecked(Boolean.TRUE.equals(snapshot.child("Soy").getValue(Boolean.class)));
-                    gluten.setChecked(Boolean.TRUE.equals(snapshot.child("Gluten").getValue(Boolean.class)));
-                    wheat.setChecked(Boolean.TRUE.equals(snapshot.child("Wheat").getValue(Boolean.class)));
-                    sesame.setChecked(Boolean.TRUE.equals(snapshot.child("Sesame").getValue(Boolean.class)));
-                    other1.setChecked(Boolean.TRUE.equals(snapshot.child("OtherAllergies").getValue(Boolean.class)));
+        // Initialize views
+        btnDone = findViewById(R.id.btn_done);
+        checkboxPeanut = findViewById(R.id.checkboxPeanut);
+        checkboxTreenuts = findViewById(R.id.checkboxTreenuts);
+        checkboxDairy = findViewById(R.id.checkboxDairy);
+        checkboxEgg = findViewById(R.id.checkboxEgg);
+        checkboxShellfish = findViewById(R.id.checkboxShellfish);
+        checkboxFish = findViewById(R.id.checkboxFish);
+        checkboxSoy = findViewById(R.id.checkboxSoy);
+        checkboxGluten = findViewById(R.id.checkboxGluten);
+        checkboxWheat = findViewById(R.id.checkboxWheat);
+        checkboxSesame = findViewById(R.id.checkboxSesame);
+        checkboxVegetarian = findViewById(R.id.checkboxVegetarian);
+        checkboxVegan = findViewById(R.id.checkboxVegan);
+        checkboxPescatarian = findViewById(R.id.checkboxPescatarian);
+        checkboxSodium = findViewById(R.id.checkboxSodium);
+        checkboxSugar = findViewById(R.id.checkboxSugar);
+        checkboxFat = findViewById(R.id.checkboxFat);
+        checkboxFODMAP = findViewById(R.id.checkboxFODMAP);
+        checkboxRenal = findViewById(R.id.checkboxRenal);
+        checkboxKetogenic = findViewById(R.id.checkboxKetogenic);
+        checkboxFoodAllerOther = findViewById(R.id.checkboxFoodAllerOther);
+        checkboxDietsOther = findViewById(R.id.checkboxDietsOther);
+        editTextFoodAllerOther = findViewById(R.id.editTextFoodAllerOther);
+        editTextDietsOther = findViewById(R.id.editTextDietsOther);
+        foodAllerContainer = findViewById(R.id.foodAllerContainer);
+        dietsContainer = findViewById(R.id.dietsContainer);
 
-                    veg.setChecked(Boolean.TRUE.equals(snapshot.child("Vegetarian").getValue(Boolean.class)));
-                    vegan.setChecked(Boolean.TRUE.equals(snapshot.child("Vegan").getValue(Boolean.class)));
-                    pesca.setChecked(Boolean.TRUE.equals(snapshot.child("Pescatarian").getValue(Boolean.class)));
-                    low_sodium.setChecked(Boolean.TRUE.equals(snapshot.child("Low Sodium").getValue(Boolean.class)));
-                    low_sugar.setChecked(Boolean.TRUE.equals(snapshot.child("Low Sugar").getValue(Boolean.class)));
-                    low_fat.setChecked(Boolean.TRUE.equals(snapshot.child("Low Fat").getValue(Boolean.class)));
-                    low_fodmap.setChecked(Boolean.TRUE.equals(snapshot.child("Low FODMAP").getValue(Boolean.class)));
-                    renal_diet.setChecked(Boolean.TRUE.equals(snapshot.child("Renal Diet").getValue(Boolean.class)));
-                    keo_diet.setChecked(Boolean.TRUE.equals(snapshot.child("Ketogenic Diet").getValue(Boolean.class)));
-                    other2.setChecked(Boolean.TRUE.equals(snapshot.child("OtherDiets").getValue(Boolean.class)));
-                }
+        loadDietaryRestrictions();
+
+        btnDone.setOnClickListener(v -> {
+            saveDietaryRestrictions();
+
+            Intent intent = new Intent(DietaryRestrictions_PC.this, ProfileCustomization.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+            finish();
+        });
+        // Initialize other views
+        otherInputLayoutFood = findViewById(R.id.foodAllerOtherInputLayout);
+        otherInputLayoutDiets = findViewById(R.id.dietsOtherInputLayout);
+        otherEditTextFood = findViewById(R.id.editTextFoodAllerOther);
+        otherEditTextDiets = findViewById(R.id.editTextDietsOther);
+        addItemButtonFood = findViewById(R.id.addItemButtonFoodAller);
+        addItemButtonDiets = findViewById(R.id.addItemButtonDiets);
+
+// Show/hide input layout for "Other" food allergies
+        checkboxFoodAllerOther.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            int visibility = isChecked ? View.VISIBLE : View.GONE;
+            otherInputLayoutFood.setVisibility(visibility);
+        });
+
+// Show/hide input layout for "Other" diets
+        checkboxDietsOther.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            int visibility = isChecked ? View.VISIBLE : View.GONE;
+            otherInputLayoutDiets.setVisibility(visibility);
+        });
+
+// Add custom food allergy
+        addItemButtonFood.setOnClickListener(v -> {
+            String itemText = otherEditTextFood.getText().toString().trim();
+            if (!itemText.isEmpty() && !otherFoodAllergies.contains(itemText)) {
+                otherFoodAllergies.add(itemText);
+                foodAllergies.add(itemText);
+                addItemToContainer(itemText, foodAllerContainer);
+                otherEditTextFood.setText("");
             }
+        });
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to load dietary restrictions", error.toException());
+// Add custom diet
+        addItemButtonDiets.setOnClickListener(v -> {
+            String itemText = otherEditTextDiets.getText().toString().trim();
+            if (!itemText.isEmpty() && !otherDiets.contains(itemText)) {
+                otherDiets.add(itemText);
+                diets.add(itemText);
+                addItemToContainer(itemText, dietsContainer);
+                otherEditTextDiets.setText("");
             }
         });
     }
-    public void onSubmitDRHistory(View view) { // Call this when user submits
-        Map<String, Boolean> dietaryRestrictions = new HashMap<>();
 
-        //store the selected checkboxes (true if checked, false if unchecked)
-        dietaryRestrictions.put("Peanut", peanut.isChecked());
-        dietaryRestrictions.put("Tree Nuts", treenuts.isChecked());
-        dietaryRestrictions.put("Dairy", dairy.isChecked());
-        dietaryRestrictions.put("Egg", egg.isChecked());
-        dietaryRestrictions.put("Shellfish", shellfish.isChecked());
-        dietaryRestrictions.put("Fish", fish.isChecked());
-        dietaryRestrictions.put("Soy", soy.isChecked());
-        dietaryRestrictions.put("Gluten", gluten.isChecked());
-        dietaryRestrictions.put("What", wheat.isChecked());
-        dietaryRestrictions.put("Sesame", sesame.isChecked());
-        dietaryRestrictions.put("OtherAllergies", other1.isChecked());
+    // Method to add item to container (with delete button functionality)
+    private void addItemToContainer(String text, LinearLayout container) {
+        LinearLayout itemLayout = new LinearLayout(this);
+        itemLayout.setOrientation(LinearLayout.HORIZONTAL);
+        itemLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
 
-        dietaryRestrictions.put("Vegetarian", veg.isChecked());
-        dietaryRestrictions.put("Vegan", vegan.isChecked());
-        dietaryRestrictions.put("Pescatarian", pesca.isChecked());
-        dietaryRestrictions.put("Low Sodium", low_sodium.isChecked());
-        dietaryRestrictions.put("Low Sugar", low_sugar.isChecked());
-        dietaryRestrictions.put("Low Fat", low_fat.isChecked());
-        dietaryRestrictions.put("Low FODMAP", low_fodmap.isChecked());
-        dietaryRestrictions.put("Renal Diet", renal_diet.isChecked());
-        dietaryRestrictions.put("Ketogenic Diet", keo_diet.isChecked());
-        dietaryRestrictions.put("OtherDiets", other2.isChecked());
+        TextView textView = new TextView(this);
+        textView.setText(text);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1
+        ));
+        textView.setPadding(8, 8, 8, 8);
+        textView.setTextSize(16);
 
-        //changed this
-        databaseRef.setValue(dietaryRestrictions) // Remove push() to store data under a fixed location
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(DietaryRestrictions_PC.this, "Restrictions saved!", Toast.LENGTH_SHORT).show();
-                        setResult(RESULT_OK, new Intent());
-                        finish();
-                    } else {
-                        Toast.makeText(DietaryRestrictions_PC.this, "Failed to save restrictions.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        Button deleteButton = new Button(this);
+        deleteButton.setText("X");
+        deleteButton.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
 
+        deleteButton.setOnClickListener(v -> {
+            container.removeView(itemLayout);
 
+            // Remove from correct list
+            if (container == foodAllerContainer) {
+                otherFoodAllergies.remove(text);
+                foodAllergies.remove(text);
+            } else if (container == dietsContainer) {
+                otherDiets.remove(text);
+                diets.remove(text);
+            }
+        });
 
-        // Indicate that the user successfully completed this step
-        Intent resultIntent = new Intent();
-        setResult(RESULT_OK, resultIntent);
-        finish(); // Close this activity and return to ProfileCustomization
+        itemLayout.addView(textView);
+        itemLayout.addView(deleteButton);
+
+        container.addView(itemLayout);
     }
 
+    public void saveDietaryRestrictions() {
+        if (isLoading) return;
+        isLoading = true;
+
+        Map<String, Object> dietaryRestrictions = new HashMap<>();
+        dietaryRestrictions.put("foodAllergies", getSelectedFoodAllergies());
+        dietaryRestrictions.put("diets", getSelectedDiets());
+
+        db.collection("users").document(userId)
+                .collection("dietary_restrictions").document("allergies")
+                .set(dietaryRestrictions)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(DietaryRestrictions_PC.this, "Data saved successfully!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(DietaryRestrictions_PC.this, "Error saving data.", Toast.LENGTH_SHORT).show();
+                    }
+                    isLoading = false;
+                });
+    }
+
+    private List<String> getSelectedFoodAllergies() {
+        List<String> foodAllergies = new ArrayList<>();
+        if (checkboxPeanut.isChecked()) foodAllergies.add("Peanut");
+        if (checkboxTreenuts.isChecked()) foodAllergies.add("Tree Nuts");
+        if (checkboxDairy.isChecked()) foodAllergies.add("Dairy");
+        if (checkboxEgg.isChecked()) foodAllergies.add("Egg");
+        if (checkboxShellfish.isChecked()) foodAllergies.add("Shellfish");
+        if (checkboxFish.isChecked()) foodAllergies.add("Fish");
+        if (checkboxSoy.isChecked()) foodAllergies.add("Soy");
+        if (checkboxGluten.isChecked()) foodAllergies.add("Gluten");
+        if (checkboxWheat.isChecked()) foodAllergies.add("Wheat");
+        if (checkboxSesame.isChecked()) foodAllergies.add("Sesame");
+
+        if (checkboxFoodAllerOther.isChecked() && !editTextFoodAllerOther.getText().toString().isEmpty()) {
+            foodAllergies.add(editTextFoodAllerOther.getText().toString());
+        }
+        return foodAllergies;
+    }
+
+    private List<String> getSelectedDiets() {
+        List<String> diets = new ArrayList<>();
+        if (checkboxVegetarian.isChecked()) diets.add("Vegetarian");
+        if (checkboxVegan.isChecked()) diets.add("Vegan");
+        if (checkboxPescatarian.isChecked()) diets.add("Pescatarian");
+        if (checkboxSodium.isChecked()) diets.add("Low Sodium");
+        if (checkboxSugar.isChecked()) diets.add("Low Sugar");
+        if (checkboxFat.isChecked()) diets.add("Low Fat");
+        if (checkboxFODMAP.isChecked()) diets.add("Low FODMAP");
+        if (checkboxRenal.isChecked()) diets.add("Renal Diet");
+        if (checkboxKetogenic.isChecked()) diets.add("Ketogenic Diet");
+
+        if (checkboxDietsOther.isChecked() && !editTextDietsOther.getText().toString().isEmpty()) {
+            diets.add(editTextDietsOther.getText().toString());
+        }
+        return diets;
+    }
+
+    private void loadDietaryRestrictions() {
+        db.collection("users").document(userId)
+                .collection("dietary_restrictions").document("allergies")
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<String> foodAllergies = (List<String>) documentSnapshot.get("foodAllergies");
+                        List<String> diets = (List<String>) documentSnapshot.get("diets");
+
+                        if (foodAllergies != null) {
+                            setCheckboxState(checkboxPeanut, foodAllergies);
+                            setCheckboxState(checkboxTreenuts, foodAllergies);
+                            setCheckboxState(checkboxDairy, foodAllergies);
+                            setCheckboxState(checkboxEgg, foodAllergies);
+                            setCheckboxState(checkboxShellfish, foodAllergies);
+                            setCheckboxState(checkboxFish, foodAllergies);
+                            setCheckboxState(checkboxSoy, foodAllergies);
+                            setCheckboxState(checkboxGluten, foodAllergies);
+                            setCheckboxState(checkboxWheat, foodAllergies);
+                            setCheckboxState(checkboxSesame, foodAllergies);
+                        }
+
+                        if (diets != null) {
+                            setCheckboxState(checkboxVegetarian, diets);
+                            setCheckboxState(checkboxVegan, diets);
+                            setCheckboxState(checkboxPescatarian, diets);
+                            setCheckboxState(checkboxSodium, diets);
+                            setCheckboxState(checkboxSugar, diets);
+                            setCheckboxState(checkboxFat, diets);
+                            setCheckboxState(checkboxFODMAP, diets);
+                            setCheckboxState(checkboxRenal, diets);
+                            setCheckboxState(checkboxKetogenic, diets);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(DietaryRestrictions_PC.this, "Error loading data.", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void setCheckboxState(CheckBox checkBox, List<String> list) {
+        checkBox.setChecked(list.contains(checkBox.getText().toString()));
+    }
 }

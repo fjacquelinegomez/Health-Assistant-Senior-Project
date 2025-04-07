@@ -112,8 +112,8 @@ public class Homescreen extends AppCompatActivity {
             public void onClick(View v) {
                 startActivity(new Intent(Homescreen.this, PinTest.class));
         }
-        });
 
+        });
 
         // Firebase logic to retrieve and display the user's first name
         FirebaseAuth mAuth = FirebaseAuth.getInstance();

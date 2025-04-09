@@ -18,4 +18,8 @@
         <item>Monitor Weight</item>
         <item>Add Custom Goal</item>
     </string-array>
+    <string name="header_pc_settings">Profile Customization</string>
+    <string name="description_pc_settings">Select anything you would like to edit.</string>
+    <string name="header_pc_regis">Hello!</string>
+    <string name="description_pc_regis">Set up your profile by providing necessary information.</string>
 </resources>

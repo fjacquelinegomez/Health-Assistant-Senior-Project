@@ -87,9 +87,9 @@ public class MedicationManager extends AppCompatActivity {
         setTimeButton = findViewById(R.id.setTimeButton);
         selectedTimeText = findViewById(R.id.selectedTimeText);
 
-        createNotificationChannel();
+        //createNotificationChannel();
 
-        requestNotificationPermission();
+        //requestNotificationPermission();
 
         setTimeButton.setOnClickListener(view -> { // shows a timepicker when the button is clicked
             Calendar currentTime = Calendar.getInstance();

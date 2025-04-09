@@ -232,7 +232,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/todayMedicationCard"
                 android:layout_width="0dp"
-                android:layout_height="160dp"
+                android:layout_height="180dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -282,20 +282,27 @@
                                 android:textSize="19dp"
                                 android:layout_marginBottom="-10dip"
                                 android:textColor="#000000" />
-                            <TextView
+
+
+                            <!-- Button to choose time -->
+                            <Button
+                                android:id="@+id/setTimeButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Dosage"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="Set Reminder Time"
                                 android:layout_gravity="center_horizontal"
+                                android:paddingTop="10dp"/>
+
+                            <!-- TextView to show selected time -->
+                            <TextView
+                                android:id="@+id/selectedTimeText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_medium"
-                                android:textSize="15dp" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Dosing Schedule"
+                                android:text="No time selected"
                                 android:layout_gravity="center_horizontal"
-                                android:paddingTop="13dp"
-                                android:fontFamily="@font/poppins_bold" />
+                                android:paddingTop="5dp"/>
                         </LinearLayout>
                     </LinearLayout>
                     <View

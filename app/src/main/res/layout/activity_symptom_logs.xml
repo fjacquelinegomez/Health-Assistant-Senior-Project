@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
                 <TextView
-                    android:id="@+id/appointmentsText"
+                    android:id="@+id/symptomsText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_bold"
@@ -90,8 +90,8 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sympCardHeader"
-        tools:context=".SleepLogsActivity">
+        app:layout_constraintTop_toBottomOf="@+id/sympCardHeader">
+
 
 
         <!-- Table Layout for Sleep Logs -->
@@ -163,21 +163,20 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
                 android:hint="Enter Date (MM-DD-YYYY)"
-                android:inputType="date"
+                android:inputType="text"
                 android:padding="8dp" />
 
-            <AutoCompleteTextView
+            <EditText
                 android:id="@+id/inputSymp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
                 android:hint="Enter Symptoms"
-                android:completionThreshold="1"
                 android:inputType="text"
                 android:padding="8dp" />
 
             <EditText
-                android:id="@+id/inputRating"
+                android:id="@+id/inputSympRating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
@@ -219,6 +218,9 @@
                 android:background="#ffdcd5"
                 android:fontFamily="@font/poppins_bold"
                 android:text="Analyze Symptoms" />
+
+
+
         </LinearLayout>
     </LinearLayout>
 

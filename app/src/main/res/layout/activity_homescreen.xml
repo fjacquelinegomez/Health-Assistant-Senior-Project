@@ -156,6 +156,7 @@
 
 <androidx.cardview.widget.CardView
     android:id="@+id/symptomLogsCard"
+    android:clickable="false"
     android:layout_width="104dp"
     android:layout_height="90dp"
     app:cardBackgroundColor="#FF9EB1"
@@ -170,10 +171,11 @@
 
 
     <ImageButton
-        android:id="@+id/symptomLogsButton"
+        android:id="@+id/sympLogsButton"
         android:layout_width="104dp"
         android:layout_height="90dp"
         android:background="#FF9EB1"
+        android:elevation="4dp"
         android:contentDescription="Log Symptom"
         app:srcCompat="@drawable/symptom_log_icon"
         tools:layout_editor_absoluteX="56dp"
@@ -183,6 +185,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/appointmentReminderCard"
+        android:clickable="false"
         android:layout_width="104dp"
         android:layout_height="90dp"
         app:cardBackgroundColor="#B8ECBC"
@@ -199,6 +202,7 @@
             android:id="@+id/appointmentReminderButton"
             android:layout_width="110dp"
             android:layout_height="90dp"
+            android:elevation="4dp"
             android:background="#B8ECBC"
             android:contentDescription="Appt Reminder"
             app:srcCompat="@drawable/create_appointment_reminder_icon"
@@ -208,6 +212,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/sleepLogsCard"
+        android:clickable="false"
         android:layout_width="104dp"
         android:layout_height="90dp"
         app:cardBackgroundColor="#73BEE9"
@@ -224,6 +229,7 @@
             android:id="@+id/sleepLogsButton"
             android:layout_width="105dp"
             android:layout_height="90dp"
+            android:elevation="4dp"
             android:background="#73BEE9"
             android:contentDescription="Log sleep"
             app:srcCompat="@drawable/sleep_log_icon"

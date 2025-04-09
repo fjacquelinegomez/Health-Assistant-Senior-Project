@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera.any" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
 
     <application
         android:allowBackup="true"
@@ -16,6 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthAssistant"
         tools:targetApi="35">
+        <receiver android:name=".AlarmReceiver" />
+        <activity
+            android:name=".SleepLogs2"
+            android:exported="false" />
         <activity
             android:name=".MFAVerify"
             android:exported="false" />
@@ -54,9 +60,7 @@
         <activity
             android:name=".SymptomLogs"
             android:exported="false" />
-        <activity
-            android:name=".SleepLogs"
-            android:exported="false" />
+
         <activity
             android:name=".Settings"
             android:exported="false" />

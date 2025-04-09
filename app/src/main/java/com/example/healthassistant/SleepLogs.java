@@ -49,7 +49,7 @@ public class SleepLogs extends AppCompatActivity {
         databaseRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("sleepLogs");
 
         // Initialize UI Elements
-        inputDate = findViewById(R.id.inputDate);
+        inputDate = findViewById(R.id.inputDateSleep);
         inputHoursSlept = findViewById(R.id.inputHoursSlept);
         inputRating = findViewById(R.id.inputRating);
         sleepLogTable = findViewById(R.id.sleepLogTable);

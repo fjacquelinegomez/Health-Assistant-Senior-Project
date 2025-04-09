@@ -89,10 +89,10 @@ public class Medication {
         return false; // If date can't be parsed
     }
 
-    // Method that calculates if the medication needs to be refilled soon, returns true if there's only 10 pills left
-    // FIXME: maybe change it to 80% of total pills instead?
+    // Method that calculates if the medication needs to be refilled soon, returns true if user has taken at least 80% of total pills
     public boolean isRefillNeeded(int totalPills, int pillsTaken) {
-        int pillsLeft = totalPills - pillsTaken;
-        return pillsLeft <= 10;
+        if (totalPills == 0) { return false; } // so it won't divide by 0
+        double takenPercentage = (double) pillsTaken / totalPills;
+        return takenPercentage >= 0.8;
     }
 }

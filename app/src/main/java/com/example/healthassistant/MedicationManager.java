@@ -34,6 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import java.util.Calendar;
 
@@ -115,13 +116,6 @@ public class MedicationManager extends AppCompatActivity {
                 startActivity(new Intent(MedicationManager.this, MedicationManager2.class));
             }
         });
-    }
-    // Sets an alarm that triggers at the selected time
-    private void setAlarm(int hour, int minute) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-        calendar.set(Calendar.SECOND, 0);
 
         // Expiration and Refill UI components
         // Fetches user's medication list
@@ -135,8 +129,15 @@ public class MedicationManager extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+
+                        // List of all user's medications
                         List<Medication> medicationList = new ArrayList<>();
-                        for (DocumentSnapshot document : task.getResult()) {
+                        // Will keep track of whether or not the asynchronous task is completely done
+                        List<DocumentSnapshot> documents = task.getResult().getDocuments();
+                        final int totalDocuments = documents.size();
+                        final int[] completedFetches = {0};
+
+                        for (DocumentSnapshot document : documents) {
                             // Pulls necessary values about the medication for the UI
                             String expirationDate = document.getString("expirationDate");
                             int totalPills = document.getLong("totalPills").intValue();
@@ -157,24 +158,29 @@ public class MedicationManager extends AppCompatActivity {
                                     medication.setMedicationForm(medicationForm);
                                     medicationList.add(medication);
                                 }
+                                completedFetches[0]++;
 
-                                // Filters through the main medication list for the expired ones and adds it to another list
+                                // Filtered list of medications (expiration and refill)
                                 List<Medication> expiringMedications = new ArrayList<>();
-                                for (Medication medication : medicationList) {
-                                    if (medication.isExpiringSoon(medication.getExpirationDate())) {
-                                        expiringMedications.add(medication);
-                                    }
-                                }
-                                setUpExpiringMedicationView(expiringMedications); // sets up the expired medication UI with this new list
-
-                                // Filters through the main medication list for the ones needing be refilled and adds it to another list
                                 List<Medication> refillMedications = new ArrayList<>();
-                                for (Medication medication : medicationList) {
-                                    if (medication.isRefillNeeded(medication.getTotalPills(), medication.getPillsTaken())) {
-                                        refillMedications.add(medication);
+
+                                // If all fetches are done
+                                if (completedFetches[0] == totalDocuments) {
+                                    // Filters through the main medication list for the medications that are expiring soon or need a refill soon
+                                    // and adds the medication to their respective lists
+                                    for (Medication medication : medicationList) {
+                                        if (medication.isExpiringSoon(medication.getExpirationDate())) {
+                                            expiringMedications.add(medication);
+                                        }
+                                        if (medication.isRefillNeeded(medication.getTotalPills(), medication.getPillsTaken())) {
+                                            refillMedications.add(medication);
+                                        }
                                     }
                                 }
-                                setUpRefillMedicationView(refillMedications); // sets up the expired medication UI with this new list
+
+                                // sets up the expired + refill medication UI with the new filtered lists
+                                setUpMedicationView(expiringMedications, "expire");
+                                setUpMedicationView(refillMedications, "refill");
 
                             }).addOnFailureListener(e -> {
                                 Log.e("Medication Manager", "Error fetching medication", e);
@@ -184,81 +190,97 @@ public class MedicationManager extends AppCompatActivity {
                 });
     }
 
-    // Sets up the expiration UI and enables arrow functionality
-    private void setUpExpiringMedicationView(List<Medication> expiringMedications) {
-        // Initializing the left and right arrows
-        ImageView leftArrow = findViewById(R.id.expiringLeftButton);
-        ImageView rightArrow = findViewById(R.id.expiringRightButton);
+    // Sets up the expiration + refill UI and enables arrow functionality
+    private void setUpMedicationView(List<Medication> medications, String view) {
+        // Initializing the arrows
+        ImageView leftArrow;
+        ImageView rightArrow;
+        
+        if (Objects.equals(view, "expire")) {
+            // Initializing the left and right expiration view arrows
+            leftArrow = findViewById(R.id.expiringLeftButton);
+            rightArrow = findViewById(R.id.expiringRightButton);
+            
+        } else if (Objects.equals(view, "refill")) {
+            // Initializing the left and right refill arrows
+            leftArrow = findViewById(R.id.refillLeftButton);
+            rightArrow = findViewById(R.id.refillRightButton);
+        } else {
+            rightArrow = null;
+            leftArrow = null;
+        }
 
-        // sets the first expiring medication as the first page
+        // if there's no medication that's expiring or needs a refill then it will stop
+        if (medications.isEmpty()) return;
+
+        // sets the first expiring/refill medication as the first page
         final int[] currentIndex = {0};
-        updateExpirationCard(expiringMedications, currentIndex[0]);
+        updateMedicationView(medications, currentIndex[0], view);
+        // sets the visibility of arrows
+        leftArrow.setVisibility(View.INVISIBLE);
+        if (medications.size() > 1) {
+            rightArrow.setVisibility(View.VISIBLE);
+        } else {
+            rightArrow.setVisibility(View.INVISIBLE);
+        }
 
         // if user clicks left then they go to the previous medication
         leftArrow.setOnClickListener(v -> {
             if (currentIndex[0] > 0) {
                 currentIndex[0]--;
-                updateExpirationCard(expiringMedications, currentIndex[0]);
+                updateMedicationView(medications, currentIndex[0], view);
+
+                // sets the visibility of arrows
+                rightArrow.setVisibility(View.VISIBLE);
+                if (currentIndex[0] == 0) {
+                    leftArrow.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
         // if user clicks right then they go to the next medication
         rightArrow.setOnClickListener(v -> {
-            if (currentIndex[0] < expiringMedications.size() - 1) {
+            if (currentIndex[0] < medications.size() - 1) {
                 currentIndex[0]++;
-                updateExpirationCard(expiringMedications, currentIndex[0]);
+                updateMedicationView(medications, currentIndex[0], view);
+
+                // sets the visibility of arrows
+                leftArrow.setVisibility(View.VISIBLE);
+                if (currentIndex[0] == medications.size() - 1) {
+                    rightArrow.setVisibility(View.INVISIBLE);
+                }
             }
         });
     }
 
-    // updates the current expiration UI being shown
-    private void updateExpirationCard(List<Medication> expiringMedications, int index) {
-        // Initializing values being changed (name and expiration date)
-        TextView medicationName = findViewById(R.id.expiringMedicationName);
-        TextView expirationDate = findViewById(R.id.expiringExpirationDate);
+    // updates the current expiration/refill medication card being shown
+    private void updateMedicationView(List<Medication> medications, int index, String view) {
+        if (Objects.equals(view, "expire")) {
+            // Initializing values being changed (name and expiration date)
+            TextView medicationName = findViewById(R.id.expiringMedicationName);
+            TextView expirationDate = findViewById(R.id.expiringExpirationDate);
 
-        // Sets values to the new medication values
-        Medication medication = expiringMedications.get(index);
-        medicationName.setText(medication.getName());
-        expirationDate.setText("Expires: " + medication.getExpirationDate());
+            // Sets values to the new medication values
+            Medication medication = medications.get(index);
+            medicationName.setText(medication.getName());
+            expirationDate.setText("Expires: " + medication.getExpirationDate());
+        } else if (Objects.equals(view, "refill")) {
+            // Initializing values being changed (name and refill dosage)
+            TextView medicationName = findViewById(R.id.refillMedicationName);
+            TextView refillDosage = findViewById(R.id.refillDosage);
+
+            // Sets values to the new medication values
+            Medication medication = medications.get(index);
+            medicationName.setText(medication.getName());
+            refillDosage.setText(medication.getPillsTaken() + "/" + medication.getTotalPills() + " " + medication.getMedicationForm() + "s taken");
+        }
     }
 
-    // Sets up the refill UI and enables arrow functionality
-    private void setUpRefillMedicationView(List<Medication> refillMedications) {
-        // Initializing the left and right arrows
-        ImageView leftArrow = findViewById(R.id.refillLeftButton);
-        ImageView rightArrow = findViewById(R.id.refillRightButton);
-
-        // sets the first refill medication as the first page
-        final int[] currentIndex = {0};
-        updateRefillCard(refillMedications, currentIndex[0]);
-
-        // if user clicks left then they go to the previous medication
-        leftArrow.setOnClickListener(v -> {
-            if (currentIndex[0] > 0) {
-                currentIndex[0]--;
-                updateRefillCard(refillMedications, currentIndex[0]);
-            }
-        });
-
-        // if user clicks right then they go to the next medication
-        rightArrow.setOnClickListener(v -> {
-            if (currentIndex[0] < refillMedications.size() - 1) {
-                currentIndex[0]++;
-                updateRefillCard(refillMedications, currentIndex[0]);
-            }
-        });
-    }
-
-    // updates the current refill UI being shown
-    private void updateRefillCard(List<Medication> refillMedications, int index) {
-        // Initializing values being changed (name and refill dosage)
-        TextView medicationName = findViewById(R.id.refillMedicationName);
-        TextView expirationDate = findViewById(R.id.refillDosage);
-
-        // Sets values to the new medication values
-        Medication medication = refillMedications.get(index);
-        medicationName.setText(medication.getName());
-        expirationDate.setText(medication.getPillsTaken() + "/" + medication.getTotalPills() + " " + medication.getMedicationForm() + "s taken");
+    // Sets an alarm that triggers at the selected time
+    private void setAlarm(int hour, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
     }
 }

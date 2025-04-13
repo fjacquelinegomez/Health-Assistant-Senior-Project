@@ -1,6 +1,7 @@
 package food;
 
 import java.util.List;
+import java.util.Set;
 
 public class RecipeResponse {
     private List<Recipe> results;
@@ -17,6 +18,7 @@ public class RecipeResponse {
         private int id;
         private String title;
         private String image;
+        private Set<String> tags;  // Tags like "low-sodium", "low-carb", "peanut-free"
 
         public int getId() {
             return id;
@@ -40,6 +42,15 @@ public class RecipeResponse {
 
         public void setImage(String image) {
             this.image = image;
+        }
+        // Getter for tags
+        public Set<String> getTags() {
+            return tags;
+        }
+
+        // Setter for tags
+        public void setTags(Set<String> tags) {
+            this.tags = tags;
         }
     }
 }

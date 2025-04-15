@@ -4,18 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.healthassistant.databinding.ActivityFoodManagerBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HealthGoals extends AppCompatActivity {
 
-    ActivityFoodManagerBinding binding;
+
+    private ImageButton btnMH;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,32 +29,40 @@ public class HealthGoals extends AppCompatActivity {
 
 
 
-            /**bottom bar navigation functionality**/
-            binding = ActivityFoodManagerBinding.inflate(getLayoutInflater());
+        /*bottom bar navigation functionality*/
 
-            setContentView(binding.getRoot());
+        BottomNavigationView nav = findViewById(R.id.bottomNavigationView);
 
-            binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-                switch (item.getItemId()) {
-                    case R.id.home:
-                        startActivity(new Intent(HealthGoals.this, Homescreen.class));
-                        break;
-                    case R.id.searchMedication:
-                        startActivity(new Intent(HealthGoals.this, Search.class));
-                        break;
-                    case R.id.foodManager:
-                        startActivity(new Intent(HealthGoals.this, FoodManager.class));
-                        break;
-                    case R.id.healthGoals:
-                        startActivity(new Intent(HealthGoals.this, HealthGoals.class));
-                        break;
-                    case R.id.medicationManager:
-                        startActivity(new Intent(HealthGoals.this, MedicationManager.class));
-                        break;
+        nav.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.home:
+                    startActivity(new Intent(HealthGoals.this, Homescreen.class));
+                    break;
+                case R.id.searchMedication:
+                    startActivity(new Intent(HealthGoals.this, Search.class));
+                    break;
+                case R.id.foodManager:
+                    startActivity(new Intent(HealthGoals.this, FoodManager.class));
+                    break;
+                case R.id.healthGoals:
+                    startActivity(new Intent(HealthGoals.this, HealthGoals.class));
+                    break;
+                case R.id.medicationManager:
+                    startActivity(new Intent(HealthGoals.this, MedicationManager.class));
+                    break;
+            }
+            return true;
+        });
 
-                }
-                return true;
 
+
+        // initialize a button for testing
+        btnMH = findViewById(R.id.stressLogButton);
+
+        // Medical History Button Logic
+        btnMH.setOnClickListener(v -> {
+            Intent intent = new Intent(HealthGoals.this, Stress_HealthGoals_PC.class);
+            startActivity(intent);
         });
 
     }

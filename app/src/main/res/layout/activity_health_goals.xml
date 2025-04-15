@@ -97,35 +97,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!--Sleep log button-->
 
-            <ImageButton
-                android:id="@+id/SleepLogButton"
-                android:layout_width="150dp"
-                android:layout_height="140dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/roundcorner"
-                android:contentDescription="MedicalHistory"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/sleep" />
 
             <!--Stress log button-->
 
-            <TextView
-                android:id="@+id/medical_profilecustom_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/SleepLogButton"
-                android:layout_alignStart="@id/SleepLogButton"
-                android:layout_marginStart="54dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/poppins_medium"
-                android:text="Sleep"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
 
             <ImageButton
                 android:id="@+id/stressLogButton"
@@ -133,7 +108,7 @@
                 android:layout_height="140dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="208dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="50dp"
                 android:background="@drawable/roundcorner"
                 android:contentDescription="StressLog"
@@ -163,8 +138,8 @@
                 android:layout_height="140dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="250dp"
+                android:layout_marginStart="208dp"
+                android:layout_marginTop="50dp"
                 android:background="@drawable/roundcorner"
                 android:contentDescription="StressLog"
                 android:enabled="false"
@@ -194,7 +169,7 @@
                 android:layout_height="140dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="208dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="250dp"
                 android:background="@drawable/roundcorner"
                 android:contentDescription="WeightLog"
@@ -217,20 +192,21 @@
 
 
             <!--Blood Pressure log button-->
+
+
             <ImageButton
                 android:id="@+id/BloodSLogButton"
                 android:layout_width="150dp"
                 android:layout_height="140dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="440dp"
+                android:layout_marginStart="208dp"
+                android:layout_marginTop="250dp"
                 android:background="@drawable/roundcorner"
                 android:contentDescription="Blood Sugar Log"
                 android:enabled="false"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/sugar_blood_level" />
-
 
             <TextView
                 android:id="@+id/bloods_profilecustom_text"
@@ -251,8 +227,8 @@
                 android:layout_height="140dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="208dp"
-                android:layout_marginTop="440dp"
+                android:layout_marginStart="116dp"
+                android:layout_marginTop="468dp"
                 android:background="@drawable/roundcorner"
                 android:contentDescription="Blood Sugar Log"
                 android:enabled="false"

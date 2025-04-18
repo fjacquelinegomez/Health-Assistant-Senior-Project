@@ -1,6 +1,8 @@
 package com.example.healthassistant;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,8 +20,12 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,6 +46,7 @@ public class Stress_HealthGoals_PC extends AppCompatActivity {
 
     private DatabaseReference stressLogsRef;
 
+    private String[] weekdays = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
     private final String[] tips = {
             "Try a 5-minute meditation 🌿",
             "Take a short walk 🚶‍♀️",
@@ -61,10 +68,9 @@ public class Stress_HealthGoals_PC extends AppCompatActivity {
             return insets;
         });
 
+
         /*bottom bar navigation functionality*/
-
         BottomNavigationView nav = findViewById(R.id.bottomNavigationView);
-
         nav.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
@@ -99,8 +105,6 @@ public class Stress_HealthGoals_PC extends AppCompatActivity {
         tipText = findViewById(R.id.tipText);
         saveButton = findViewById(R.id.saveStressLogButton);
         weekTracker = findViewById(R.id.weekTracker);
-
-
         moodHappy = findViewById(R.id.moodHappy);
         moodNeutral = findViewById(R.id.moodNeutral);
         moodStressed = findViewById(R.id.moodStressed);
@@ -120,14 +124,14 @@ public class Stress_HealthGoals_PC extends AppCompatActivity {
         });
 
 
+        //logic for mood selection
         View.OnClickListener moodClickListener = v -> {
             // Reset all to unselected
-            moodHappy.setChecked(false);
-            moodNeutral.setChecked(false);
-            moodStressed.setChecked(false);
-
+            resetMoodTints();
             // Highlight the selected one
-            ((ToggleButton) v ).setChecked(true);
+            ToggleButton selected = (ToggleButton) v;
+            selected.setChecked(true);
+            selected.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.pastel_yellow)));
         };
 
         moodHappy.setOnClickListener(moodClickListener);
@@ -136,6 +140,26 @@ public class Stress_HealthGoals_PC extends AppCompatActivity {
 
         // Save logic
         saveButton.setOnClickListener(v -> saveEntry());
+
+        //makes sure the checkmarks appear on the page
+        loadWeeklyCheckmarks();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadWeeklyCheckmarks();
+    }
+
+
+    private void resetMoodTints() {
+        ColorStateList defaultTint = ColorStateList.valueOf(getResources().getColor(R.color.default_toggle_background));
+        moodHappy.setChecked(false);
+        moodNeutral.setChecked(false);
+        moodStressed.setChecked(false);
+        moodHappy.setBackgroundTintList(defaultTint);
+        moodNeutral.setBackgroundTintList(defaultTint);
+        moodStressed.setBackgroundTintList(defaultTint);
     }
 
     private void saveEntry() {
@@ -166,6 +190,7 @@ public class Stress_HealthGoals_PC extends AppCompatActivity {
         logEntry.put("weekday", weekday);
         logEntry.put("didRelax", didRelax);
         logEntry.put("mood", mood);
+        logEntry.put("timestamp", ServerValue.TIMESTAMP);
         if (didRelax) {
             logEntry.put("activity", activity);
         } else {
@@ -174,19 +199,15 @@ public class Stress_HealthGoals_PC extends AppCompatActivity {
 
         stressLogsRef.child(today).setValue(logEntry).addOnSuccessListener(aVoid -> {
             Toast.makeText(this, "Log saved! 🌼", Toast.LENGTH_SHORT).show();
-            highlightWeekday(weekday);
+            showCheckmark(weekday);
             clearInputs();
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to save log.", Toast.LENGTH_SHORT).show();
         });
     }
 
-    private String getSelectedMood() {
-        if (moodHappy.isChecked()) return "Happy";
-        if (moodNeutral.isChecked()) return "Neutral";
-        if (moodStressed.isChecked()) return "Sad";
-        return null;
-    }
+
+
 
     private void clearInputs() {
         btnYes.setChecked(false);
@@ -194,17 +215,74 @@ public class Stress_HealthGoals_PC extends AppCompatActivity {
         editRelaxingActivity.setVisibility(View.GONE);
         editRelaxingActivity.setText("");
         tipText.setVisibility(View.GONE);
-        moodHappy.setChecked(false);
-        moodNeutral.setChecked(false);
-        moodStressed.setChecked(false);
+        resetMoodTints();
     }
 
-    private void highlightWeekday(String weekday) {
+
+    //captures the selected mood
+    private String getSelectedMood() {
+        if (moodHappy.isChecked()) return "Happy";
+        if (moodNeutral.isChecked()) return "Neutral";
+        if (moodStressed.isChecked()) return "Stressed";
+        return null;
+    }
+
+    private void showCheckmark(String weekday) {
         int dayId = getResources().getIdentifier("check" + weekday, "id", getPackageName());
         TextView checkView = findViewById(dayId);
         if (checkView != null) {
             checkView.setText("✅");
         }
+    }
+
+    private void loadWeeklyCheckmarks() {
+        String currentWeek = getCurrentWeekIdentifier();
+        stressLogsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot log : snapshot.getChildren()) {
+                    Object timestampObj = log.child("timestamp").getValue();
+                    String weekday = log.child("weekday").getValue(String.class);
+
+                    if (timestampObj instanceof Long && weekday != null) {
+                        Calendar logDate = Calendar.getInstance();
+                        logDate.setTimeInMillis((Long) timestampObj);
+                        String logWeek = getWeekIdentifier(logDate);
+
+                        if (logWeek.equals(currentWeek)) {
+                            showCheckmark(weekday);
+                        } else {
+                            clearOldCheckmark(weekday);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(Stress_HealthGoals_PC.this, "Failed to load tracker", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void clearOldCheckmark(String weekday) {
+        int dayId = getResources().getIdentifier("check" + weekday, "id", getPackageName());
+        TextView checkView = findViewById(dayId);
+        if (checkView != null) {
+            checkView.setText(""); // Reset to blank
+        }
+    }
+
+    private String getWeekIdentifier(Calendar cal) {
+        int year = cal.get(Calendar.YEAR);
+        int week = cal.get(Calendar.WEEK_OF_YEAR);
+        return year + "-W" + week;
+    }
+
+    private String getCurrentWeekIdentifier() {
+        Calendar cal = Calendar.getInstance();
+        return getWeekIdentifier(cal);
     }
 
     private String getRandomTip() {

@@ -290,7 +290,7 @@
                 <TextView android:id="@+id/checkMon" style="@style/WeekCheckStyle" />
                 <TextView android:id="@+id/checkTue" style="@style/WeekCheckStyle" />
                 <TextView android:id="@+id/checkWed" style="@style/WeekCheckStyle" />
-                <TextView android:id="@+id/checkThurs" style="@style/WeekCheckStyle" />
+                <TextView android:id="@+id/checkThu" style="@style/WeekCheckStyle" />
                 <TextView android:id="@+id/checkFri" style="@style/WeekCheckStyle" />
                 <TextView android:id="@+id/checkSat" style="@style/WeekCheckStyle" />
                 <TextView android:id="@+id/checkSun" style="@style/WeekCheckStyle" />

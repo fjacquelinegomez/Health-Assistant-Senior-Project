@@ -19,7 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class HealthGoals extends AppCompatActivity {
 
 
-    private ImageButton btnMH;
+    private ImageButton stress_hg_btn, cholesterol_hg_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +56,22 @@ public class HealthGoals extends AppCompatActivity {
 
 
 
-        // initialize a button for testing
-        btnMH = findViewById(R.id.stressLogButton);
+        // initialize a stress button
+        stress_hg_btn = findViewById(R.id.stressLogButton);
 
-        // Medical History Button Logic
-        btnMH.setOnClickListener(v -> {
+        // Stress Button Logic
+        stress_hg_btn.setOnClickListener(v -> {
             Intent intent = new Intent(HealthGoals.this, Stress_HealthGoals_PC.class);
+            startActivity(intent);
+        });
+
+
+        // initialize cholesterol button
+        cholesterol_hg_btn = findViewById(R.id.CholesterolLogButton);
+
+        // Cholesterol Button Logic
+        cholesterol_hg_btn.setOnClickListener(v -> {
+            Intent intent = new Intent(HealthGoals.this, Cholesterol_HealthGoals.class);
             startActivity(intent);
         });
 

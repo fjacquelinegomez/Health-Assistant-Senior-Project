@@ -55,7 +55,7 @@ public class Cholesterol_HealthGoals extends AppCompatActivity {
 
         // Initialize Firebase
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        databaseRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("sleepLogs");
+        databaseRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("cholesterol_logs");
 
         // Initialize UI Elements
         inputLabDate = findViewById(R.id.date_chol_labs);

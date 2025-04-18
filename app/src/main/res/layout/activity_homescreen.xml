@@ -95,6 +95,238 @@
 
     </androidx.cardview.widget.CardView>
 
+
+    <!--bottom toolbar-->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_background"
+        app:itemIconSize="35dp"
+        app:itemIconTint="@drawable/item_selector"
+        app:itemPaddingBottom="1dp"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_taskbar" />
+
+
+
+    <!-- Medication Plan Section -->
+    <TextView
+        android:id="@+id/medicationPlanText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Today's Medication Plan"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/topCard"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/medicationPlanCard"
+        android:layout_width="0dp"
+        android:layout_height="135dp"
+        android:layout_marginTop="8dp"
+        app:cardBackgroundColor="#E2E2E2"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintTop_toBottomOf="@id/medicationPlanText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.9" />
+
+    <!-- Recommended Food Section -->
+    <TextView
+        android:id="@+id/recommendedFoodText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Recommended Food Options"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/medicationPlanCard"
+        app:layout_constraintStart_toStartOf="@id/medicationPlanText"
+        android:layout_marginTop="30dp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/recommendedFoodCard"
+        android:layout_width="0dp"
+        android:layout_height="135dp"
+        android:layout_marginTop="8dp"
+        app:cardBackgroundColor="#F1E1EF"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintTop_toBottomOf="@id/recommendedFoodText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.9" />
+
+    <!-- Bottom Action Cards Section -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainBodySection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/recommendedFoodCard"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Place the shared responsive card layout here as before -->
+        <!-- Use the layout shared earlier to keep it concise here -->
+
+
+
+        <!-- Symptom Logs Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/symptomLogsCard"
+            android:layout_width="0dp"
+            android:layout_height="90dp"
+            app:layout_constraintWidth_percent="0.28"
+            app:cardBackgroundColor="#FF9EB1"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/symptomLogsText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/appointmentReminderCard"
+            app:layout_constraintHorizontal_chainStyle="spread">
+
+            <ImageButton
+                android:id="@+id/sympLogsButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FF9EB1"
+                android:contentDescription="Log Symptom"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/symptom_log_icon" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- Appointment Reminder Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/appointmentReminderCard"
+            android:layout_width="0dp"
+            android:layout_height="90dp"
+            app:layout_constraintWidth_percent="0.28"
+            app:cardBackgroundColor="#B8ECBC"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:layout_constraintTop_toTopOf="@+id/symptomLogsCard"
+            app:layout_constraintBottom_toTopOf="@+id/appointmentReminderText"
+            app:layout_constraintStart_toEndOf="@+id/symptomLogsCard"
+            app:layout_constraintEnd_toStartOf="@+id/sleepLogsCard">
+
+            <ImageButton
+                android:id="@+id/appointmentReminderButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#B8ECBC"
+                android:contentDescription="Appt Reminder"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/create_appointment_reminder_icon" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- Sleep Logs Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/sleepLogsCard"
+            android:layout_width="0dp"
+            android:layout_height="90dp"
+            app:layout_constraintWidth_percent="0.28"
+            app:cardBackgroundColor="#73BEE9"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:layout_constraintTop_toTopOf="@+id/appointmentReminderCard"
+            app:layout_constraintBottom_toTopOf="@+id/sleepLogsText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/appointmentReminderCard">
+
+            <ImageButton
+                android:id="@+id/sleepLogsButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#73BEE9"
+                android:contentDescription="Log sleep"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/sleep_log_icon" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- Labels under each card -->
+        <TextView
+            android:id="@+id/symptomLogsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Log a Symptom"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_medium"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/symptomLogsCard"
+            app:layout_constraintStart_toStartOf="@+id/symptomLogsCard"
+            app:layout_constraintEnd_toEndOf="@+id/symptomLogsCard"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/appointmentReminderText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Appointment\nReminder"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_medium"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/appointmentReminderCard"
+            app:layout_constraintStart_toStartOf="@+id/appointmentReminderCard"
+            app:layout_constraintEnd_toEndOf="@+id/appointmentReminderCard"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/sleepLogsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Log Your Sleep"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_medium"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/sleepLogsCard"
+            app:layout_constraintStart_toStartOf="@+id/sleepLogsCard"
+            app:layout_constraintEnd_toEndOf="@+id/sleepLogsCard"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/pintest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="184dp"
+        android:layout_marginEnd="24dp"
+        android:text="Pin Test"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+
+    <!--
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -265,7 +497,7 @@
         app:labelVisibilityMode="labeled"
         app:itemPaddingBottom="1dp"
         />
-<!--
+// this was already commented out start here
  app:labelVisibilityMode="unlabeled"
     <androidx.cardview.widget.CardView
         android:id="@+id/bottomBar"
@@ -317,8 +549,8 @@
             android:background="#FFDCD5"
             app:srcCompat="@drawable/medication_manager_icon"
             android:layout_marginStart="245dp" />
-    </androidx.cardview.widget.CardView>
--->
+    </androidx.cardview.widget.CardView> // this was the end of what was already commented out
+
     <TextView
         android:id="@+id/symptomLogsText"
         android:layout_width="wrap_content"
@@ -373,6 +605,8 @@
         android:text="Pin Test"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+        -->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

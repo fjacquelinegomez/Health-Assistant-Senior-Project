@@ -86,173 +86,189 @@
 
 
         </LinearLayout>
-        <!--space-->
-        <View
+
+
+        <GridLayout
+            android:id="@+id/healthGoalsGrid"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:columnCount="2"
+            android:alignmentMode="alignMargins"
+            android:useDefaultMargins="true"
+            android:layout_gravity="center">
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
 
-
-            <!--Stress log button-->
-
-
-            <ImageButton
-                android:id="@+id/stressLogButton"
-                android:layout_width="150dp"
-                android:layout_height="140dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/roundcorner"
-                android:contentDescription="StressLog"
-                android:enabled="false"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/stress" />
-
-            <TextView
-                android:id="@+id/stress_profilecustom_text"
-                android:layout_width="wrap_content"
+            <!-- Stress button -->
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/stressLogButton"
-                android:layout_alignStart="@+id/stressLogButton"
-                android:layout_marginStart="55dp"
-                android:layout_marginTop="9dp"
-                android:fontFamily="@font/poppins_medium"
-                android:text="Stress"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:paddingBottom="12dp">
+
+                <ImageButton
+                    android:id="@+id/stressLogButton"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:background="@drawable/roundcorner"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="Stress Log"
+                    android:enabled="false"
+                    app:srcCompat="@drawable/stress" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Stress"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+
+
 
             <!--Weight log button-->
 
-
-            <ImageButton
-                android:id="@+id/WeightLogButton"
-                android:layout_width="150dp"
-                android:layout_height="140dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="208dp"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/roundcorner"
-                android:contentDescription="StressLog"
-                android:enabled="false"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/weight_scale" />
-
-            <TextView
-                android:id="@+id/weight_profilecustom_text"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/WeightLogButton"
-                android:layout_alignStart="@+id/WeightLogButton"
-                android:layout_marginStart="44dp"
-                android:layout_marginTop="9dp"
-                android:fontFamily="@font/poppins_medium"
-                android:text="Weight"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:paddingBottom="12dp">
+
+                <ImageButton
+                    android:id="@+id/WeightLogButton"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:background="@drawable/roundcorner"
+                    android:contentDescription="StressLog"
+                    android:enabled="false"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/weight_scale" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Weight"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+
 
             <!--Cholesterol log button-->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:paddingBottom="12dp">
+
+
+                <ImageButton
+                    android:id="@+id/CholesterolLogButton"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:background="@drawable/roundcorner"
+                    android:contentDescription="WeightLog"
+                    android:enabled="false"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/cholesterol" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Cholesterol"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
 
 
             <!--Blood Sugar log button-->
-            <ImageButton
-                android:id="@+id/CholesterolLogButton"
-                android:layout_width="150dp"
-                android:layout_height="140dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="250dp"
-                android:background="@drawable/roundcorner"
-                android:contentDescription="WeightLog"
-                android:enabled="false"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/cholesterol" />
 
-            <TextView
-                android:id="@+id/chol_profilecustom_text"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/CholesterolLogButton"
-                android:layout_alignStart="@+id/CholesterolLogButton"
-                android:layout_marginStart="36dp"
-                android:layout_marginTop="9dp"
-                android:fontFamily="@font/poppins_medium"
-                android:text="Cholesterol"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:paddingBottom="12dp">
 
 
-            <!--Blood Pressure log button-->
+                <ImageButton
+                    android:id="@+id/BloodSLogButton"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:background="@drawable/roundcorner"
+                    android:contentDescription="Blood Sugar Log"
+                    android:enabled="false"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/sugar_blood_level" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Blood Sugar"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+            </LinearLayout>
 
 
-            <ImageButton
-                android:id="@+id/BloodSLogButton"
-                android:layout_width="150dp"
-                android:layout_height="140dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="208dp"
-                android:layout_marginTop="250dp"
-                android:background="@drawable/roundcorner"
-                android:contentDescription="Blood Sugar Log"
-                android:enabled="false"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/sugar_blood_level" />
 
-            <TextView
-                android:id="@+id/bloods_profilecustom_text"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/BloodSLogButton"
-                android:layout_alignStart="@+id/BloodSLogButton"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="9dp"
-                android:fontFamily="@font/poppins_medium"
-                android:text="Blood Sugar"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <ImageButton
-                android:id="@+id/BloodPLogButton"
-                android:layout_width="150dp"
-                android:layout_height="140dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="116dp"
-                android:layout_marginTop="468dp"
-                android:background="@drawable/roundcorner"
-                android:contentDescription="Blood Sugar Log"
-                android:enabled="false"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/blood_pressure" />
-
-            <TextView
-                android:id="@+id/bloodp_profilecustom_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/BloodPLogButton"
-                android:layout_alignStart="@+id/BloodPLogButton"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="9dp"
-                android:fontFamily="@font/poppins_medium"
-                android:text="Blood Pressure"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
 
 
-        </RelativeLayout>
+
+                <ImageButton
+                    android:id="@+id/BloodPLogButton"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:background="@drawable/roundcorner"
+                    android:contentDescription="Blood Sugar Log"
+                    android:enabled="false"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/blood_pressure" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:layout_marginTop="8dp"
+                    android:text="Blood Pressure"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+
+
+            </LinearLayout>
+
+
+        </GridLayout>
+
 
 
     </LinearLayout>
+
     <!--bottom toolbar-->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"

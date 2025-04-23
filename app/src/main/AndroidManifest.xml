@@ -23,6 +23,9 @@
         android:theme="@style/Theme.HealthAssistant"
         tools:targetApi="35">
         <activity
+            android:name=".BloodPressure_HealthGoals"
+            android:exported="false" />
+        <activity
             android:name=".Cholesterol_HealthGoals"
             android:exported="false" />
         <activity

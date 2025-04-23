@@ -7,4 +7,9 @@
     <color name="grey">#777777</color>
     <color name="pastel_yellow">#FFF5C3</color>
     <color name="default_toggle_background">#E0E0E0</color>
+    <color name="normal_green">#84c189</color>
+    <color name="elevated_yellow">#FFE87C</color>
+    <color name="st1_orange">#FFA500</color>
+    <color name="st2_orange">#CC5500</color>
+    <color name="hyper_red">#FF0000</color>
 </resources>

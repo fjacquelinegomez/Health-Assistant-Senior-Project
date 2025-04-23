@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFE8ED"
+    tools:context=".BloodPressure_HealthGoals">
+
+    <!--header-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/BloodPressureGoalsCard"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="0dp"
+        app:cardBackgroundColor="#FAEDCB"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintWidth_percent="1.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.05"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/CholText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Blood Pressure"
+                    android:textColor="#000000"
+                    android:textSize="28sp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_background"
+        app:itemIconSize="35dp"
+        app:itemIconTint="@drawable/item_selector"
+        app:itemPaddingBottom="1dp"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_taskbar" />
+
+    <!-- body of the page -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:background="#FFE8ED"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/BloodPressureGoalsCard"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <!-- Motivation Quote -->
+    <TextView
+        android:id="@+id/motivationQuote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Let's track your Blood Pressure for a healthier lifestyle 🩺🩸"
+        android:textAlignment="center"
+        android:textColor="#555"
+        android:textSize="14sp" />
+
+
+        <!-- Table Layout for Blood Pressure readings-->
+
+        <TableLayout
+            android:id="@+id/bloodPressureReadings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:shrinkColumns="*"
+            android:stretchColumns="*"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="50dp">
+
+            <!-- Table Header -->
+            <TableRow>
+
+                <TextView
+                    android:background="@drawable/cell_shape_header_hg"
+                    android:bottom="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="7dp"
+                    android:text="Category"
+                    android:textColor="#000"
+                    android:textSize="12sp"
+                    android:top="5dp" />
+
+                <TextView
+                    android:background="@drawable/cell_shape_header_hg"
+                    android:bottom="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Blood Pressure Reading\n (Systolic/Diastolic)"
+                    android:textColor="#000"
+                    android:textSize="12sp"
+                    android:top="5dp" />
+
+
+            </TableRow>
+
+
+            <TableRow>
+                <TextView
+                    android:background="@drawable/row_shape_normal"
+                    android:bottom="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="8dp"
+                    android:text="Normal"
+                    android:textColor="#000"
+                    android:textSize="13sp"
+                    android:top="5dp" />
+
+                <TextView
+                    android:background="@drawable/row_shape_normal"
+                    android:bottom="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="8dp"
+                    android:text="Less than 120 / Less than 80"
+                    android:textColor="#000"
+                    android:textSize="13sp"
+                    android:top="5dp" />
+
+
+            </TableRow>
+
+
+            <TableRow>
+                <TextView
+                    android:background="@drawable/row_shape_elevated"
+                    android:bottom="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="8dp"
+                    android:text="Elevated"
+                    android:textColor="#000"
+                    android:textSize="13sp"
+                    android:top="5dp" />
+
+                <TextView
+                    android:background="@drawable/row_shape_elevated"
+                    android:bottom="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="8dp"
+                    android:text="120 - 129 / Less than 80"
+                    android:textColor="#000"
+                    android:textSize="13sp"
+                    android:top="5dp" />
+
+
+            </TableRow>
+
+
+            <TableRow>
+
+                <TextView
+                    android:background="@drawable/row_shape_stage1"
+                    android:bottom="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="5dp"
+                    android:text="High Blood Press. (Stage 1)"
+                    android:textColor="#000"
+                    android:textSize="13sp"
+                    android:top="5dp" />
+
+                <TextView
+                    android:background="@drawable/row_shape_stage1"
+                    android:bottom="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="5dp"
+                    android:text="130 - 139 / 80 -89"
+                    android:textColor="#000"
+                    android:textSize="13sp"
+                    android:top="5dp" />
+
+
+            </TableRow>
+
+
+            <TableRow>
+
+                <TextView
+                    android:background="@drawable/row_shape_stage2"
+                    android:bottom="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="5dp"
+                    android:text="High Blood Press. (Stage 2)"
+                    android:textColor="#000"
+                    android:textSize="13sp"
+                    android:top="5dp" />
+
+                <TextView
+                    android:background="@drawable/row_shape_stage2"
+                    android:bottom="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="5dp"
+                    android:text="140+ / 90 +"
+                    android:textColor="#000"
+                    android:textSize="13sp"
+                    android:top="5dp" />
+
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:background="@drawable/row_shape_hypertensive"
+                    android:bottom="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="5dp"
+                    android:text="Hypertensive Crisis (Call 911)"
+                    android:textColor="#000"
+                    android:textSize="13sp"
+                    android:top="5dp" />
+
+                <TextView
+                    android:background="@drawable/row_shape_hypertensive"
+                    android:bottom="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="5dp"
+                    android:text="> 180 / > 120"
+                    android:textColor="#000"
+                    android:textSize="13sp"
+                    android:top="5dp" />
+
+
+            </TableRow>
+        </TableLayout>
+
+
+        <!-- Table Layout for Cholesterol Logs -->
+
+        <TableLayout
+            android:id="@+id/BloodPLogTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:shrinkColumns="*"
+            android:stretchColumns="*"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="50dp">
+
+            <!-- Table Header -->
+            <TableRow>
+
+                <TextView
+                    android:background="@drawable/cell_shape_header_hg"
+                    android:bottom="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Date"
+                    android:textColor="#000"
+                    android:textSize="15sp"
+                    android:top="5dp" />
+
+                <TextView
+                    android:background="@drawable/cell_shape_header_hg"
+                    android:bottom="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Systolic Reading"
+                    android:textColor="#000"
+                    android:textSize="15sp"
+                    android:top="5dp" />
+
+                <TextView
+                    android:background="@drawable/cell_shape_header_hg"
+                    android:bottom="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Diastolic Reading"
+                    android:textColor="#000"
+                    android:textSize="15sp"
+                    android:top="5dp" />
+
+
+            </TableRow>
+
+        </TableLayout>
+
+
+
+        <!-- Asking about user's bp -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/question_background"
+            android:padding="12dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="When did you check your blood pressure?"
+                android:textSize="15sp"
+                android:textColor="#000"
+                />
+
+
+            <EditText
+                android:id="@+id/date_bp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="17sp"
+                android:hint="MM-DD-YYYY"
+                android:inputType="text"
+                android:layout_marginBottom="8dp"  />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="What was the systolic (upper number) value?"
+                android:textSize="15sp"
+                android:textColor="#000"
+                />
+
+
+            <EditText
+                android:id="@+id/sys_bp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="17sp"
+                android:hint="mm Hg"
+                android:inputType="number"
+                android:layout_marginBottom="8dp"  />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="What was the diastolic (lower number) value?"
+                android:textSize="15sp"
+                android:textColor="#000"
+                />
+
+
+            <EditText
+                android:id="@+id/diast_bp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="17sp"
+                android:hint="mm Hg"
+                android:inputType="number"
+                android:layout_marginBottom="8dp"  />
+
+        </LinearLayout>
+
+
+        <!-- Save Progress Button -->
+        <Button
+            android:id="@+id/saveBPLabResults"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Save Your Readings"
+            android:textColor="#FFFF"
+            android:backgroundTint="#000000"
+            android:layout_marginTop="20dp"
+            android:elevation="2dp" />
+
+        <!-- Option to Edit Button -->
+        <Button
+            android:id="@+id/editBPLabResults"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Edit the Table"
+            android:textColor="#FFFF"
+            android:backgroundTint="#000000"
+            android:elevation="2dp" />
+
+
+    </LinearLayout>
+    </ScrollView>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

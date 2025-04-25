@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/setpin"
     android:background="#FBE2E2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -288,10 +288,11 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/calendar_create_appoint"
                     android:layout_weight="0.25" />
+
                 <EditText
+                    android:id="@+id/date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="MM/DD/YYYY"
                     android:layout_weight="1"
                     android:alpha="0.5" />
                 <View
@@ -336,10 +337,11 @@
                 app:layout_constraintWidth_percent="0.9"
                 android:padding="7dp"
                 app:layout_constraintVertical_bias="0.0">
+
                 <EditText
+                    android:id="@+id/type"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="e.g. psychiatric,orthopedic"
                     android:layout_weight="1"
                     android:alpha="0.5" />
             </LinearLayout>
@@ -380,10 +382,11 @@
                 app:layout_constraintWidth_percent="0.9"
                 android:padding="7dp"
                 app:layout_constraintVertical_bias="0.0">
+
                 <EditText
+                    android:id="@+id/name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Dr. Name"
                     android:layout_weight="1"
                     android:alpha="0.5" />
             </LinearLayout>

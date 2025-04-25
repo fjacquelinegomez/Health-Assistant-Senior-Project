@@ -3,7 +3,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/setpin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FBE2E2"
@@ -72,6 +72,7 @@
                     android:contentDescription="User Profile"
                     app:srcCompat="@drawable/user_profile_icon" />
                 <!--Title bar-->
+
                 <TextView
                     android:id="@+id/foodManagerText"
                     android:layout_width="wrap_content"
@@ -83,13 +84,21 @@
                     android:textColor="#000000"
                     android:textSize="28sp" />
 
-                <!-- Temporary back button -->
                 <Button
                     android:id="@+id/back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
                     android:text="Back" />
+
+                <Button
+                    android:id="@+id/picture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:text="scan" />
+
+                <!-- Temporary back button -->
             </LinearLayout>
 
             <View

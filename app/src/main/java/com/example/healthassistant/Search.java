@@ -1,11 +1,12 @@
 package com.example.healthassistant;
 
+import static com.example.healthassistant.R.id.picture;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.SearchView;
 
 import androidx.activity.EdgeToEdge;
@@ -41,13 +42,20 @@ public class Search extends AppCompatActivity {
         // Initializes the search and recycler view (+ adapter)
         search = findViewById(R.id.searchView);
         recyclerView = findViewById(R.id.searchRecyclerView);
+        Button test2 = findViewById(picture);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(null);
         adapter = new MedicationSearchAdapter(medicationList);
         recyclerView.setAdapter(adapter);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+
+        Intent intent = getIntent();
+        String str = intent.getStringExtra("message_key");
+        search.setQuery(str, true);
+
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.setpin), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -88,6 +96,7 @@ public class Search extends AppCompatActivity {
             }
         };
         back.setOnClickListener(buttonClickListener);
+        test2.setOnClickListener(v -> startActivity(new Intent(Search.this, BarcodeScannerActivity.class)));
     }
 
     // Grabs the user's inputted search and requests information about the medication from RxNorm

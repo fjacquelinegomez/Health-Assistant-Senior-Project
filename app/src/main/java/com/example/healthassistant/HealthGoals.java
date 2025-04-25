@@ -4,18 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.healthassistant.databinding.ActivityFoodManagerBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HealthGoals extends AppCompatActivity {
 
-    ActivityFoodManagerBinding binding;
+
+    private ImageButton stress_hg_btn, cholesterol_hg_btn, bp_hg_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,33 +29,61 @@ public class HealthGoals extends AppCompatActivity {
 
 
 
-            /**bottom bar navigation functionality**/
-            binding = ActivityFoodManagerBinding.inflate(getLayoutInflater());
+        /*bottom bar navigation functionality*/
 
-            setContentView(binding.getRoot());
+        BottomNavigationView nav = findViewById(R.id.bottomNavigationView);
 
-            binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-                switch (item.getItemId()) {
-                    case R.id.home:
-                        startActivity(new Intent(HealthGoals.this, Homescreen.class));
-                        break;
-                    case R.id.searchMedication:
-                        startActivity(new Intent(HealthGoals.this, Search.class));
-                        break;
-                    case R.id.foodManager:
-                        startActivity(new Intent(HealthGoals.this, FoodManager.class));
-                        break;
-                    case R.id.healthGoals:
-                        startActivity(new Intent(HealthGoals.this, HealthGoals.class));
-                        break;
-                    case R.id.medicationManager:
-                        startActivity(new Intent(HealthGoals.this, MedicationManager.class));
-                        break;
-
-                }
-                return true;
-
+        nav.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.home:
+                    startActivity(new Intent(HealthGoals.this, Homescreen.class));
+                    break;
+                case R.id.searchMedication:
+                    startActivity(new Intent(HealthGoals.this, Search.class));
+                    break;
+                case R.id.foodManager:
+                    startActivity(new Intent(HealthGoals.this, FoodManager.class));
+                    break;
+                case R.id.healthGoals:
+                    startActivity(new Intent(HealthGoals.this, HealthGoals.class));
+                    break;
+                case R.id.medicationManager:
+                    startActivity(new Intent(HealthGoals.this, MedicationManager.class));
+                    break;
+            }
+            return true;
         });
+
+
+
+        // initialize a stress button
+        stress_hg_btn = findViewById(R.id.stressLogButton);
+
+        // Stress Button Logic
+        stress_hg_btn.setOnClickListener(v -> {
+            Intent intent = new Intent(HealthGoals.this, Stress_HealthGoals_PC.class);
+            startActivity(intent);
+        });
+
+
+        // initialize cholesterol button
+        cholesterol_hg_btn = findViewById(R.id.CholesterolLogButton);
+
+        // Cholesterol Button Logic
+        cholesterol_hg_btn.setOnClickListener(v -> {
+            Intent intent = new Intent(HealthGoals.this, Cholesterol_HealthGoals.class);
+            startActivity(intent);
+        });
+
+
+        bp_hg_btn = findViewById(R.id.BloodPLogButton);
+
+        // Blood Pressure Button Logic
+        bp_hg_btn.setOnClickListener(v -> {
+            Intent intent = new Intent(HealthGoals.this, BloodPressure_HealthGoals.class);
+            startActivity(intent);
+        });
+
 
     }
 }

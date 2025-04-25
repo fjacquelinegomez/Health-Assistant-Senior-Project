@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MedicalHistoryConditions_PC"
+    android:background="#FBE2E2">
+<!--header-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/conditionsMedicalHistCard"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="0dp"
+        app:cardBackgroundColor="#d9d9d9"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintWidth_percent="1.0">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.05"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/conditionsMedicalHistText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Medical Conditions"
+                    android:textColor="#000000"
+                    android:textSize="28sp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/conditionsMedicalHistCard"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+            <!--description-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alpha="0.5"
+                android:fontFamily="@font/poppins_bold"
+                android:justificationMode="inter_word"
+                android:paddingTop="15dp"
+                android:text="Select any of the checkboxes below, you may also specify conditions that are not listed in Other."
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"/>
+            <!--chronic-->
+            <LinearLayout
+                android:layout_width="383dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/question_background"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginStart="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:paddingTop="10dp"
+                    android:text="Chronic  Condtions"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                    <CheckBox
+                        android:id="@+id/checkboxHypertension"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:minWidth="48dp"
+                        android:minHeight="48dp"
+                        android:padding="8dp"
+                        android:text="Hypertension"
+                        android:textSize="16sp" />
+                    <CheckBox
+                        android:id="@+id/checkboxDiabetes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:minWidth="48dp"
+                        android:minHeight="48dp"
+                        android:padding="8dp"
+                        android:text="Diabetes"
+                        android:textSize="16sp" />
+                    <CheckBox
+                        android:id="@+id/checkboxAsthma"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:minWidth="48dp"
+                        android:minHeight="48dp"
+                        android:padding="8dp"
+                        android:text="Asthma"
+                        android:textSize="16sp" />
+                    <CheckBox
+                        android:id="@+id/checkboxOsteoarthritis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:minWidth="48dp"
+                        android:minHeight="48dp"
+                        android:padding="8dp"
+                        android:text="Osteoarthritis"
+                        android:textSize="16sp" />
+                    <CheckBox
+                        android:id="@+id/checkboxCOPD"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:minWidth="48dp"
+                        android:minHeight="48dp"
+                        android:padding="8dp"
+                        android:text="Chronic Obstructive Pulmonary Disease (COPD)"
+                        android:textSize="16sp" />
+            </LinearLayout>
+            <!--acute-->
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:background="@drawable/question_background"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_width="383dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:paddingTop="10dp"
+                    android:text="Acute Conditions"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+                <CheckBox
+                    android:id="@+id/checkboxFlu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Flu"
+                    android:minHeight="48dp"
+                    android:minWidth="48dp"
+                    android:padding="8dp"
+                    android:textSize="16sp"/>
+                <CheckBox
+                    android:id="@+id/checkboxCold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Cold"
+                    android:minHeight="48dp"
+                    android:minWidth="48dp"
+                    android:padding="8dp"
+                    android:textSize="16sp"/>
+                <CheckBox
+                    android:id="@+id/checkboxMigraine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Migraine"
+                    android:minHeight="48dp"
+                    android:minWidth="48dp"
+                    android:padding="8dp"
+                    android:textSize="16sp"/>
+                <CheckBox
+                    android:id="@+id/checkboxPneumonia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Pneumonia"
+                    android:minHeight="48dp"
+                    android:minWidth="48dp"
+                    android:padding="8dp"
+                    android:textSize="16sp"/>
+                <CheckBox
+                    android:id="@+id/checkboxGastroenteritis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Gastroenteritis "
+                    android:minHeight="48dp"
+                    android:minWidth="48dp"
+                    android:padding="8dp"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+            <!--Mental health-->
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:background="@drawable/question_background"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_width="383dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:paddingTop="10dp"
+                    android:text="Mental Health Conditions"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+                <CheckBox
+                    android:id="@+id/checkboxDepression"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Depression"
+                    android:minHeight="48dp"
+                    android:minWidth="48dp"
+                    android:padding="8dp"
+                    android:textSize="16sp"/>
+                <CheckBox
+                    android:id="@+id/checkboxAnxiety"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Anxiety"
+                    android:minHeight="48dp"
+                    android:minWidth="48dp"
+                    android:padding="8dp"
+                    android:textSize="16sp"/>
+                <CheckBox
+                    android:id="@+id/checkboxBipolar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Bipolar Disorder"
+                    android:minHeight="48dp"
+                    android:minWidth="48dp"
+                    android:padding="8dp"
+                    android:textSize="16sp"/>
+                <CheckBox
+                    android:id="@+id/checkboxOCD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Obsessive-Compulsive Disorder (OCD)"
+                    android:minHeight="48dp"
+                    android:minWidth="48dp"
+                    android:padding="8dp"
+                    android:textSize="16sp"/>
+                <CheckBox
+                    android:id="@+id/checkboxPTSD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Post-Traumatic Stress Disorder (PTSD)"
+                    android:minHeight="48dp"
+                    android:minWidth="48dp"
+                    android:padding="8dp"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+            <!--Other-->
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:background="@drawable/question_background"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_width="383dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:paddingTop="10dp"
+                    android:text="Other"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                    <!-- Input section for adding other food allergies -->
+                    <LinearLayout
+                        android:id="@+id/conditionsOtherInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/editTextConditionsOther"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter item" />
+
+                        <Button
+                            android:id="@+id/addItemButtonConditions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Add" />
+                    </LinearLayout>
+                <!-- This is where dynamically added allergens will be listed -->
+                <LinearLayout
+                    android:id="@+id/conditionsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+                    <!-- Dynamically added allergens will be added here -->
+                </LinearLayout>
+
+            </LinearLayout>
+            <!--button-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_done"
+                    android:layout_width="250dp"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="56dp"
+                    android:layout_marginBottom="50dp"
+                    android:background="@android:color/black"
+                    android:fontFamily="@font/poppins_bold"
+                    android:onClick="onDoneButtonPressed"
+                    android:text="Done"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

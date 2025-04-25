@@ -4,205 +4,221 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/setpin"
     android:layout_width="match_parent"
-    android:background="#F0FFFF"
+    android:background="#FBE2E2"
     android:layout_height="match_parent"
     tools:context=".SleepLogs"
     tools:ignore="ExtraText">
-    // upper shape
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleX="2.1"
-        android:scaleY="1.8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/upper_icon_sleep" />
-    // title
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_bold"
-        android:scaleX="2"
-        android:scaleY="2"
-        android:text="Sleep Logs"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.313"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.079" />
-    // icon
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/sleep_log_icon" />
-    // table
-    <LinearLayout
+
+    <!-- bottom toolbar -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView4"
-        app:layout_constraintVertical_bias="0.224"
-        tools:layout_editor_absoluteX="0dp">
-
-        <TableLayout
-            android:id="@+id/tableLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#99BBFF"
-            android:divider="?android:attr/dividerVertical"
-            android:dividerPadding="4dp"
-            android:showDividers="middle"
-            android:stretchColumns="1">
-
-            <TableRow>
-
-                <TextView
-                    android:padding="8dp"
-                    android:text="Date"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:padding="8dp"
-                    android:text="Hours Slept"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:padding="8dp"
-                    android:text="Rate"
-                    android:textStyle="bold" />
-            </TableRow>
-
-
-        </TableLayout>
-
-    </LinearLayout>
-    //button layout
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:background="@drawable/bottom_background"
+        app:itemIconSize="35dp"
+        app:itemIconTint="@drawable/item_selector"
+        app:itemPaddingBottom="1dp"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="0dp"
+        app:menu="@menu/bottom_taskbar" />
+
+
+    <!-- header -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/sleepCardHeader"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="-12dp"
+        app:cardBackgroundColor="#73BEE9"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.911">
-        //makes text layer over button
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintWidth_percent="1.0">
 
-            <ImageButton
-                android:id="@+id/imageButton13"
-                android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.05"/>
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:contentDescription="This is an icon for the health assistant"
-                android:foreground="@null"
-                android:stateListAnimator="@null"
-                app:srcCompat="@drawable/rounder_button_sleep" />
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/sleepText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Sleep Logs"
+                    android:textColor="#000000"
+                    android:textSize="25sp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"/>
 
-            <TextView
-                android:id="@+id/buttonText3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/poppins_medium"
-                android:gravity="center"
-                android:text="Edit Table"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </FrameLayout>
+                <ImageButton
+                    android:id="@+id/userProfileButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="65dp"
+                    android:background="#73BEE9"
+                    android:src="@drawable/user_profile_icon"
+                    android:contentDescription="User Profile"
+                    android:layout_weight="0.25"/>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp">
 
-            <ImageButton
-                android:id="@+id/idBtnSendData"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:contentDescription="This is an icon for the health assistant"
-                android:foreground="@null"
-                android:stateListAnimator="@null"
-                app:srcCompat="@drawable/rounder_button_sleep" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sleepCardHeader"
+        tools:context=".SleepLogsActivity">
 
-            <TextView
-                android:id="@+id/buttonText2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/poppins_medium"
-                android:gravity="center"
-                android:text="Create a log"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </FrameLayout>
-        "<!--" Text inside the EditBox that collects the Sleep time "-->"
-        <EditText
-            android:id="@+id/sleep_log_tester"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:fontFamily="@font/poppins_medium"
-            android:padding="15dp"
-            android:textSize="20sp"
-            android:hint="Enter your sleepy time"
-            android:ems="10"
-            android:gravity="start|top"
-            android:inputType="textMultiLine"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
+
+        <!-- Table Layout for Sleep Logs -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.319" />
+            app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView"
+            android:layout_weight="1">
 
-        <FrameLayout
-            android:layout_width="wrap_content"
+
+            <TableLayout
+                android:id="@+id/sleepLogTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:shrinkColumns="*"
+                android:stretchColumns="*">
+
+                <!-- Table Header -->
+                <TableRow>
+
+                    <TextView
+                        android:background="@drawable/cell_shape_header_sleep"
+                        android:top="5dp"
+                        android:bottom="5dp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:textSize="17sp"
+                        android:textColor="#000"
+                        android:text="Date" />
+
+                    <TextView
+                        android:background="@drawable/cell_shape_header_sleep"
+                        android:top="5dp"
+                        android:bottom="5dp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:textSize="17sp"
+                        android:textColor="#000"
+                        android:text="Hours Slept" />
+
+                    <TextView
+                        android:background="@drawable/cell_shape_header_sleep"
+                        android:top="5dp"
+                        android:bottom="5dp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:textSize="17sp"
+                        android:textColor="#000"
+                        android:text="Rating" />
+                </TableRow>
+
+            </TableLayout>
+        </ScrollView>
+
+        <!-- Input Fields for New Log Entry -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/imageButton15"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/inputDateSleep"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:contentDescription="This is an icon for the health assistant"
-                android:foreground="@null"
-                android:stateListAnimator="@null"
-                app:srcCompat="@drawable/rounder_button_sleep" />
-
-            <TextView
-                android:id="@+id/buttonText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:fontFamily="@font/poppins_medium"
-                android:gravity="center"
-                android:text="Analyze Sleep"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </FrameLayout>
+                android:hint="Enter Date (MM-DD-YYYY)"
+                android:inputType="date"
+                android:padding="8dp" />
 
+            <EditText
+                android:id="@+id/inputHoursSlept"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="Enter Hours Slept"
+                android:inputType="numberDecimal"
+                android:padding="8dp" />
+
+            <EditText
+                android:id="@+id/inputRating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="Enter Rating (Good/Okay/Tired)"
+                android:padding="8dp" />
+        </LinearLayout>
+
+        <!-- Buttons Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnCreateLog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="#C8E8FB"
+                android:fontFamily="@font/poppins_bold"
+
+                android:text="Add to table" />
+
+            <Button
+                android:id="@+id/btnEditTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="#C8E8FB"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Edit Table" />
+
+            <Button
+                android:id="@+id/btnAnalyzeSleep"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="#C8E8FB"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Analyze Sleep" />
+        </LinearLayout>
     </LinearLayout>
 
 

@@ -232,7 +232,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/todayMedicationCard"
                 android:layout_width="0dp"
-                android:layout_height="160dp"
+                android:layout_height="180dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -282,20 +282,27 @@
                                 android:textSize="19dp"
                                 android:layout_marginBottom="-10dip"
                                 android:textColor="#000000" />
-                            <TextView
+
+
+                            <!-- Button to choose time -->
+                            <Button
+                                android:id="@+id/setTimeButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Dosage"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="Set Reminder Time"
                                 android:layout_gravity="center_horizontal"
+                                android:paddingTop="10dp"/>
+
+                            <!-- TextView to show selected time -->
+                            <TextView
+                                android:id="@+id/selectedTimeText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_medium"
-                                android:textSize="15dp" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Dosing Schedule"
+                                android:text="No time selected"
                                 android:layout_gravity="center_horizontal"
-                                android:paddingTop="13dp"
-                                android:fontFamily="@font/poppins_bold" />
+                                android:paddingTop="5dp"/>
                         </LinearLayout>
                     </LinearLayout>
                     <View
@@ -400,46 +407,57 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:id="@+id/expiringLeftButton"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:src="@drawable/move_to_previous_medication"
                             android:layout_weight="1"
-                            android:layout_gravity="center_vertical" />
+                            android:layout_gravity="center_vertical"
+                            android:visibility="invisible"/>
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/medication_image"
-                            android:layout_weight="1" />
+                            app:layout_constraintStart_toEndOf="@id/expiringLeftButton"
+                            android:layout_weight="1"
+                            android:visibility="gone"/>
                         <LinearLayout
                             android:id="@+id/expiringMedicationInfoLayout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:layout_weight="1"
+                            app:layout_constraintEnd_toStartOf="@id/expiringRightButton"
                             android:paddingTop="10dp">
                             <TextView
+                                android:id="@+id/expiringMedicationName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Medication Name"
+                                android:layout_gravity="center"
+                                android:text="No Expiring Medications"
                                 android:fontFamily="@font/poppins_bold"
                                 android:textSize="19dp"
                                 android:layout_marginBottom="-10dip"
-                                android:textColor="#000000" />
+                                android:textColor="#000000"/>
                             <TextView
+                                android:id="@+id/expiringExpirationDate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Expires: 00/00/0000"
+                                android:layout_gravity="center"
+                                android:text=" "
                                 android:textColor="#FF0000"
                                 android:fontFamily="@font/poppins_medium"
                                 android:textSize="13dp"
-                                android:paddingTop="7dp" />
+                                android:paddingTop="7dp"/>
                         </LinearLayout>
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:id="@+id/expiringRightButton"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:src="@drawable/move_forward_in_medication"
                             android:layout_weight="1"
-                            android:layout_gravity="center_vertical" />
+                            android:layout_gravity="center_vertical"
+                            android:visibility="invisible"/>
                     </LinearLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
@@ -509,16 +527,19 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <ImageView
+                            android:id="@+id/refillLeftButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/move_to_previous_medication"
                             android:layout_weight="1"
-                            android:layout_gravity="center_vertical" />
+                            android:layout_gravity="center_vertical"
+                            android:visibility="invisible"/>
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/medication_image"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:visibility="gone"/>
                         <LinearLayout
                             android:id="@+id/refillMedicationInfoLayout"
                             android:layout_width="wrap_content"
@@ -527,51 +548,61 @@
                             android:layout_weight="1"
                             android:paddingTop="10dp">
                             <TextView
+                                android:id="@+id/refillMedicationName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Medication Name"
+                                android:layout_gravity="center"
+                                android:text="No Refills Needed"
                                 android:fontFamily="@font/poppins_bold"
                                 android:textSize="19dp"
                                 android:layout_marginBottom="-10dip"
-                                android:textColor="#000000" />
+                                android:textColor="#000000"/>
                             <TextView
+                                android:id="@+id/refillDosage"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="000/0 [dosage form] taken"
+                                android:layout_gravity="center"
+                                android:text=" "
                                 android:textColor="#FF0000"
                                 android:fontFamily="@font/poppins_medium"
                                 android:textSize="13dp"
-                                android:paddingTop="7dp" />
+                                android:paddingTop="7dp"/>
                         </LinearLayout>
                         <ImageView
+                            android:id="@+id/refillRightButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/move_forward_in_medication"
                             android:layout_weight="1"
-                            android:layout_gravity="center_vertical" />
+                            android:layout_gravity="center_vertical"
+                            android:visibility="invisible"/>
                     </LinearLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+    <LinearLayout
+        android:id="@+id/currentMedicationButtonLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintWidth_percent="0.9"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintVertical_bias="1.0">
             <!--button directs to current medications-->
             <Button
                 android:id="@+id/currentMedicationButton"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Current medication"
                 android:textAllCaps="true"
                 android:fontFamily="@font/poppins_bold"
                 android:textColor="#000000"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/refillMedicationCard"
-                app:layout_constraintWidth_percent="0.9"
-                app:layout_constraintVertical_bias="0.0"
-                android:textSize="15sp"
-                android:layout_gravity="center|center_vertical"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+                android:textSize="15sp" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

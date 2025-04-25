@@ -3,7 +3,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/setpin"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FBE2E2"
@@ -72,7 +72,6 @@
                     android:contentDescription="User Profile"
                     app:srcCompat="@drawable/user_profile_icon" />
                 <!--Title bar-->
-
                 <TextView
                     android:id="@+id/foodManagerText"
                     android:layout_width="wrap_content"
@@ -82,23 +81,20 @@
                     android:fontFamily="@font/poppins_bold"
                     android:text="Search Medications"
                     android:textColor="#000000"
-                    android:textSize="28sp" />
+                    android:textSize="28sp"
+                    android:lines="1"
+                    app:autoSizeMaxTextSize="28sp"
+                    app:autoSizeMinTextSize="14sp"
+                    app:autoSizeStepGranularity="2sp"
+                    app:autoSizeTextType="uniform"/>
 
-                <Button
+                <!-- Temporary back button -->
+                <!-- <Button
                     android:id="@+id/back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
-                    android:text="Back" />
-
-                <Button
-                    android:id="@+id/picture"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:text="scan" />
-
-                <!-- Temporary back button -->
+                    android:text="Back" /> -->
             </LinearLayout>
 
             <View

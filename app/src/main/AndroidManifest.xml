@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera.any" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.AD_ID" />
+
+    <uses-feature android:name="android.hardware.camera.any" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +22,45 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthAssistant"
         tools:targetApi="35">
+        <activity
+            android:name=".BloodPressure_HealthGoals"
+            android:exported="false" />
+        <activity
+            android:name=".Cholesterol_HealthGoals"
+            android:exported="false" />
+        <activity
+            android:name=".Stress_HealthGoals"
+            android:exported="false" />
+        <activity
+            android:name=".Stress_HealthGoals_PC"
+            android:exported="false" />
+        <activity
+            android:name=".Sleep_HealthGoals_PC"
+            android:exported="false" />
+
+        <receiver android:name=".AlarmReceiver" />
+
+        <activity
+            android:name=".SleepLogs2"
+            android:exported="false" />
+        <activity
+            android:name=".MedicalHistoryConditions_PC"
+            android:exported="false" />
+        <activity
+            android:name=".MedicalHistoryAllergies_PC"
+            android:exported="false" />
+        <activity
+            android:name=".MFAVerifyLogin"
+            android:exported="false" />
+        <activity
+            android:name=".MFAVerify"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterMFASetup2"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterMFASetup"
+            android:exported="false" />
         <activity
             android:name=".AddMedication"
             android:exported="false" />
@@ -43,9 +89,6 @@
             android:exported="false" />
         <activity
             android:name=".SymptomLogs"
-            android:exported="false" />
-        <activity
-            android:name=".SleepLogs"
             android:exported="false" />
         <activity
             android:name=".Settings"
@@ -82,11 +125,10 @@
             android:exported="false" />
         <activity
             android:name=".BarcodeScannerActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

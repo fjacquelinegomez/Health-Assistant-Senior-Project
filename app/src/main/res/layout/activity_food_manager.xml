@@ -199,8 +199,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintTop_toBottomOf="@+id/calendarCard"
+        app:layout_constraintVertical_bias="0.05"
         app:layout_constraintWidth_percent="0.9"
         android:padding="7dp">
         <TextView
@@ -287,13 +287,15 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eatenCard"
-        app:layout_constraintVertical_bias="0.07"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="10dp"
         app:layout_constraintWidth_percent="0.9"
-        android:padding="7dp">
+        android:padding="7dp"
+        android:orientation="vertical"
+        app:layout_constraintVertical_bias="0.05">
         <TextView
             android:id="@+id/recommendedText"
             android:layout_width="wrap_content"
@@ -308,68 +310,89 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/eatenCard"
             app:layout_constraintVertical_bias="0.9" />
+        <TextView
+            android:id="@+id/moderationWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Moderation Warning"
+            android:textColor="#88000000"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="17sp"
+            android:visibility="gone"
+            />
     </LinearLayout>
 
-    <!--recommended card with checked mark and dislike and like buttons-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/recommendedCard"
+<!--    &lt;!&ndash;recommended card with checked mark and dislike and like buttons&ndash;&gt;-->
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:id="@+id/recommendedCard"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="150dp"-->
+<!--        app:cardBackgroundColor="#F1E1EF"-->
+<!--        app:cardCornerRadius="20dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHeight_percent="0.1"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/recommendedLayout"-->
+<!--        app:layout_constraintVertical_bias="0.0"-->
+<!--        app:layout_constraintWidth_percent="0.9"-->
+<!--        android:layout_gravity="center">-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_vertical">-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="0.5"-->
+<!--                android:gravity="center">-->
+<!--                <ImageButton-->
+<!--                    android:id="@+id/addButton"-->
+<!--                    android:layout_width="30dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:background="@drawable/add_grey" />-->
+<!--            </LinearLayout>-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="2"-->
+<!--                android:gravity="center">-->
+<!--            </LinearLayout>-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="0.5"-->
+<!--                android:gravity="center">-->
+<!--                <ImageButton-->
+<!--                    android:id="@+id/likeButtonRecommended"-->
+<!--                    android:layout_width="30dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:background="@drawable/like"-->
+<!--                    android:scaleX="-1" />-->
+<!--            </LinearLayout>-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="0.5"-->
+<!--                android:gravity="center">-->
+<!--                <ImageButton-->
+<!--                    android:id="@+id/dislikeButtonRecommended"-->
+<!--                    android:layout_width="30dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:background="@drawable/dislike"-->
+<!--                    android:scaleX="-1" />-->
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
+<!--    </androidx.cardview.widget.CardView>-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recipesRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="150dp"
-        app:cardBackgroundColor="#F1E1EF"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.1"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@+id/recommendedLayout"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.3"
         app:layout_constraintWidth_percent="0.9"
-        android:layout_gravity="center">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:gravity="center">
-                <ImageButton
-                    android:id="@+id/addButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/add_grey" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="center">
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:gravity="center">
-                <ImageButton
-                    android:id="@+id/likeButtonRecommended"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/like"
-                    android:scaleX="-1" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:gravity="center">
-                <ImageButton
-                    android:id="@+id/dislikeButtonRecommended"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/dislike"
-                    android:scaleX="-1" />
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+        android:padding="8dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -93,27 +93,51 @@ public class AddMedication extends AppCompatActivity {
     }
 
     // References added medication to the user
+//    private void saveUserMedication(String medicationName, String expirationDate, int totalPills, String userId, String rxcui) {
+//        // Creates a document reference in the userMedications database using the userId-rxcui as the entry identifier
+//        DocumentReference userMedRef = database.collection("userMedications").document(userId + "_" + rxcui);
+//
+//        // Creates new userMedication document with their inputted values
+//        Map<String, Object> userMedData = new HashMap<>();
+//        userMedData.put("userID", userId);
+//        userMedData.put("medicationName", medicationName);
+//        userMedData.put("expirationDate", expirationDate);
+//        userMedData.put("totalPills", totalPills);
+//
+//        // Saves to userMedications database
+//        userMedRef.set(userMedData).addOnSuccessListener(aVoid -> {
+//            Log.d("Firestore", "User Medication added:" + medicationName + "to" + userId);
+//            Intent intent = new Intent(AddMedication.this, MedicationManager2.class);
+//            // Shows the new medication added in medication manager (FIXME: this doesn't persist and goes away as soon as you restart)
+//            intent.putExtra("medicationName", medicationName);
+//            intent.putExtra("EXPIRE_DATE", expirationDate);
+//            intent.putExtra("TOTAL_PILLS", totalPills);
+//            startActivity(intent);
+//        }).addOnFailureListener(e -> Log.e("Firestore", "Error saving user-medication", e));
+//
+//    }
+    //replaced above
     private void saveUserMedication(String medicationName, String expirationDate, int totalPills, String userId, String rxcui) {
-        // Creates a document reference in the userMedications database using the userId-rxcui as the entry identifier
+        // Create a document reference in the userMedications database using userId + rxcui as the document identifier
         DocumentReference userMedRef = database.collection("userMedications").document(userId + "_" + rxcui);
 
-        // Creates new userMedication document with their inputted values
+        // Create a map to hold the medication data
         Map<String, Object> userMedData = new HashMap<>();
         userMedData.put("userID", userId);
         userMedData.put("medicationName", medicationName);
         userMedData.put("expirationDate", expirationDate);
         userMedData.put("totalPills", totalPills);
+        userMedData.put("rxcui", rxcui);  // Add the RxCUI if needed for interaction filtering
 
-        // Saves to userMedications database
+        // Save the data to Firestore
         userMedRef.set(userMedData).addOnSuccessListener(aVoid -> {
-            Log.d("Firestore", "User Medication added:" + medicationName + "to" + userId);
+            Log.d("Firestore", "User Medication added: " + medicationName + " to " + userId);
             Intent intent = new Intent(AddMedication.this, MedicationManager2.class);
-            // Shows the new medication added in medication manager (FIXME: this doesn't persist and goes away as soon as you restart)
+            // Send data back to the MedicationManager screen
             intent.putExtra("medicationName", medicationName);
             intent.putExtra("EXPIRE_DATE", expirationDate);
             intent.putExtra("TOTAL_PILLS", totalPills);
             startActivity(intent);
         }).addOnFailureListener(e -> Log.e("Firestore", "Error saving user-medication", e));
-
     }
 }

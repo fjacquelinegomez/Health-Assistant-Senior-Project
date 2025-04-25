@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthassistant.databinding.ActivityMedicationManager2Binding;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -66,7 +67,10 @@ public class MedicationManager2 extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference medicationRef = db.collection("userMedications");
 
-        medicationRef.get().addOnCompleteListener(task -> {
+        // Filter by userID
+        medicationRef.whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 medicationList.clear();
                 for (QueryDocumentSnapshot document : task.getResult()) {

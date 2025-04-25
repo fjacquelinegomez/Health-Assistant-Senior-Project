@@ -199,8 +199,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintTop_toBottomOf="@+id/calendarCard"
+        app:layout_constraintVertical_bias="0.05"
         app:layout_constraintWidth_percent="0.9"
         android:padding="7dp">
         <TextView
@@ -287,13 +287,15 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eatenCard"
-        app:layout_constraintVertical_bias="0.07"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="10dp"
         app:layout_constraintWidth_percent="0.9"
-        android:padding="7dp">
+        android:padding="7dp"
+        android:orientation="vertical"
+        app:layout_constraintVertical_bias="0.05">
         <TextView
             android:id="@+id/recommendedText"
             android:layout_width="wrap_content"
@@ -308,6 +310,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/eatenCard"
             app:layout_constraintVertical_bias="0.9" />
+        <TextView
+            android:id="@+id/moderationWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Moderation Warning"
+            android:textColor="#88000000"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="17sp"
+            android:visibility="gone"
+            />
     </LinearLayout>
 
 <!--    &lt;!&ndash;recommended card with checked mark and dislike and like buttons&ndash;&gt;-->

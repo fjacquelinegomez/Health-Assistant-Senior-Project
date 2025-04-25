@@ -18,6 +18,7 @@ public class RecipeResponse {
         private int id;
         private String title;
         private String image;
+        private String sourceUrl;
         private Set<String> tags;  // Tags like "low-sodium", "low-carb", "peanut-free"
 
         public int getId() {
@@ -38,6 +39,13 @@ public class RecipeResponse {
 
         public String getImage() {
             return image;
+        }
+        public String getSourceUrl() {
+            return sourceUrl;
+        }
+
+        public void setSourceUrl(String sourceUrl) {
+            this.sourceUrl = sourceUrl;
         }
 
         public void setImage(String image) {

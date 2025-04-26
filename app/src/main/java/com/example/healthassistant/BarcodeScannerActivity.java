@@ -1,5 +1,6 @@
 package com.example.healthassistant;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -95,8 +96,12 @@ public class BarcodeScannerActivity extends AppCompatActivity {
                 .addOnSuccessListener(barcodes -> {
                     for (Barcode barcode : barcodes) {
                         String barcodeValue = barcode.getRawValue();
+                        Intent intent = new Intent(getApplicationContext(), Search.class);
+                        intent.putExtra("message_key", barcodeValue);
                         Toast.makeText(this, "Scanned: " + barcodeValue, Toast.LENGTH_SHORT).show();
                         Log.d("BarcodeScanner", "Barcode detected: " + barcodeValue);
+                        cameraExecutor.shutdown();
+                        startActivity(intent);
                     }
                 })
                 .addOnFailureListener(e -> Log.e("BarcodeScanner", "Failed to scan barcode", e));

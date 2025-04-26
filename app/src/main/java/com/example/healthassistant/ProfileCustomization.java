@@ -140,7 +140,8 @@ public class ProfileCustomization extends AppCompatActivity {
                     if (snapshot.exists()) {
                         String fullName = snapshot.child("fullName").getValue(String.class);
                         if (fullName != null && !fullName.isEmpty()) {
-                            String firstName = fullName.split(" ")[0];  // Extract first name
+                            String decryptedFullName = EncryptionUtils.decrypt(fullName);
+                            String firstName = decryptedFullName.split(" ")[0];  // Extract first name
 
                             if (!fromSettings) {
                                 greeting.setText(String.format("Hello %s!", firstName));

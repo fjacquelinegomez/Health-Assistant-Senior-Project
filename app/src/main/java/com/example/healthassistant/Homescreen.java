@@ -132,10 +132,12 @@ public class Homescreen extends AppCompatActivity {
             databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        String fullName = snapshot.child("fullName").getValue(String.class);
-                        if (fullName != null && !fullName.isEmpty()) {
-                            String firstName = fullName.split(" ")[0];  // Extract first name
+                    if (snapshot.exists()) { // new, now the name will be encrypted :) !!
+                        String encryptedFullName = snapshot.child("fullName").getValue(String.class);
+                        String decryptedFullName = EncryptionUtils.decrypt(encryptedFullName);
+
+                        if (decryptedFullName != null && !decryptedFullName.isEmpty()) {
+                            String firstName = decryptedFullName.split(" ")[0];  // Extract first name
                             greeting.setText(firstName);
                         }
                     } else {
@@ -216,50 +218,56 @@ public class Homescreen extends AppCompatActivity {
 
     // Goes through the user's current medications and check if they're close to needing a refill (10 pills left)
     private void checkMedicationsRefill() {
-        // Gets the current user
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        String currentUserId = auth.getCurrentUser().getUid();
+        FirebaseUser currentUser = auth.getCurrentUser();
 
-        // Creates reference to the userMedications collection
+        if (currentUser == null) {
+            Log.e("MedRefill", "User is not logged in");
+            return;
+        }
+
+        String currentUserId = currentUser.getUid();
         CollectionReference userMedicationRef = database.collection("userMedications");
 
-        // Pulls the user's current medications from Firestore
-        //database.collection("userMedications")
         userMedicationRef.whereEqualTo("userID", currentUserId)
                 .get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        // Loops through all of the user's current medications
+                    if (task.isSuccessful() && task.getResult() != null) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            // Grabs values from the database
-                            int totalPills = document.getLong("totalPills").intValue();
-                            int pillsTaken = document.getLong("pillsTaken").intValue();
+                            Long totalPillsLong = document.getLong("totalPills");
+                            Long pillsTakenLong = document.getLong("pillsTaken");
                             DocumentReference medRef = document.getDocumentReference("medicationRef");
 
-                            // Create a Medication object
+                            if (totalPillsLong == null || pillsTakenLong == null || medRef == null) {
+                                Log.w("MedRefill", "Missing data for medication: " + document.getId());
+                                continue; // skip this document
+                            }
+
+                            int totalPills = totalPillsLong.intValue();
+                            int pillsTaken = pillsTakenLong.intValue();
+
                             Medication medication = new Medication();
                             medication.setTotalPills(totalPills);
                             medication.setPillsTaken(pillsTaken);
 
-                            // Checks if current medication needs to be refilled soon
                             if (medication.isRefillNeeded(totalPills, pillsTaken)) {
-                                // Grabs the name of the medication
                                 medRef.get().addOnSuccessListener(medSnapshot -> {
                                     if (medSnapshot.exists()) {
                                         String medicationName = medSnapshot.getString("Name");
                                         String message = "Your medication " + medicationName + " needs to be refilled soon!";
 
-                                        // Checks if user turned on notification permissions
                                         if (notificationHelper.checkNotificationPermission(Homescreen.this, 101)) {
-                                            // Sends the refill notification
-                                            int notificationId = notificationCounter++; // Gives each expired medication a unique notif Id so notifs don't replace old ones
+                                            int notificationId = notificationCounter++;
                                             notificationHelper.showNotification("Your Medication Running Low", message, notificationId);
                                         }
                                     }
                                 });
                             }
                         }
+                    } else {
+                        Log.e("MedRefill", "Failed to fetch medications", task.getException());
                     }
                 });
     }
+
 }

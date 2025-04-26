@@ -42,9 +42,9 @@ public class Appointments extends AppCompatActivity {
 
 
         // Find views from layout
-        dateInput = findViewById(R.id.dateReminderLinearLayout).findViewById(R.id.date); // if you set an id for EditText
-        typeInput = findViewById(R.id.typeAppointmentInputLinearLayout).findViewById(R.id.type); // make sure your EditText has id "type"
-        providerInput = findViewById(R.id.providerAppointmentInputLinearLayout).findViewById(R.id.name); // and id "name"
+        dateInput = findViewById(R.id.dateReminderLinearLayout).findViewById(R.id.inputApptDate); // if you set an id for EditText
+        typeInput = findViewById(R.id.typeAppointmentInputLinearLayout).findViewById(R.id.inputApptType); // make sure your EditText has id "type"
+        providerInput = findViewById(R.id.providerAppointmentInputLinearLayout).findViewById(R.id.inputApptType); // and id "name"
         addAppointmentButton = findViewById(R.id.addAppointmentButton);
 
         // Button click listener

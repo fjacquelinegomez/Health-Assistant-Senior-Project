@@ -216,50 +216,51 @@ public class Homescreen extends AppCompatActivity {
 
     // Goes through the user's current medications and check if they're close to needing a refill (10 pills left)
     private void checkMedicationsRefill() {
-        // Gets the current user
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String currentUserId = auth.getCurrentUser().getUid();
 
-        // Creates reference to the userMedications collection
         CollectionReference userMedicationRef = database.collection("userMedications");
 
-        // Pulls the user's current medications from Firestore
-        //database.collection("userMedications")
         userMedicationRef.whereEqualTo("userID", currentUserId)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        // Loops through all of the user's current medications
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            // Grabs values from the database
-                            int totalPills = document.getLong("totalPills").intValue();
-                            int pillsTaken = document.getLong("pillsTaken").intValue();
+                            // Safely retrieve the fields
+                            Long totalPillsLong = document.getLong("totalPills");
+                            Long pillsTakenLong = document.getLong("pillsTaken");
                             DocumentReference medRef = document.getDocumentReference("medicationRef");
 
-                            // Create a Medication object
-                            Medication medication = new Medication();
-                            medication.setTotalPills(totalPills);
-                            medication.setPillsTaken(pillsTaken);
+                            // Null check
+                            if (totalPillsLong != null && pillsTakenLong != null && medRef != null) {
+                                int totalPills = totalPillsLong.intValue();
+                                int pillsTaken = pillsTakenLong.intValue();
 
-                            // Checks if current medication needs to be refilled soon
-                            if (medication.isRefillNeeded(totalPills, pillsTaken)) {
-                                // Grabs the name of the medication
-                                medRef.get().addOnSuccessListener(medSnapshot -> {
-                                    if (medSnapshot.exists()) {
-                                        String medicationName = medSnapshot.getString("Name");
-                                        String message = "Your medication " + medicationName + " needs to be refilled soon!";
+                                Medication medication = new Medication();
+                                medication.setTotalPills(totalPills);
+                                medication.setPillsTaken(pillsTaken);
 
-                                        // Checks if user turned on notification permissions
-                                        if (notificationHelper.checkNotificationPermission(Homescreen.this, 101)) {
-                                            // Sends the refill notification
-                                            int notificationId = notificationCounter++; // Gives each expired medication a unique notif Id so notifs don't replace old ones
-                                            notificationHelper.showNotification("Your Medication Running Low", message, notificationId);
+                                if (medication.isRefillNeeded(totalPills, pillsTaken)) {
+                                    medRef.get().addOnSuccessListener(medSnapshot -> {
+                                        if (medSnapshot.exists()) {
+                                            String medicationName = medSnapshot.getString("Name");
+                                            String message = "Your medication " + medicationName + " needs to be refilled soon!";
+
+                                            if (notificationHelper.checkNotificationPermission(Homescreen.this, 101)) {
+                                                int notificationId = notificationCounter++;
+                                                notificationHelper.showNotification("Your Medication Running Low", message, notificationId);
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                                }
+                            } else {
+                                Log.e("Homescreen", "Medication data missing: totalPills=" + totalPillsLong + ", pillsTaken=" + pillsTakenLong);
                             }
                         }
+                    } else {
+                        Log.e("Homescreen", "Error getting medications", task.getException());
                     }
                 });
     }
+
 }

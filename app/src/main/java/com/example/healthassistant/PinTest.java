@@ -1,7 +1,5 @@
 package com.example.healthassistant;
 
-import static com.example.healthassistant.R.id.picture;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;

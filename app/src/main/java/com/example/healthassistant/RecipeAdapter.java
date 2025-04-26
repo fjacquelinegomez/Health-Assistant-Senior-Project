@@ -2,6 +2,7 @@ package com.example.healthassistant;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +35,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         Glide.with(holder.itemView.getContext())
                 .load(recipe.getImage())
                 .into(holder.recipeImageView);
+
+        // new
+        holder.addButton.setOnClickListener(v -> {
+            if (addClickListener != null) {
+                addClickListener.onAddClick(recipe);
+            }
+        });
+
     }
 
     @Override
@@ -44,11 +53,34 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public static class RecipeViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         ImageView recipeImageView;
+        ImageButton addButton;  // <- NEW
+
 
         public RecipeViewHolder(View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.recipeTitle);
             recipeImageView = itemView.findViewById(R.id.recipeImage);
+            addButton = itemView.findViewById(R.id.addButton); // <- NEW
+
         }
+
+
+    }
+
+    // New, for adding foods to eaten
+    public interface OnAddClickListener {
+        void onAddClick(Recipe recipe);
+    }
+
+    private OnAddClickListener addClickListener;
+
+    public void setOnAddClickListener(OnAddClickListener listener) {
+        this.addClickListener = listener;
+    }
+
+    // New, for removing from recs when added
+    public void removeRecipe(Recipe recipe) {
+        recipeList.remove(recipe);
+        notifyDataSetChanged();
     }
 }

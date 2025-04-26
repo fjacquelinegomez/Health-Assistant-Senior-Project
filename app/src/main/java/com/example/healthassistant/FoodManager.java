@@ -47,6 +47,9 @@ public class FoodManager extends AppCompatActivity {
     private final List<String>[] allergiesHolder = new List[]{new ArrayList<>()};
     private final List<String>[] conditionsHolder = new List[]{new ArrayList<>()};
     private List<String> medicationNames;
+    private List<Recipe> eatenTodayRecipes = new ArrayList<>();
+    private EatenFoodAdapter eatenAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +139,14 @@ public class FoodManager extends AppCompatActivity {
                         Log.e("FoodManager", "Query failed", task.getException());
                     }
                 });
+
+        // New, eaten foods
+        RecyclerView eatenRecyclerView = findViewById(R.id.eatenRecyclerView);
+        eatenTodayRecipes = new ArrayList<>();
+        eatenAdapter = new EatenFoodAdapter(eatenTodayRecipes);
+        eatenRecyclerView.setAdapter(eatenAdapter);
+        eatenRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
     private void checkAndGenerateWhenReady(List<String> allergies, List<String> conditions) {
@@ -197,7 +208,6 @@ public class FoodManager extends AppCompatActivity {
                                     avoidIngredients.add(item.trim());
                                 }
                             }
-                            // Moderation warnings ("Moderation: Vitamin K") are kept only for display
                         }
                     }
                 }
@@ -218,7 +228,7 @@ public class FoodManager extends AppCompatActivity {
         TextView textView = findViewById(R.id.moderationWarning);
 
         if (warnings == null || warnings.isEmpty()) {
-            textView.setVisibility(View.GONE); // 🔥 Stay hidden
+            textView.setVisibility(View.GONE); // Stay hidden
         } else {
             StringBuilder displayText = new StringBuilder();
 
@@ -238,7 +248,6 @@ public class FoodManager extends AppCompatActivity {
                     }
                 }
             }
-
             if (!avoidSet.isEmpty()) {
                 displayText.append("🛑 Avoid: ").append(String.join(", ", avoidSet)).append("\n");
             }
@@ -246,9 +255,8 @@ public class FoodManager extends AppCompatActivity {
             if (!moderationSet.isEmpty()) {
                 displayText.append("🌿 Moderation: ").append(String.join(", ", moderationSet));
             }
-
             textView.setText(displayText.toString().trim());
-            textView.setVisibility(View.VISIBLE); // 🔥 Show it once there’s content
+            textView.setVisibility(View.VISIBLE); // Show warning once there’s content
         }
     }
 
@@ -336,10 +344,8 @@ public class FoodManager extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("OpenFDA", "Exception for " + medName + ": " + e.getMessage());
         }
-
         return interactions;
     }
-
 
     private void fetchRecipesWithExclusions(List<String> exclusions, String diet) {
         try {
@@ -380,6 +386,14 @@ public class FoodManager extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         RecipeAdapter adapter = new RecipeAdapter(recipes);
         recyclerView.setAdapter(adapter);
+
+        // Adding recs to eaten today and removing from list
+        adapter.setOnAddClickListener(recipe -> {
+            eatenTodayRecipes.add(recipe);
+            eatenAdapter.notifyDataSetChanged();
+            adapter.removeRecipe(recipe); // <- now call this new method!
+        });
+
     }
 
     private List<String> extractMedicationNames(QueryDocumentSnapshot doc) {
@@ -395,7 +409,6 @@ public class FoodManager extends AppCompatActivity {
 
         return meds;
     }
-
 
 
     // Cleans medication names
@@ -466,13 +479,11 @@ public class FoodManager extends AppCompatActivity {
                 case "Bipolar":
                     tags.add("low-sugar");
                     break;
-                // You can add more mappings here if needed
+                // Add more mappings if needed
             }
         }
-
         return String.join(",", tags);  // Join all the tags into a comma-separated string
     }
-
 }
 
 

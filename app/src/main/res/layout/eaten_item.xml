@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/recipeCard"
+        android:id="@+id/eatenCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -25,7 +25,7 @@
             android:gravity="center_vertical"
             android:padding="8dp">
 
-            <!-- Add Button -->
+            <!-- Checked Button (instead of plus add) -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -33,11 +33,11 @@
                 android:gravity="center">
 
                 <ImageButton
-                    android:id="@+id/addButton"
+                    android:id="@+id/addedButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/add_grey"
-                    android:contentDescription="Add" />
+                    android:background="@drawable/added_grey"
+                    android:contentDescription="Added" />
             </LinearLayout>
 
             <!-- Image and Title -->
@@ -77,7 +77,7 @@
                 android:gravity="center">
 
                 <ImageButton
-                    android:id="@+id/likeButtonRecommended"
+                    android:id="@+id/likeButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@drawable/like"
@@ -93,7 +93,7 @@
                 android:gravity="center">
 
                 <ImageButton
-                    android:id="@+id/dislikeButtonRecommended"
+                    android:id="@+id/dislikeButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@drawable/dislike"

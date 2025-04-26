@@ -140,54 +140,67 @@ public class MedicationManager extends AppCompatActivity {
                         for (DocumentSnapshot document : documents) {
                             // Pulls necessary values about the medication for the UI
                             String expirationDate = document.getString("expirationDate");
-                            int totalPills = document.getLong("totalPills").intValue();
-                            int pillsTaken = document.getLong("pillsTaken").intValue();
+
+// Safely get the totalPills and pillsTaken, using default values if they are null
+                            Long totalPillsLong = document.getLong("totalPills");
+                            Long pillsTakenLong = document.getLong("pillsTaken");
+
+// If the values are null, default to 0
+                            int totalPills = (totalPillsLong != null) ? totalPillsLong.intValue() : 0;
+                            int pillsTaken = (pillsTakenLong != null) ? pillsTakenLong.intValue() : 0;
+
                             String medicationForm = document.getString("medicationForm");
                             DocumentReference medRef = document.getDocumentReference("medicationRef");
 
-                            // Pulls the medication name from the medication reference
-                            medRef.get().addOnSuccessListener(medSnapshot -> {
-                                if (medSnapshot.exists()) {
-                                    String medicationName = medSnapshot.getString("Name");
-                                    // creates a new medication object with all the desired values then adds it to the main medication list
-                                    Medication medication = new Medication();
-                                    medication.setName(medicationName);
-                                    medication.setExpirationDate(expirationDate);
-                                    medication.setTotalPills(totalPills);
-                                    medication.setPillsTaken(pillsTaken);
-                                    medication.setMedicationForm(medicationForm);
-                                    medicationList.add(medication);
-                                }
-                                completedFetches[0]++;
+                            // Check if medRef is null before calling .get()
+                            if (medRef != null) {
+                                // Pulls the medication name from the medication reference
+                                medRef.get().addOnSuccessListener(medSnapshot -> {
+                                    if (medSnapshot.exists()) {
+                                        String medicationName = medSnapshot.getString("Name");
+                                        // creates a new medication object with all the desired values then adds it to the main medication list
+                                        Medication medication = new Medication();
+                                        medication.setName(medicationName);
+                                        medication.setExpirationDate(expirationDate);
+                                        medication.setTotalPills(totalPills);
+                                        medication.setPillsTaken(pillsTaken);
+                                        medication.setMedicationForm(medicationForm);
+                                        medicationList.add(medication);
+                                    }
+                                    completedFetches[0]++;
 
-                                // Filtered list of medications (expiration and refill)
-                                List<Medication> expiringMedications = new ArrayList<>();
-                                List<Medication> refillMedications = new ArrayList<>();
+                                    // Filtered list of medications (expiration and refill)
+                                    List<Medication> expiringMedications = new ArrayList<>();
+                                    List<Medication> refillMedications = new ArrayList<>();
 
-                                // If all fetches are done
-                                if (completedFetches[0] == totalDocuments) {
-                                    // Filters through the main medication list for the medications that are expiring soon or need a refill soon
-                                    // and adds the medication to their respective lists
-                                    for (Medication medication : medicationList) {
-                                        if (medication.isExpiringSoon(medication.getExpirationDate())) {
-                                            expiringMedications.add(medication);
-                                        }
-                                        if (medication.isRefillNeeded(medication.getTotalPills(), medication.getPillsTaken())) {
-                                            refillMedications.add(medication);
+                                    // If all fetches are done
+                                    if (completedFetches[0] == totalDocuments) {
+                                        // Filters through the main medication list for the medications that are expiring soon or need a refill soon
+                                        // and adds the medication to their respective lists
+                                        for (Medication medication : medicationList) {
+                                            if (medication.isExpiringSoon(medication.getExpirationDate())) {
+                                                expiringMedications.add(medication);
+                                            }
+                                            if (medication.isRefillNeeded(medication.getTotalPills(), medication.getPillsTaken())) {
+                                                refillMedications.add(medication);
+                                            }
                                         }
                                     }
-                                }
 
-                                // sets up the expired + refill medication UI with the new filtered lists
-                                setUpMedicationView(expiringMedications, "expire");
-                                setUpMedicationView(refillMedications, "refill");
+                                    // sets up the expired + refill medication UI with the new filtered lists
+                                    setUpMedicationView(expiringMedications, "expire");
+                                    setUpMedicationView(refillMedications, "refill");
 
-                            }).addOnFailureListener(e -> {
-                                Log.e("Medication Manager", "Error fetching medication", e);
-                            });
+                                }).addOnFailureListener(e -> {
+                                    Log.e("Medication Manager", "Error fetching medication reference", e);
+                                });
+                            } else {
+                                Log.e("Medication Manager", "Medication reference is null for medication ID: " + document.getId());
+                            }
                         }
                     }
                 });
+
     }
 
     // Sets up the expiration + refill UI and enables arrow functionality

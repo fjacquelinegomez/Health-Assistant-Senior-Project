@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,8 +18,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 //import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -27,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button login_btn;
     private Button register_btn;
+    private String storedPin = "";
+    private DatabaseReference databaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +73,26 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             Log.d("AuthUser", "User is already signed in: " + currentUser.getEmail());
-            startActivity(new Intent(MainActivity.this, Homescreen.class));
-            finish();
+            String uid = currentUser.getUid();
+            databaseRef = database.getReference("users").child(uid);
+
+            databaseRef.child("pin").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    storedPin = dataSnapshot.getValue(String.class);
+                    if (storedPin == null || storedPin.isEmpty()) {
+                        startActivity(new Intent(MainActivity.this, Homescreen.class));
+                    } else {
+                        startActivity(new Intent(MainActivity.this, PinTest.class));
+                    }
+                    finish(); // move finish inside here too
+                }
+
+                @Override
+                public void onCancelled(com.google.firebase.database.DatabaseError error) {
+                    Toast.makeText(MainActivity.this, "Failed to retrieve PIN", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
 

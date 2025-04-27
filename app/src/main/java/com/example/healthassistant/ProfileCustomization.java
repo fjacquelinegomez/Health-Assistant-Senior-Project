@@ -140,7 +140,7 @@ public class ProfileCustomization extends AppCompatActivity {
                     if (snapshot.exists()) {
                         String fullName = snapshot.child("fullName").getValue(String.class);
                         if (fullName != null && !fullName.isEmpty()) {
-                            String decryptedFullName = EncryptionUtils.decrypt(fullName);
+                            String decryptedFullName = EncryptionUtils.decrypt(fullName); // NEW, encrypts the name from firebase
                             String firstName = decryptedFullName.split(" ")[0];  // Extract first name
 
                             if (!fromSettings) {

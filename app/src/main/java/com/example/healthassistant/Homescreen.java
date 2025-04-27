@@ -217,11 +217,11 @@ public class Homescreen extends AppCompatActivity {
     }
 
     // Goes through the user's current medications and check if they're close to needing a refill (10 pills left)
-    private void checkMedicationsRefill() {
+    private void checkMedicationsRefill() { // updated because it was giving errors
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
 
-        if (currentUser == null) {
+        if (currentUser == null) { // new catches any errors
             Log.e("MedRefill", "User is not logged in");
             return;
         }

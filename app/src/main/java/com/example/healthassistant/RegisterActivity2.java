@@ -83,7 +83,7 @@ public class RegisterActivity2 extends AppCompatActivity {
     }
 
 
-    //method for capturing the data from the input fields
+    //method for capturing the data from the input fields (new encrypted version)
     private void saveNames(){
         String uName = fullname.getText().toString().trim();
         String uUsername = username.getText().toString().trim();

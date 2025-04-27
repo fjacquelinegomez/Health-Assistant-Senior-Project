@@ -277,15 +277,18 @@ public class AddMedication extends AppCompatActivity {
         userMedData.put("pillsTaken", 0);
         userMedData.put("totalPills", totalPills);
         userMedData.put("additionalNotes", additionalNotes);
+        userMedData.put("rxcui", rxcui);  // Add the RxCUI if needed for interaction filtering
 
-        // Saves to userMedications database
+        // Save the data to Firestore
         userMedRef.set(userMedData).addOnSuccessListener(aVoid -> {
-            Log.d("Firestore", "User Medication added:" + medicationName + "to" + userId);
-            // Shows the new medication added in medication manager
+            Log.d("Firestore", "User Medication added: " + medicationName + " to " + userId);
             Intent intent = new Intent(AddMedication.this, MedicationManager2.class);
+            // Send data back to the MedicationManager screen
+            intent.putExtra("medicationName", medicationName);
+            intent.putExtra("EXPIRE_DATE", expirationDate);
+            intent.putExtra("TOTAL_PILLS", totalPills);
             startActivity(intent);
         }).addOnFailureListener(e -> Log.e("Firestore", "Error saving user-medication", e));
-
     }
 
     // Helper function that sets up the spinner/dropdown options (cleans up redundant code)

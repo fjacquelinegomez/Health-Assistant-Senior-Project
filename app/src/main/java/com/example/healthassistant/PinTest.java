@@ -3,6 +3,7 @@ package com.example.healthassistant;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,11 +22,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.nio.charset.StandardCharsets;
 import java.math.BigInteger;
-
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class PinTest extends AppCompatActivity {
@@ -45,6 +50,10 @@ public class PinTest extends AppCompatActivity {
         });
 
         Button test = findViewById(R.id.button3);
+        Button mybutton = (Button) findViewById(R.id.FoodREB);
+        mybutton.setOnClickListener(v -> {
+            addRestrict();
+        });
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -115,5 +124,43 @@ public class PinTest extends AppCompatActivity {
             return null;
         }
     }
+    private void addRestrict() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null && user.getUid() != null) {
+            // Access Firestore
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            // Get the value of "FoodRe" from the EditText
+            EditText adder2 = findViewById(R.id.setter2);
+            String foodRe = adder2.getText().toString().trim();
+
+            // Debug the value of foodRe
+            Log.d("AddFoodRe", "FoodRe value: " + foodRe);
+
+            if (!foodRe.isEmpty()) {
+                // Create a map to store the "FoodRe" data
+
+                // Save the data in Firestore under the user's UID
+                databaseRef.child("Refood").child(foodRe).setValue("Restricted")
+                        .addOnSuccessListener(aVoid -> {
+                            Log.d("AddFoodRe", "FoodRe saved successfully");
+                            Toast.makeText(this, "FoodRe saved successfully! " + user.getUid(), Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("AddFoodRe", "Error saving FoodRe: ", e);
+                            Toast.makeText(this, "Error saving FoodRe", Toast.LENGTH_SHORT).show();
+                        });
+            } else {
+                Toast.makeText(this, "Please enter a valid value for FoodRe", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Log.e("AddFoodRe", "User is not authenticated or UID is null");
+            Toast.makeText(this, "User is not authenticated", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 
 }

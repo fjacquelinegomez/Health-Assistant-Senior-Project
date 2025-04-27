@@ -2,25 +2,29 @@ package com.example.healthassistant;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.healthassistant.databinding.ActivityFoodManagerBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FoodManager extends AppCompatActivity {
 
     ActivityFoodManagerBinding binding;
+
+
 
     /**this was already created**/
     @Override
@@ -31,8 +35,11 @@ public class FoodManager extends AppCompatActivity {
 
         /**section below is new**/
 
+
+
         /**bottom bar navigation functionality**/
         binding = ActivityFoodManagerBinding.inflate(getLayoutInflater());
+
 
         setContentView(binding.getRoot());
 
@@ -59,4 +66,5 @@ public class FoodManager extends AppCompatActivity {
         });
 
     }
+
 }

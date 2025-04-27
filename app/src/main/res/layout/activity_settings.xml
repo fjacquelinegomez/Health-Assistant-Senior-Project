@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SetPin" />
+        app:layout_constraintTop_toBottomOf="@+id/Adder" />
 
     <TextView
         android:id="@+id/settingsText"
@@ -104,7 +104,7 @@
     <!-- Set Button -->
 
     <Button
-        android:id="@+id/SetPin"
+        android:id="@+id/Adder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Set Pin"
@@ -118,7 +118,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="176dp"
-        app:layout_constraintBottom_toTopOf="@+id/SetPin"
+        app:layout_constraintBottom_toTopOf="@+id/Adder"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

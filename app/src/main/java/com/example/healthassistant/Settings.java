@@ -49,7 +49,7 @@ public class Settings extends AppCompatActivity {
         ImageButton back = findViewById(R.id.settingsBackButton);
         Button logOut = findViewById(R.id.logOutButton);
         TextView profileCustom = findViewById(R.id.clickablePC);
-        Button set = findViewById(R.id.SetPin); // Button for setting PIN
+        Button set = findViewById(R.id.Adder); // Button for setting PIN
 
         View.OnClickListener buttonClickListener = v -> {
             switch (v.getId()) {

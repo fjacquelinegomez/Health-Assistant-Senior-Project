@@ -10,6 +10,7 @@
     tools:context=".FoodManager">
 
     <!--bottom toolbar-->
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
@@ -73,6 +74,7 @@
                     android:contentDescription="User Profile"
                     android:layout_weight="0.25"
                     app:srcCompat="@drawable/user_profile_icon" />
+
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -371,5 +373,6 @@
                     android:scaleX="-1" />
             </LinearLayout>
         </LinearLayout>
+
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

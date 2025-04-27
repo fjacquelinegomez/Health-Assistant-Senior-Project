@@ -13,15 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-// https://developer.android.com/develop/ui/views/layout/recyclerview -> Used this and Giovanna's Medication Adapter to help implement this
 // Adapter class for the recycler view that displays the list of searched medications
-// Very similar logic to MedicationAdapter.java
 public class MedicationSearchAdapter extends RecyclerView.Adapter<MedicationSearchAdapter.MedicationViewHolder> {
-    private List<Medication> medications;
+    private List<Medication> medicationList;
 
     // Constructs medication list
-    public MedicationSearchAdapter(List<Medication> medications) {
-        this.medications = medications;
+    public MedicationSearchAdapter(List<Medication> medicationList) {
+        this.medicationList = medicationList;
     }
 
     // Inflates medication item to create view holder instances
@@ -31,10 +29,10 @@ public class MedicationSearchAdapter extends RecyclerView.Adapter<MedicationSear
         return new MedicationViewHolder(view);
     }
 
-    // Binds data from the medications list to the view holder
+    // Binds data from the medicationList to the view holder
     @Override
     public void onBindViewHolder(MedicationViewHolder holder, int position) {
-        Medication medication = medications.get(position);
+        Medication medication = medicationList.get(position);
         Log.d("SearchMedication", "Binding item at position: " + position + " with name: " + medication.getName());
         holder.medicationName.setText(medication.getName());
 
@@ -51,7 +49,14 @@ public class MedicationSearchAdapter extends RecyclerView.Adapter<MedicationSear
     // Returns the total number of medications in the list
     @Override
     public int getItemCount() {
-        return medications.size();
+        return medicationList.size();
+    }
+
+    // Updates the list of medications and notifies the adapter
+    public void updateList(List<Medication> newList) {
+        medicationList.clear(); // Corrected variable name
+        medicationList.addAll(newList);
+        notifyDataSetChanged();
     }
 
     // Holds the references to the views in each item

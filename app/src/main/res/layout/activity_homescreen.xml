@@ -134,13 +134,115 @@
         android:layout_width="0dp"
         android:layout_height="135dp"
         android:layout_marginTop="8dp"
-        app:cardBackgroundColor="#E2E2E2"
+        app:cardBackgroundColor="@color/light_grey"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
         app:layout_constraintTop_toBottomOf="@id/medicationPlanText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.9" />
+        app:layout_constraintWidth_percent="0.9" >
+        <RelativeLayout
+            android:id="@+id/todayMedicationRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/medicationImageInfoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_vertical">
+                <!-- Image stuff
+                <LinearLayout
+                    android:id="@+id/medicationImageLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/medication_image"
+                        android:layout_gravity="center"
+                        android:visibility="gone"/>
+                </LinearLayout>
+                -->
+                <ImageView
+                    android:id="@+id/timeLeftButton"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/move_to_previous_medication"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="invisible"/>
+
+                <LinearLayout
+                    android:id="@+id/medicationInfoLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:id="@+id/timeMedicationName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="-10dip"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="No medication found"
+                        android:textColor="#000000"
+                        android:textSize="19dp" />
+                    <!-- TextView to show selected time -->
+                    <TextView
+                        android:id="@+id/timeMedicationTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/poppins_medium"
+                        android:paddingTop="5dp"
+                        android:text=" " />
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/timeRightButton"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/move_forward_in_medication"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="invisible"/>
+            </LinearLayout>
+            <View
+                android:id="@+id/horizontal_line"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#000000"
+                android:layout_below="@+id/medicationImageInfoLayout"
+                android:layout_margin="10dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/horizontal_line"
+                android:layout_alignParentBottom="true">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <Button
+                        android:id="@+id/takenButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/check_done"
+                        android:text ="Taken"
+                        android:textAllCaps="false"
+                        android:textSize="20dp"
+                        android:backgroundTint="@color/white" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
     <!-- Recommended Food Section -->
     <TextView

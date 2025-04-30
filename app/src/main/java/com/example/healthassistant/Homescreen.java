@@ -2,6 +2,7 @@ package com.example.healthassistant;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -14,12 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.healthassistant.databinding.ActivityHomescreenBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -32,12 +35,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class Homescreen extends AppCompatActivity {
@@ -132,12 +142,10 @@ public class Homescreen extends AppCompatActivity {
             databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) { // new, now the name will be encrypted :) !!
-                        String encryptedFullName = snapshot.child("fullName").getValue(String.class);
-                        String decryptedFullName = EncryptionUtils.decrypt(encryptedFullName);
-
-                        if (decryptedFullName != null && !decryptedFullName.isEmpty()) {
-                            String firstName = decryptedFullName.split(" ")[0];  // Extract first name
+                    if (snapshot.exists()) {
+                        String fullName = snapshot.child("fullName").getValue(String.class);
+                        if (fullName != null && !fullName.isEmpty()) {
+                            String firstName = fullName.split(" ")[0];  // Extract first name
                             greeting.setText(firstName);
                         }
                     } else {
@@ -167,6 +175,79 @@ public class Homescreen extends AppCompatActivity {
         // Sends notifications to users if their medication is expiring or needs to be refilled (will only send if user clicks on homescreen tho)
         checkMedicationsExpiration();
         checkMedicationsRefill();
+        checkMedicationTime();
+
+        // Sets up medication UI component FIXME: turn this into a separate function
+        // Updates the medication taken for the day log (makes sure it's on the current day)
+        checkTakenToday();
+        // Fetches user's medication list
+        CollectionReference userMedicationRef = database.collection("userMedications");
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String currentUserId = auth.getCurrentUser().getUid();
+
+        // Goes through the user's medications
+        userMedicationRef.whereEqualTo("userID", currentUserId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+
+                        // List of all user's medications
+                        List<Medication> medicationList = new ArrayList<>();
+                        // Will keep track of whether or not the asynchronous task is completely done
+                        List<DocumentSnapshot> documents = task.getResult().getDocuments();
+                        final int totalDocuments = documents.size();
+                        final int[] completedFetches = {0};
+
+                        for (DocumentSnapshot document : documents) {
+                            // Pulls necessary values about the medication for the UI
+                            String id = document.getId();
+                            String expirationDate = document.getString("expirationDate");
+                            int totalPills = document.getLong("totalPills").intValue();
+                            int pillsTaken = document.getLong("pillsTaken").intValue();
+                            String medicationForm = document.getString("medicationForm");
+                            Map<String, Boolean> takenToday = (Map<String, Boolean>) document.get("takenToday");
+                            DocumentReference medRef = document.getDocumentReference("medicationRef");
+
+                            // Grabs and formats the medication time
+                            String medicationTime = document.getString("medicationTime");
+                            SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm", Locale.getDefault()); // input is 24 hour
+                            SimpleDateFormat outputFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // output is 12 hour
+                            String formattedTime = "";
+                            try {
+                                Date time = inputFormat.parse(medicationTime); // Parse the string into a Date
+                                formattedTime = outputFormat.format(time); // Formats medication time to 12 hour
+                            } catch (ParseException e) {
+                                e.printStackTrace(); // Handle parse exception / error
+                            }
+
+                            // Pulls the medication name from the medication reference
+                            String finalFormattedTime = formattedTime;
+                            medRef.get().addOnSuccessListener(medSnapshot -> {
+                                if (medSnapshot.exists()) {
+                                    String medicationName = medSnapshot.getString("Name");
+                                    // creates a new medication object with all the desired values then adds it to the main medication list
+                                    Medication medication = new Medication();
+                                    medication.setId(id);
+                                    medication.setName(medicationName);
+                                    medication.setExpirationDate(expirationDate);
+                                    medication.setTotalPills(totalPills);
+                                    medication.setPillsTaken(pillsTaken);
+                                    medication.setMedicationForm(medicationForm);
+                                    medication.setMedicationTime(finalFormattedTime);
+                                    medication.setTakenToday(takenToday);
+                                    medicationList.add(medication);
+                                }
+                                completedFetches[0]++;
+
+                                // sets up the time + expired + refill medication UI with the new filtered lists
+                                setUpMedicationView(medicationList, "time");
+
+                            }).addOnFailureListener(e -> {
+                                Log.e("Medication Manager", "Error fetching medication", e);
+                            });
+                        }
+                    }
+                });
     }
 
     // Goes through the user's current medications and check if they're close to expiring (7 days)
@@ -206,7 +287,7 @@ public class Homescreen extends AppCompatActivity {
                                         if (notificationHelper.checkNotificationPermission(Homescreen.this, 101)) {
                                             // Sends the expiration notification
                                             int notificationId = notificationCounter++; // Gives each expired medication a unique notif Id so notifs don't replace old ones
-                                            notificationHelper.showNotification("Your Medication Expiring Soon", message, notificationId);
+                                            notificationHelper.showNotification("Medication Expiration Reminder", message, notificationId);
                                         }
                                     }
                                 });
@@ -217,57 +298,248 @@ public class Homescreen extends AppCompatActivity {
     }
 
     // Goes through the user's current medications and check if they're close to needing a refill (10 pills left)
-    private void checkMedicationsRefill() { // updated because it was giving errors
+    private void checkMedicationsRefill() {
+        // Gets the current user
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = auth.getCurrentUser();
+        String currentUserId = auth.getCurrentUser().getUid();
 
-        if (currentUser == null) { // new catches any errors
-            Log.e("MedRefill", "User is not logged in");
-            return;
-        }
-
-        String currentUserId = currentUser.getUid();
+        // Creates reference to the userMedications collection
         CollectionReference userMedicationRef = database.collection("userMedications");
 
+        // Pulls the user's current medications from Firestore
+        //database.collection("userMedications")
         userMedicationRef.whereEqualTo("userID", currentUserId)
                 .get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
+                    if (task.isSuccessful()) {
+                        // Loops through all of the user's current medications
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Long totalPillsLong = document.getLong("totalPills");
-                            Long pillsTakenLong = document.getLong("pillsTaken");
+                            // Grabs values from the database
+                            int totalPills = document.getLong("totalPills").intValue();
+                            int pillsTaken = document.getLong("pillsTaken").intValue();
                             DocumentReference medRef = document.getDocumentReference("medicationRef");
 
-                            if (totalPillsLong == null || pillsTakenLong == null || medRef == null) {
-                                Log.w("MedRefill", "Missing data for medication: " + document.getId());
-                                continue; // skip this document
-                            }
-
-                            int totalPills = totalPillsLong.intValue();
-                            int pillsTaken = pillsTakenLong.intValue();
-
+                            // Create a Medication object
                             Medication medication = new Medication();
                             medication.setTotalPills(totalPills);
                             medication.setPillsTaken(pillsTaken);
 
+                            // Checks if current medication needs to be refilled soon
                             if (medication.isRefillNeeded(totalPills, pillsTaken)) {
+                                // Grabs the name of the medication
                                 medRef.get().addOnSuccessListener(medSnapshot -> {
                                     if (medSnapshot.exists()) {
                                         String medicationName = medSnapshot.getString("Name");
                                         String message = "Your medication " + medicationName + " needs to be refilled soon!";
 
+                                        // Checks if user turned on notification permissions
                                         if (notificationHelper.checkNotificationPermission(Homescreen.this, 101)) {
-                                            int notificationId = notificationCounter++;
-                                            notificationHelper.showNotification("Your Medication Running Low", message, notificationId);
+                                            // Sends the refill notification
+                                            int notificationId = notificationCounter++; // Gives each expired medication a unique notif Id so notifs don't replace old ones
+                                            notificationHelper.showNotification("Medication Refill Reminder", message, notificationId);
                                         }
                                     }
                                 });
                             }
                         }
-                    } else {
-                        Log.e("MedRefill", "Failed to fetch medications", task.getException());
                     }
                 });
     }
 
+    // Goes through the user's current medications and check if they're close to their medication-time (15 min before and right on time)
+    private void checkMedicationTime() {
+        // Gets the current user
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String currentUserId = auth.getCurrentUser().getUid();
+
+        // Creates reference to the userMedications collection
+        CollectionReference userMedicationRef = database.collection("userMedications");
+
+        // Pulls the user's current medications from Firestore
+        //database.collection("userMedications")
+        userMedicationRef.whereEqualTo("userID", currentUserId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Loops through all of the user's current medications
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            // Grabs values from the database
+                            String medicationTime = document.getString("medicationTime");
+                            DocumentReference medRef = document.getDocumentReference("medicationRef");
+
+                            // Create a Medication object
+                            Medication medication = new Medication();
+                            medication.setMedicationTime(medicationTime);
+                            Log.d("medicationNotif", "hi");
+
+                            // Checks if current medication needs to be taken soon (within 15 minutes)
+                            if (medication.isTimeToTake(medicationTime)) {
+                                Log.d("medicationNotif", "hi");
+                                // Grabs the name of the medication
+                                medRef.get().addOnSuccessListener(medSnapshot -> {
+                                    if (medSnapshot.exists()) {
+                                        String medicationName = medSnapshot.getString("Name");
+                                        String message = "Your medication " + medicationName + " needs to be taken soon!";
+
+                                        // Checks if user turned on notification permissions
+                                        if (notificationHelper.checkNotificationPermission(Homescreen.this, 101)) {
+                                            // Sends the medication-time notification
+                                            int notificationId = notificationCounter++; // Gives each medication a unique notif Id so notifs don't replace old ones
+                                            notificationHelper.showNotification("Medication Reminder", message, notificationId);
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+    }
+
+    // checks if the user's taken today map is linked to the current day (today)
+    private void checkTakenToday() {
+        // Gets the current user
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String currentUserId = auth.getCurrentUser().getUid();
+
+        // Creates reference to the userMedications collection
+        CollectionReference userMedicationRef = database.collection("userMedications");
+
+        // Pulls the user's current medications from Firestore
+        userMedicationRef.whereEqualTo("userID", currentUserId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Loops through all of the user's current medications
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String today = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(new Date()); // grabs today's daate
+                            Map<String, Boolean> takenToday = (Map<String, Boolean>) document.get("takenToday"); // grabs the date stored
+
+                            // if takenToday doesn't exist yet
+                            if (takenToday == null) {
+                                takenToday = new HashMap<>();
+                            }
+
+                            // If today's entry isn't there yet
+                            if (!takenToday.containsKey(today)) {
+                                takenToday.put(today, false); // assumes not taken
+                                document.getReference().update("takenToday", takenToday); // updates takenToday with current date
+                            }
+                        }
+                    }
+                });
+    }
+    // Sets up the expiration + refill UI and enables arrow functionality
+    private void setUpMedicationView(List<Medication> medications, String view) {
+        // Initializing the arrows
+        ImageView leftArrow;
+        ImageView rightArrow;
+
+        if (Objects.equals(view, "time")) {
+            // Initializing the left and right medication time arrows
+            leftArrow = findViewById((R.id.timeLeftButton));
+            rightArrow = findViewById((R.id.timeRightButton));
+        } else {
+            rightArrow = null;
+            leftArrow = null;
+        }
+
+        // if there's no medication that's expiring or needs a refill then it will stop
+        if (medications.isEmpty()) return;
+
+        // sets the first expiring/refill medication as the first page
+        final int[] currentIndex = {0};
+        updateMedicationView(medications, currentIndex[0], view);
+        // sets the visibility of arrows
+        leftArrow.setVisibility(View.INVISIBLE);
+        if (medications.size() > 1) {
+            rightArrow.setVisibility(View.VISIBLE);
+        } else {
+            rightArrow.setVisibility(View.INVISIBLE);
+        }
+
+        // if user clicks left then they go to the previous medication
+        leftArrow.setOnClickListener(v -> {
+            if (currentIndex[0] > 0) {
+                currentIndex[0]--;
+                updateMedicationView(medications, currentIndex[0], view);
+
+                // sets the visibility of arrows
+                rightArrow.setVisibility(View.VISIBLE);
+                if (currentIndex[0] == 0) {
+                    leftArrow.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        // if user clicks right then they go to the next medication
+        rightArrow.setOnClickListener(v -> {
+            if (currentIndex[0] < medications.size() - 1) {
+                currentIndex[0]++;
+                updateMedicationView(medications, currentIndex[0], view);
+
+                // sets the visibility of arrows
+                leftArrow.setVisibility(View.VISIBLE);
+                if (currentIndex[0] == medications.size() - 1) {
+                    rightArrow.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+    }
+
+    // updates the current expiration/refill medication card being shown
+    private void updateMedicationView(List<Medication> medications, int index, String view) {
+        if (Objects.equals(view, "time")) {
+            // Initializing values being changed (name and medication time)
+            TextView medicationName = findViewById(R.id.timeMedicationName);
+            TextView medicationTime = findViewById(R.id.timeMedicationTime);
+
+            // Sets values to the new medication values
+            Medication medication = medications.get(index);
+            medicationName.setText(medication.getName());
+            medicationTime.setText(medication.getMedicationTime());
+
+            // Updates if medication has been taken in firestore + UI
+            // Increments/decrements pill tracking also
+            Button takenButton = findViewById(R.id.takenButton);
+            // Grabs the current taken status of the medication
+            String today = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(new Date());
+            Map<String, Boolean> takenToday = medication.getTakenToday();
+            // Taken button logic
+            takenButton.setOnClickListener(v -> {
+                // Switches taken status to the opposite and updates medication model
+                // If currently true (taken), switches to false (not taken)
+                boolean hasTaken = takenToday.getOrDefault(today, false);
+                boolean newHasTaken = !hasTaken;
+                takenToday.put(today, newHasTaken);
+                medication.setTakenToday(takenToday);
+
+                // Updates changes in firestore
+                FirebaseFirestore database = FirebaseFirestore.getInstance();
+                DocumentReference userMedicationRef = database.collection("userMedications").document(medication.getId());
+                userMedicationRef.update("takenToday", takenToday);
+
+                if (!hasTaken) {
+                    // If taken then button changes to green and increments medication
+                    takenButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(Homescreen.this, R.color.normal_green)));
+                    int newPillsTaken = medication.getPillsTaken() + 1;
+                    medication.setPillsTaken(newPillsTaken);
+                    userMedicationRef.update("pillsTaken", newPillsTaken);
+                } else {
+                    // If not taken then button reverts back to white and decrements medication
+                    takenButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(Homescreen.this, R.color.white)));
+                    int newPillsTaken = medication.getPillsTaken() - 1;
+                    medication.setPillsTaken(newPillsTaken);
+                    userMedicationRef.update("pillsTaken", newPillsTaken);
+                }
+            });
+
+            // Determines the taken status of medication when it first loads
+            boolean initialHasTaken = takenToday.getOrDefault(today, false);
+            if (initialHasTaken) {
+                takenButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(Homescreen.this, R.color.normal_green)));
+            } else {
+                takenButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(Homescreen.this, R.color.white)));
+            }
+        }
+    }
 }

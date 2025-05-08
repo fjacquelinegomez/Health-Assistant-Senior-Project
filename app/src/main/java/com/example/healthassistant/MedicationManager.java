@@ -148,7 +148,7 @@ public class MedicationManager extends AppCompatActivity {
                                     String medicationName = medSnapshot.getString("Name");
                                     // creates a new medication object with all the desired values then adds it to the main medication list
                                     Medication medication = new Medication();
-                                    medication.setId(id);
+                                    medication.setUserId(id);
                                     medication.setName(medicationName);
                                     medication.setExpirationDate(expirationDate);
                                     medication.setTotalPills(totalPills);
@@ -305,7 +305,7 @@ public class MedicationManager extends AppCompatActivity {
 
                 // Updates changes in firestore
                 FirebaseFirestore database = FirebaseFirestore.getInstance();
-                DocumentReference userMedicationRef = database.collection("userMedications").document(medication.getId());
+                DocumentReference userMedicationRef = database.collection("userMedications").document(medication.getUserId());
                 userMedicationRef.update("takenToday", takenToday);
 
                 if (!hasTaken) {

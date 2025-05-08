@@ -29,13 +29,27 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import medication.OpenFDAApiResponse;
+import medication.OpenFDAApiService;
+import medication.RetrofitService;
+import medication.RxNormApiNameResponse;
+import medication.RxNormApiResponse;
+import medication.RxNormApiService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AddMedication extends AppCompatActivity {
     // Initializes firebase variables
@@ -292,62 +306,71 @@ public class AddMedication extends AppCompatActivity {
 
             // Save medication to medication manager and links it to the user adding it
             // Saves medication itself to the medications database
-            saveMedicationToFirestore(medicationName, rxcui);
+            Medication medication = new Medication(rxcui, medicationName);
+            saveMedicationToFirestore(medication);
 
             // checks added medication for drug interaction and adds medication to user's medication database
             // If there is an interaction then a warning pops up and user can choose how to proceed
-            // FIXME: for now I hardcoded Aspirin to show that the dialogue works
-            //checkInteractions(rxcui, medicationName, "Aspirin", userId, medicationForm, frequencyCount, frequencyUnit, medicationTime, dosageAmount, expirationDate, totalPills, additionalNotes);
+            Medication userMedication = new Medication(rxcui, medicationName, userId, medicationForm, frequencyCount, frequencyUnit, medicationTime, dosageAmount, expirationDate, totalPills, additionalNotes);
+            DocumentReference medicationReference = database.collection("medications").document(rxcui);
+            checkInteractions(userMedication, medicationReference);
 
             // Save medication (along with other inputted details) to the user's medication database
-            saveUserMedication(rxcui, medicationName, userId, medicationForm, frequencyCount, frequencyUnit, medicationTime, dosageAmount, expirationDate, totalPills, additionalNotes);
+            //saveUserMedication(userMedication);
         });
     }
 
     // Saves added medication to firestore
-    private void saveMedicationToFirestore(String medicationName, String rxcui) {
+    private void saveMedicationToFirestore(Medication medication) {
         // Creates a document reference in the medications database using the rxcui as the entry identifier
-        DocumentReference medRef = database.collection("medications").document(rxcui);
+        DocumentReference medRef = database.collection("medications").document(medication.getRxcui());
 
         // Checks if the medication already exists in the medications database
         medRef.get().addOnCompleteListener(task -> {
-           if (!task.getResult().exists()) {
+           if (task.isSuccessful() && !task.getResult().exists()) {
                // If medication doesn't exist in the medication database yet, adds to medication database then userMedications database
-               // Creates new medication document
-               Map<String, Object> medicationData = new HashMap<>();
-               medicationData.put("RxCUI", rxcui);
-               medicationData.put("Name", medicationName);
+
+               fetchAllNames(medication.getRxcui(), altNames -> {
+                   // Creates new medication document
+                   Map<String, Object> medicationData = new HashMap<>();
+                   medicationData.put("RxCUI", medication.getRxcui());
+                   medicationData.put("Name", medication.getName());
+                   medicationData.put("AlternateNames", altNames != null ? altNames : "Unknown");
 
                // Saves to medications database
-               medRef.set(medicationData).addOnSuccessListener(aVoid -> {
-                   Log.d("Firestore", "Medication added: " + medicationName);
-               }).addOnFailureListener(e -> Log.e("Firestore", "Error adding medication", e));
+               medRef.set(medicationData)
+                       .addOnSuccessListener(aVoid -> {
+                           Log.d("Firestore", "Medication added: " + medication.getName());
+                       })
+                       .addOnFailureListener(e -> {
+                           Log.e("Firestore", "Error adding medication", e);
+                       });
+               });
            }
         });
     }
 
     // References added medication to the user
-    private void saveUserMedication(String rxcui, String medicationName, String userId, String medicationForm, int frequencyCount, String frequencyUnit,
-                                    String medicationTime, int dosageAmount, String expirationDate, int totalPills, String additionalNotes) {
+    private void saveUserMedication(Medication userMedication) {
         // Creates a document reference in the userMedications database using the userId-rxcui as the entry identifier
-        DocumentReference userMedRef = database.collection("userMedications").document(userId + "_" + rxcui);
+        DocumentReference userMedRef = database.collection("userMedications").document(userMedication.getUserId() + "_" + userMedication.getRxcui());
 
         // Creates a document reference to the medication the user is trying to save (keeps it modular)
-        DocumentReference medRef = database.collection("medications").document(rxcui);
+        DocumentReference medRef = database.collection("medications").document(userMedication.getRxcui());
 
         // Creates userMedication hashmap with their inputted values
         Map<String, Object> userMedData = new HashMap<>();
-        userMedData.put("userID", userId);
+        userMedData.put("userID", userMedication.getUserId());
         userMedData.put("medicationRef", medRef);
-        userMedData.put("medicationForm", medicationForm);
-        userMedData.put("dosageAmount", dosageAmount);
-        userMedData.put("frequencyCount", frequencyCount);
-        userMedData.put("frequencyUnit", frequencyUnit);
-        userMedData.put("medicationTime", medicationTime);
-        userMedData.put("expirationDate", expirationDate);
+        userMedData.put("medicationForm", userMedication.getMedicationForm());
+        userMedData.put("dosageAmount", userMedication.getDosageAmount());
+        userMedData.put("frequencyCount", userMedication.getFrequencyCount());
+        userMedData.put("frequencyUnit", userMedication.getFrequencyUnit());
+        userMedData.put("medicationTime", userMedication.getMedicationTime());
+        userMedData.put("expirationDate", userMedication.getExpirationDate());
         userMedData.put("pillsTaken", 0);
-        userMedData.put("totalPills", totalPills);
-        userMedData.put("additionalNotes", additionalNotes);
+        userMedData.put("totalPills", userMedication.getTotalPills());
+        userMedData.put("additionalNotes", userMedication.getAdditionalNotes());
 
         // Creates a log of whether or not user has taken a medication
         // FIXME: will only log the current day
@@ -359,7 +382,6 @@ public class AddMedication extends AppCompatActivity {
 
         // Saves to userMedications database
         userMedRef.set(userMedData).addOnSuccessListener(aVoid -> {
-            Log.d("Firestore", "User Medication added:" + medicationName + "to" + userId);
             // Shows the new medication added in medication manager
             Intent intent = new Intent(AddMedication.this, MedicationManager2.class);
             startActivity(intent);
@@ -453,13 +475,72 @@ public class AddMedication extends AppCompatActivity {
         return valid;
     }
 
-    // Checks for medication interactions
-    private void checkInteractions(String rxcui, String medicationName, String genericName, String userId, String medicationForm, int frequencyCount, String frequencyUnit,
-                                      String medicationTime, int dosageAmount, String expirationDate, int totalPills, String additionalNotes) { // FIXME: should prob have used medication object oops
+    // Defines what to do with the list of names after fetching asynchronously
+    public interface AllNameCallback {
+        void onAllNamesFetched(List names);
+    }
 
+    // Fetches all the possible names of the medication (for drug interaction purposes)
+    private void fetchAllNames(String rxcui, final AllNameCallback callback) {
+        // Creates Retrofit instance of RxNorm api + opens a request to the endpoint
+        RxNormApiService apiService = RetrofitService.getRxNormClient().create(RxNormApiService.class);
+        Call<RxNormApiNameResponse> call = apiService.fetchAllNames(rxcui);
+
+        // Performs request asynchronously
+        call.enqueue(new Callback<RxNormApiNameResponse>() {
+            @Override
+            public void onResponse(Call<RxNormApiNameResponse> call, Response<RxNormApiNameResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // Gets the properties section of the response
+                    RxNormApiNameResponse.Properties properties = response.body().getProperties();
+
+                    // List that will hold all the possible drug names RxNorm provides + adds to the list if it exists
+                    List<String> names = new ArrayList<>();
+                    if (properties.getName() != null) {
+                        names.add(properties.getName());
+                    }
+                    if (properties.getSynonym() != null && !properties.getSynonym().equals(properties.getName())) {
+                        names.add(properties.getSynonym());
+                    }
+
+                    // Returns list of medication names
+                    callback.onAllNamesFetched(names);
+                } else {
+                    // If no name is found then it's marked as Unknown
+                    callback.onAllNamesFetched(Collections.singletonList("Unknown"));
+                }
+        }
+            @Override
+            // If the request fails
+            public void onFailure(Call<RxNormApiNameResponse> call, Throwable t) { callback.onAllNamesFetched(Collections.singletonList("Unknown")); }
+        });
+    }
+
+    // Checks for medication interactions
+    private void checkInteractions(Medication userMedication, DocumentReference medicationReference) {
         // Gets the current user
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String currentUserId = auth.getCurrentUser().getUid();
+
+        // Grabs the name + alternate names of the medication being added and adds to a list of names to check
+        medicationReference.get().addOnSuccessListener(userMedicationDoc -> {
+            // Grabs name + alternate names
+            String addedMedicationName = userMedicationDoc.getString("Name");
+            List<String> addedAlternateNames = (List<String>) userMedicationDoc.get("AlternateNames");
+
+            // Adds names + altername names if it exists
+            List<String> namesToCheck = new ArrayList<>();
+            if (addedMedicationName != null) {
+                namesToCheck.add(addedMedicationName);
+            }
+            if (addedAlternateNames != null) {
+                namesToCheck.addAll(addedAlternateNames);
+            }
+
+            List<String> activeIngredients = new ArrayList<>();
+            for (String name : namesToCheck) {
+                activeIngredients.addAll(extractActiveIngredients(name));
+            }
 
         // Creates reference to the userMedications collection
         CollectionReference userMedicationRef = database.collection("userMedications");
@@ -469,8 +550,8 @@ public class AddMedication extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        // Will hold all the stored medications it interacts with
-                        List<String> interactingMedications = new ArrayList<>();
+                        // Will hold all the stored medications it interacts with (no duplicates)
+                        Set<String> interactingMedications = new HashSet<>();
 
                         // Variables that ensures async task is done before proceeding
                         int totalDocs = task.getResult().size();
@@ -482,45 +563,80 @@ public class AddMedication extends AppCompatActivity {
                             medRef.get().addOnCompleteListener(medSnapshot -> {
                                 if (medSnapshot.isSuccessful()) {
                                     DocumentSnapshot medDoc = medSnapshot.getResult();
+                                    // Grabs the information of the medication being checked against
                                     String medName = medDoc.getString("Name");
-                                    List<String> interactions = (List<String>) medDoc.get("interactions");
-                                    Log.d("drugInteraction", interactions.get(0));
+                                    //List<String> interactions = (List<String>) medDoc.get("interactions");
 
-                                    // Adds to the list of medications it interacts with if it matches the interactions list
-                                    // FIXME: not working ;-;
-                                    if (interactions != null && interactions.contains(genericName)) {
-                                        interactingMedications.add(medName);
-                                        Log.d("drugInteraction", "added interaction");
+                                    // Fetches warnings about medicaiton from openFDA which should have interactions mentioned theorhetically
+                                    fetchWarnings(medName, 1, new OnWarningsFetchedListener() {
+                                        @Override
+                                        public void onWarningsFetched(List<String> warnings) {
+                                            if (warnings != null && !warnings.isEmpty()) {
+                                                // Goes through each warning
+                                                for (String warning : warnings) {
+                                                    Log.d("InteractionWarning", "Warning: " + warning);
+                                                    // Goes through the ingredients / name of the medication being added
+                                                    for (String ingredient : activeIngredients) {
+                                                        //Log.d("InteractionWarning", "Ingredient: " + ingredient);
+                                                        // Checks if ingredient/name is found in the warning
+                                                        if (warning.toLowerCase().contains(ingredient.toLowerCase())) {
+                                                            Log.d("InteractionWarning", "interaction found: " + medName);
+                                                            interactingMedications.add(medName);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            // Ensures async task is done before proceeding
+                                            if (asyncTaskCounter.incrementAndGet() == totalDocs) {
+                                                if (!interactingMedications.isEmpty()) {
+                                                    // shows interaction warning dialog
+                                                    Log.d("InteractionWarning", "Interaction found");
+                                                    showInteractionWarning(interactingMedications, userMedication);
+                                                } else {
+                                                    // saves the user's medication like normal
+                                                    Log.d("InteractionWarning", "Interaction not found");
+                                                    saveUserMedication(userMedication);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    /*
+                                    // Goes through the medication's interactions
+                                    if (interactions != null) {
+                                        for (String interaction : interactions) {
+                                            for (String nameToCheck : namesToCheck) {
+                                                // Adds the medication to the list of interacting medications if interaction found
+                                                if (nameToCheck.toLowerCase().contains(interaction.toLowerCase())) {
+                                                    interactingMedications.add(medName);
+                                                }
+                                            }
+                                        }
                                     }
+                                     */
                                 }
                             });
                         }
-
-                        Log.d("drugInteraction", "running");
-                        // Ensures async task is done before proceeding
-                        if (asyncTaskCounter.incrementAndGet() == totalDocs) {
-                            Log.d("drugInteraction", "inside");
-                            if (!interactingMedications.isEmpty()) {
-                                // shows interaction warning dialog
-                                Log.d("drugInteraction", "interaction");
-                                showInteractionWarning(interactingMedications, rxcui, medicationName, genericName, userId, medicationForm, frequencyCount, frequencyUnit, medicationTime, dosageAmount, expirationDate, totalPills, additionalNotes);
-                            } else {
-                                // saves the user's medication like normal
-                                Log.d("drugInteraction", "no interaction");
-                                saveUserMedication(rxcui, medicationName, userId, medicationForm, frequencyCount, frequencyUnit, medicationTime, dosageAmount, expirationDate, totalPills, additionalNotes);
-                            }
-                        }
                     }
                 });
+        });
     }
 
-    private void showInteractionWarning(List<String> interactingMedications, String rxcui, String medicationName, String genericName, String userId, String medicationForm, int frequencyCount, String frequencyUnit,
-                                        String medicationTime, int dosageAmount, String expirationDate, int totalPills, String additionalNotes) {
+    // Displays the interaction warning so users can choose how to proceed
+    private void showInteractionWarning(Set<String> interactingMedications, Medication userMedication) {
         // Builds the warning message
-        StringBuilder message = new StringBuilder(medicationName + " interacts with the following medication(s) in your Medication Manager: ");
-        //for (String medName : interactingMedications) {
-           // message.append(medName).append(", ");
-        //}
+        StringBuilder message = new StringBuilder(userMedication.getName() + " interacts with the following medication(s) in your Medication Manager: ");
+        // Will tell the user which medication the medication they're adding interacts with
+        int i = 0;
+        int interactingMedicationsSize = interactingMedications.size();
+        for (String med: interactingMedications) {
+            message.append(med);
+            if (i == interactingMedicationsSize - 1) {
+                message.append(". ");
+            } else {
+                message.append(", ");
+            }
+            i++;
+        }
         message.append("Please consult a healthcare professional or use caution. Do you still wish to proceed?");
 
         // shows the actual alert and lets the user interact with it
@@ -529,7 +645,7 @@ public class AddMedication extends AppCompatActivity {
                 .setMessage(message.toString())
                 .setPositiveButton("Add", (dialog, which) -> {
                     // if user decides to add anyways it saves the medication
-                    saveUserMedication(rxcui, medicationName, userId, medicationForm, frequencyCount, frequencyUnit, medicationTime, dosageAmount, expirationDate, totalPills, additionalNotes);
+                    saveUserMedication(userMedication);
                     dialog.dismiss();
                 })
                 .setNegativeButton("Exit", (dialog, which) -> {
@@ -538,4 +654,61 @@ public class AddMedication extends AppCompatActivity {
                 })
                 .show();
     }
+
+    // Defines what to do with the warnings after fetching asynchronously
+    public interface OnWarningsFetchedListener {
+        void onWarningsFetched(List<String> warnings);
+    }
+
+    // Fetches warning about medication from OpenFDA Api
+    public void fetchWarnings(String medicationName, int limit, final OnWarningsFetchedListener listener) {
+        // Creates instance of OpenFDA api + opens a request to the endpoint
+        OpenFDAApiService openFDAApiService = RetrofitService.getOpenFDAClient().create(OpenFDAApiService.class);
+        Call<OpenFDAApiResponse> call = openFDAApiService.getDrugWarnings(medicationName, limit);
+
+        // Requests warning from openFDA asynchronously
+        call.enqueue(new retrofit2.Callback<OpenFDAApiResponse>() {
+            @Override
+            public void onResponse(Call<OpenFDAApiResponse> call, retrofit2.Response<OpenFDAApiResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // Will return the list of warnings that openFDA provides
+                    List<String> warnings = new ArrayList<>();
+                    for (OpenFDAApiResponse.DrugLabel drugLabel : response.body().getResults()) {
+                        warnings.addAll(drugLabel.getWarnings());
+                    }
+                    listener.onWarningsFetched(warnings);
+                } else {
+                    listener.onWarningsFetched(null); // In case there's no warning for that medication
+                }
+            }
+
+            @Override
+            // In case the Api request fails
+            public void onFailure(Call<OpenFDAApiResponse> call, Throwable t) {
+                listener.onWarningsFetched(null);
+            }
+        });
+    }
+
+    // Extracts active ingredients from the medication names
+    private List<String> extractActiveIngredients(String medicationName) {
+        List<String> ingredients = new ArrayList<>();
+
+        // List of terms to ignore during extraction
+        List<String> ignoreTerms = Arrays.asList("MG", "Tablet", "Oral", "Caplet", "Caplets", "Capsule", "mg", "tablet", "oral", "Triple", "and", "Strength", "Reliever", "Extra", "Action", "PM");
+
+        if (medicationName != null) {
+            // Parses information if it runs into a space, slash, or comma
+            String[] parts = medicationName.split("[/ ,]");
+            for (String part : parts) {
+                // Filters out ignore words I defined + no numbers
+                if (part.matches("[a-zA-Z]+") && !ignoreTerms.contains(part)) {
+                    ingredients.add(part.trim());
+                }
+            }
+        }
+        return ingredients;
+    }
+
+
 }

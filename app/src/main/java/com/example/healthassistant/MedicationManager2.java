@@ -102,7 +102,7 @@ public class MedicationManager2 extends AppCompatActivity {
                             if (medTask.isSuccessful() && medTask.getResult().exists()) {
                                 String name = medTask.getResult().getString("Name");
 
-                                Medication medication = new Medication(name, medicationForm, medicationTime, expirationDate, pillsTaken, totalPills, userKey, takenToday);
+                                Medication medication = new Medication(name, userKey, medicationForm, medicationTime, expirationDate, pillsTaken, totalPills,  takenToday);
                                 medicationList.add(medication);
                                 medicationAdapter.notifyDataSetChanged();
                             } else {
@@ -132,7 +132,7 @@ public class MedicationManager2 extends AppCompatActivity {
     // Method to delete medication from Firestore and update the list
     public void deleteMedicationFromFirestore(Medication medication, int position) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference medicationRef = db.collection("userMedications").document(medication.getId());
+        DocumentReference medicationRef = db.collection("userMedications").document(medication.getUserId());
 
         medicationRef.delete().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

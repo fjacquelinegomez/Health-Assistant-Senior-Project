@@ -100,19 +100,6 @@
                 android:layout_marginBottom="20dp" />
 
 
-            <!-- Streak counter
-            <TextView
-                android:id="@+id/streakCounter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
-                android:text="Relaxation Streak: 0 Days"
-                android:textColor="#333"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_marginBottom="16dp" /> -->
-
-
             <!-- Asking how the user feels -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -312,7 +299,6 @@
                 android:elevation="2dp" />
         </LinearLayout>
     </ScrollView>
-
 
 
 

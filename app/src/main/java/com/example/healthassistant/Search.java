@@ -105,7 +105,7 @@ public class Search extends AppCompatActivity {
     private void searchMedication(String drugName) {
         Log.d("SearchMedication", "Searching for: " + drugName);
 
-        RxNormApiService service = RetrofitService.getClient().create(RxNormApiService.class);
+        RxNormApiService service = RetrofitService.getRxNormClient().create(RxNormApiService.class);
         service.searchDrugs(drugName).enqueue(new Callback<RxNormApiResponse>() {
             @Override
             public void onResponse(Call<RxNormApiResponse> call, Response<RxNormApiResponse> response) {

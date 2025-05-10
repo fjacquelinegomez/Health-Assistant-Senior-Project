@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.List;
+import java.util.Map;
 
 public class MedicationManager2 extends AppCompatActivity {
     private List<Medication> medicationList = new ArrayList<>();
@@ -93,6 +94,8 @@ public class MedicationManager2 extends AppCompatActivity {
                     String userKey = document.getId();
                     String expirationDate = document.getString("expirationDate");
                     String medicationForm = document.getString("medicationForm");
+                    String medicationTime = document.getString("medicationTime");
+                    Map<String, Boolean> takenToday = (Map<String, Boolean>) document.get("takenToday");
 
                     // Grabs the reference of the medication for extra information (medication name)
                     DocumentReference medRef = document.getDocumentReference("medicationRef");
@@ -101,7 +104,7 @@ public class MedicationManager2 extends AppCompatActivity {
                             if (medTask.isSuccessful() && medTask.getResult().exists()) {
                                 String name = medTask.getResult().getString("Name");
 
-                                Medication medication = new Medication(name, medicationForm, expirationDate, pillsTaken, totalPills, userKey);
+                                Medication medication = new Medication(name, userKey, medicationForm, medicationTime, expirationDate, pillsTaken, totalPills,  takenToday);
                                 medicationList.add(medication);
                                 medicationAdapter.notifyDataSetChanged();
                             } else {
@@ -131,7 +134,7 @@ public class MedicationManager2 extends AppCompatActivity {
     // Method to delete medication from Firestore and update the list
     public void deleteMedicationFromFirestore(Medication medication, int position) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference medicationRef = db.collection("userMedications").document(medication.getId());
+        DocumentReference medicationRef = db.collection("userMedications").document(medication.getUserId());
 
         medicationRef.delete().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

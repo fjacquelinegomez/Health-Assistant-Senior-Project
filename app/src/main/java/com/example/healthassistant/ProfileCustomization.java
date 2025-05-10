@@ -107,7 +107,7 @@ public class ProfileCustomization extends AppCompatActivity {
 
         //logic when a user presses health goals
         btnHG.setOnClickListener(v ->{
-            Intent intent = new Intent(ProfileCustomization.this, HealthGoals_PC.class);
+            Intent intent = new Intent(ProfileCustomization.this, HealthGoals.class);
             activityLauncher.launch(intent);
         });
 

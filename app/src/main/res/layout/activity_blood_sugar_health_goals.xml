@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFE8ED"
+    tools:context=".BloodSugar_HealthGoals">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header CardView -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/BloodSugarGoalsCard"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#FAEDCB"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="15dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.05" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/BloodSugarHeaderText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Blood Sugar"
+                        android:textColor="#000000"
+                        android:textSize="28sp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+            <!-- Motivation Quote -->
+            <TextView
+                android:id="@+id/motivationQuote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Let's set a goal for your blood sugar and track your progress for a healthier lifestyle 🩸🎯"
+                android:textAlignment="center"
+                android:textColor="#555"
+                android:textSize="16sp" />
+
+            <!-- Goal Input Section -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="#FAF3DD"> <!-- You can change this color -->
+
+                <LinearLayout
+                    android:id="@+id/goalInputSection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="16dp">
+
+                    <EditText
+                        android:id="@+id/inputGoalMin"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:hint="Min Goal"
+                        android:inputType="number"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                    <EditText
+                        android:id="@+id/inputGoalMax"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:hint="Max Goal"
+                        android:inputType="number"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                    <Button
+                        android:id="@+id/setGoalButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Set Goal"
+                        android:textColor="#FFFF"
+                        android:fontFamily="@font/poppins_bold"
+                        android:backgroundTint="#000000"
+                        android:elevation="2dp"
+                        android:padding="12dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/goalBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/goal_section_background"
+                android:padding="12dp"
+                android:layout_marginTop="0dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp">
+                <TextView
+                    android:id="@+id/goalTitleDisplay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Goal"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textColor="#000"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"/>
+                <!-- Goal Display Section -->
+                <TextView
+                    android:id="@+id/goalDisplay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Goal"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/editGoalButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Edit Goal"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#FFFF"
+                android:backgroundTint="#000000"
+                android:elevation="2dp"
+                android:textSize="16sp"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone" />
+
+
+            <!-- Daily Graph -->
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/dailyLineChart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Log Blood Sugar Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Log Blood Sugar"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#000"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Blood Sugar Input -->
+            <EditText
+                android:id="@+id/inputBloodSugar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter blood sugar (mg/dL)"
+                android:inputType="number"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Context Dropdown -->
+            <Spinner
+                android:id="@+id/contextSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Save Button -->
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save Your Readings"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#FFFF"
+                android:backgroundTint="#000000"
+                android:elevation="2dp"
+                android:textSize="16sp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Weekly Goal Progress Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weekly Goal Progress"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#000"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Weekly Bar Chart -->
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/weeklyBarChart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Progress Text -->
+            <TextView
+                android:id="@+id/goalProgressText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You’ve stayed in your goal range 0% of the time so far this week."
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="#000"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="32dp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

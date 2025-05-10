@@ -23,6 +23,12 @@
         android:theme="@style/Theme.HealthAssistant"
         tools:targetApi="35">
         <activity
+            android:name=".Weight_HealthGoal"
+            android:exported="false" />
+        <activity
+            android:name=".BloodSugar_HealthGoals"
+            android:exported="false" />
+        <activity
             android:name=".BloodPressure_HealthGoals"
             android:exported="false" />
         <activity

@@ -87,7 +87,9 @@ public class MedicationManager2 extends AppCompatActivity {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     // Grabs all the user's inputted information about the medication
                     int totalPills = document.getLong("totalPills").intValue();
-                    int pillsTaken = document.getLong("pillsTaken").intValue();
+//                    int pillsTaken = document.getLong("pillsTaken").intValue(); //this line was causing current medications page to crash, was replaced with 2 lines below
+                    Long pillsTakenLong = document.getLong("pillsTaken");
+                    int pillsTaken = (pillsTakenLong != null) ? pillsTakenLong.intValue() : 0;
                     String userKey = document.getId();
                     String expirationDate = document.getString("expirationDate");
                     String medicationForm = document.getString("medicationForm");

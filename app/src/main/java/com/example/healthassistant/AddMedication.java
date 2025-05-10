@@ -280,6 +280,8 @@ public class AddMedication extends AppCompatActivity {
         // The logic for when the user clicks the "Add Medication" Button after filling in fields
         // Should save their medication to their database and medication manager
         addMedicationButton.setOnClickListener(v -> {
+            Log.d("MedicationDebug", "Add medication button works");
+
             // Grabs user's input
             String medicationForm  = selectedMedicationForm;
             String dosageAmountText = dosageInput.getText().toString();
@@ -303,17 +305,20 @@ public class AddMedication extends AppCompatActivity {
 
             // Grabs the user's unique ID
             String userId = user.getCurrentUser().getUid();
+            Log.d("MedicationDebug", "User ID in add medication: " + userId);
 
             // Save medication to medication manager and links it to the user adding it
             // Saves medication itself to the medications database
             Medication medication = new Medication(rxcui, medicationName);
             saveMedicationToFirestore(medication);
+            Log.d("MedicationDebug", "Saved medication to firestore");
 
             // checks added medication for drug interaction and adds medication to user's medication database
             // If there is an interaction then a warning pops up and user can choose how to proceed
             Medication userMedication = new Medication(rxcui, medicationName, userId, medicationForm, frequencyCount, frequencyUnit, medicationTime, dosageAmount, expirationDate, totalPills, additionalNotes);
             DocumentReference medicationReference = database.collection("medications").document(rxcui);
             checkInteractions(userMedication, medicationReference);
+            Log.d("MedicationDebug", "Saved user medication to firestore");
 
             // Save medication (along with other inputted details) to the user's medication database
             //saveUserMedication(userMedication);
@@ -354,6 +359,7 @@ public class AddMedication extends AppCompatActivity {
     private void saveUserMedication(Medication userMedication) {
         // Creates a document reference in the userMedications database using the userId-rxcui as the entry identifier
         DocumentReference userMedRef = database.collection("userMedications").document(userMedication.getUserId() + "_" + userMedication.getRxcui());
+        Log.d("MedicationDebug", "User ID in save user medication function: " + userMedication.getUserId());
 
         // Creates a document reference to the medication the user is trying to save (keeps it modular)
         DocumentReference medRef = database.collection("medications").document(userMedication.getRxcui());
@@ -373,7 +379,6 @@ public class AddMedication extends AppCompatActivity {
         userMedData.put("additionalNotes", userMedication.getAdditionalNotes());
 
         // Creates a log of whether or not user has taken a medication
-        // FIXME: will only log the current day
         String today = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(new Date());
         Map<String, Object> takenTodayMap = new HashMap<>();
         takenTodayMap.put(today, false);
@@ -384,6 +389,7 @@ public class AddMedication extends AppCompatActivity {
         userMedRef.set(userMedData).addOnSuccessListener(aVoid -> {
             // Shows the new medication added in medication manager
             Intent intent = new Intent(AddMedication.this, MedicationManager2.class);
+            Log.d("MedicationDebug", "user medication save successful");
             startActivity(intent);
         }).addOnFailureListener(e -> Log.e("Firestore", "Error saving user-medication", e));
     }
@@ -518,9 +524,11 @@ public class AddMedication extends AppCompatActivity {
 
     // Checks for medication interactions
     private void checkInteractions(Medication userMedication, DocumentReference medicationReference) {
+        Log.d("MedicationDebug", "In Check interaction");
         // Gets the current user
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String currentUserId = auth.getCurrentUser().getUid();
+        Log.d("MedicationDebug", "User Id in check interactions: " + currentUserId);
 
         // Grabs the name + alternate names of the medication being added and adds to a list of names to check
         medicationReference.get().addOnSuccessListener(userMedicationDoc -> {
@@ -555,7 +563,16 @@ public class AddMedication extends AppCompatActivity {
 
                         // Variables that ensures async task is done before proceeding
                         int totalDocs = task.getResult().size();
+                        Log.d("MedicationDebug", "Total Docs: " + totalDocs);
                         AtomicInteger asyncTaskCounter = new AtomicInteger(0);
+
+                        // Checks if the user has saved a medication before
+                        // If they haven't then it skips the interaction check
+                        if (totalDocs == 0) {
+                            Log.d("MedicationDebug", "No user medications saved yet, skip interaction check");
+                            saveUserMedication(userMedication);
+                            return;
+                        }
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             // Pulls more information from the actual medication (medication name and interactions)
@@ -574,13 +591,13 @@ public class AddMedication extends AppCompatActivity {
                                             if (warnings != null && !warnings.isEmpty()) {
                                                 // Goes through each warning
                                                 for (String warning : warnings) {
-                                                    Log.d("InteractionWarning", "Warning: " + warning);
+                                                    Log.d("MedicationDebug", "Warning: " + warning);
                                                     // Goes through the ingredients / name of the medication being added
                                                     for (String ingredient : activeIngredients) {
                                                         //Log.d("InteractionWarning", "Ingredient: " + ingredient);
                                                         // Checks if ingredient/name is found in the warning
                                                         if (warning.toLowerCase().contains(ingredient.toLowerCase())) {
-                                                            Log.d("InteractionWarning", "interaction found: " + medName);
+                                                            Log.d("MedicationDebug", "interaction found: " + medName);
                                                             interactingMedications.add(medName);
                                                         }
                                                     }
@@ -590,11 +607,11 @@ public class AddMedication extends AppCompatActivity {
                                             if (asyncTaskCounter.incrementAndGet() == totalDocs) {
                                                 if (!interactingMedications.isEmpty()) {
                                                     // shows interaction warning dialog
-                                                    Log.d("InteractionWarning", "Interaction found");
+                                                    Log.d("MedicationDebug", "Interaction found");
                                                     showInteractionWarning(interactingMedications, userMedication);
                                                 } else {
                                                     // saves the user's medication like normal
-                                                    Log.d("InteractionWarning", "Interaction not found");
+                                                    Log.d("MedicationDebug", "Interaction not found");
                                                     saveUserMedication(userMedication);
                                                 }
                                             }

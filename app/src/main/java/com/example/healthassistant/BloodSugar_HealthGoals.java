@@ -23,6 +23,7 @@ import com.github.mikephil.charting.data.*;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.firebase.database.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class BloodSugar_HealthGoals extends AppCompatActivity {
@@ -133,21 +134,57 @@ public class BloodSugar_HealthGoals extends AppCompatActivity {
                 inRangeCountMap.clear();
                 totalCountMap.clear();
 
+                String todayStr = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+                Calendar weekStartCal = Calendar.getInstance();
+                weekStartCal.set(Calendar.HOUR_OF_DAY, 0);
+                weekStartCal.set(Calendar.MINUTE, 0);
+                weekStartCal.set(Calendar.SECOND, 0);
+                weekStartCal.set(Calendar.MILLISECOND, 0);
+                int currentDayOfWeek = weekStartCal.get(Calendar.DAY_OF_WEEK);
+                weekStartCal.add(Calendar.DAY_OF_MONTH, -(currentDayOfWeek - Calendar.SUNDAY));
+                Date startOfWeek = weekStartCal.getTime();
+
+                Calendar weekEndCal = (Calendar) weekStartCal.clone();
+                weekEndCal.add(Calendar.DAY_OF_MONTH, 7);
+                Date endOfWeek = weekEndCal.getTime();
+
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     Float value = snap.child("value").getValue(Float.class);
                     String context = snap.child("context").getValue(String.class);
+                    String dateStr = snap.child("date").getValue(String.class);
 
-                    if (value == null || context == null) continue;
+                    if (value == null || context == null || dateStr == null) continue;
 
-                    int contextIndex = Arrays.asList(contextLabels).indexOf(context);
-                    if (contextIndex == -1) continue;
+                    try {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        Date logDate = sdf.parse(dateStr);
+                        if (logDate == null) continue;
 
-                    dailyEntries.add(new Entry(contextIndex, value));
+                        // Line Chart (today only)
+                        if (dateStr.equals(todayStr)) {
+                            int contextIndex = Arrays.asList(contextLabels).indexOf(context);
+                            if (contextIndex != -1) {
+                                dailyEntries.add(new Entry(contextIndex, value));
+                            }
+                        }
 
-                    int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
-                    totalCountMap.put(dayOfWeek, totalCountMap.getOrDefault(dayOfWeek, 0) + 1);
-                    if (value >= goalMin && value <= goalMax) {
-                        inRangeCountMap.put(dayOfWeek, inRangeCountMap.getOrDefault(dayOfWeek, 0) + 1);
+                        // Bar Chart (this week only: Sunday–Saturday)
+                        if (!logDate.before(startOfWeek) && logDate.before(endOfWeek)) {
+                            Calendar logCal = Calendar.getInstance();
+                            logCal.setTime(logDate);
+                            int dayOfWeek = logCal.get(Calendar.DAY_OF_WEEK); // 1 = Sunday, 7 = Saturday
+                            int chartIndex = (dayOfWeek + 5) % 7;
+
+                            totalCountMap.put(chartIndex, totalCountMap.getOrDefault(chartIndex, 0) + 1);
+                            if (value >= goalMin && value <= goalMax) {
+                                inRangeCountMap.put(chartIndex, inRangeCountMap.getOrDefault(chartIndex, 0) + 1);
+                            }
+
+                        }
+
+                    } catch (Exception e) {
+                        Log.e(TAG, "Date parse failed for: " + dateStr, e);
                     }
                 }
 
@@ -157,7 +194,7 @@ public class BloodSugar_HealthGoals extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("Firebase", "Read failed", error.toException());
+                Log.e(TAG, "Firebase read failed", error.toException());
             }
         });
     }
@@ -251,7 +288,10 @@ public class BloodSugar_HealthGoals extends AppCompatActivity {
 
         float value = Float.parseFloat(valueStr);
         String context = contextSpinner.getSelectedItem().toString();
-        String date = new java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        sdf.setTimeZone(TimeZone.getDefault());
+        String date = sdf.format(new Date());
+
 
         String id = dbRef.push().getKey();
         if (id == null) return;
@@ -270,14 +310,18 @@ public class BloodSugar_HealthGoals extends AppCompatActivity {
                     dailyEntries.add(new Entry(contextIndex, value));
                     updateDailyChart();
 
-                    int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
-                    int total = totalCountMap.getOrDefault(dayOfWeek, 0) + 1;
-                    totalCountMap.put(dayOfWeek, total);
+                    Calendar cal = Calendar.getInstance();
+                    int rawDay = cal.get(Calendar.DAY_OF_WEEK); // 1 = Sunday, 7 = Saturday
+                    int chartIndex = (rawDay + 5) % 7;
+
+                    int total = totalCountMap.getOrDefault(chartIndex, 0) + 1;
+                    totalCountMap.put(chartIndex, total);
 
                     if (value >= goalMin && value <= goalMax) {
-                        int inRange = inRangeCountMap.getOrDefault(dayOfWeek, 0) + 1;
-                        inRangeCountMap.put(dayOfWeek, inRange);
+                        int inRange = inRangeCountMap.getOrDefault(chartIndex, 0) + 1;
+                        inRangeCountMap.put(chartIndex, inRange);
                     }
+
 
                     updateWeeklyChart();
                 })
@@ -288,7 +332,17 @@ public class BloodSugar_HealthGoals extends AppCompatActivity {
     }
 
     private void updateDailyChart() {
-        LineDataSet dataSet = new LineDataSet(dailyEntries, "Blood Sugar (mg/dL)");
+        // Generate new X-values in order and build matching labels
+        List<Entry> sortedEntries = new ArrayList<>();
+        List<String> xLabels = new ArrayList<>();
+
+        for (int i = 0; i < dailyEntries.size(); i++) {
+            Entry entry = dailyEntries.get(i);
+            sortedEntries.add(new Entry(i, entry.getY())); // force chronological X
+            xLabels.add(contextSpinner.getItemAtPosition((int) entry.getX()).toString()); // use original context label
+        }
+
+        LineDataSet dataSet = new LineDataSet(sortedEntries, "Blood Sugar (mg/dL)");
         dataSet.setLineWidth(2f);
         dataSet.setCircleRadius(4f);
         dataSet.setDrawValues(false);
@@ -300,7 +354,16 @@ public class BloodSugar_HealthGoals extends AppCompatActivity {
         XAxis xAxis = dailyLineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
-        xAxis.setValueFormatter(new LabelFormatter(contextLabels));
+        xAxis.setLabelRotationAngle(-45f); // tilt labels for space
+        xAxis.setLabelCount(xLabels.size(), true); // ensure even label spacing
+        xAxis.setDrawLabels(true);
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                int index = (int) value;
+                return (index >= 0 && index < xLabels.size()) ? xLabels.get(index) : "";
+            }
+        });
 
         dailyLineChart.invalidate();
     }
@@ -338,7 +401,7 @@ public class BloodSugar_HealthGoals extends AppCompatActivity {
         XAxis xAxis = weeklyBarChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
-        xAxis.setValueFormatter(new LabelFormatter(getWeekdayLabelsStartingToday()));
+        xAxis.setValueFormatter(new LabelFormatter(getWeekdayLabelsSundayFirst()));
 
         weeklyBarChart.getDescription().setEnabled(false);
         weeklyBarChart.invalidate();
@@ -356,15 +419,8 @@ public class BloodSugar_HealthGoals extends AppCompatActivity {
         updateWeeklyChart();
     }
 
-    private String[] getWeekdayLabelsStartingToday() {
-        String[] allDays = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-        String[] reordered = new String[7];
-        int today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
-
-        for (int i = 0; i < 7; i++) {
-            reordered[i] = allDays[(today + i) % 7];
-        }
-        return reordered;
+    private String[] getWeekdayLabelsSundayFirst() {
+        return new String[] {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
     }
 
     public static class LabelFormatter extends ValueFormatter {

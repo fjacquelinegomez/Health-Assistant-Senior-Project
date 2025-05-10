@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.*;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.firebase.database.*;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -84,6 +85,7 @@ public class Weight_HealthGoal extends AppCompatActivity {
         loadWeightsFromFirebase();
     }
 
+    // Validates and saves the user’s weight goal range and updates the goal display.
     private void setWeightGoal() {
         String minStr = inputGoalMin.getText().toString();
         String maxStr = inputGoalMax.getText().toString();
@@ -110,6 +112,7 @@ public class Weight_HealthGoal extends AppCompatActivity {
         editGoalButton.setVisibility(View.VISIBLE);
     }
 
+    // Loads the saved goal range and timestamp from SharedPreferences and updates UI visibility accordingly.
     private void loadGoalFromPrefs() {
         goalMin = preferences.getInt(PREF_GOAL_MIN, 0);
         goalMax = preferences.getInt(PREF_GOAL_MAX, 0);
@@ -136,6 +139,7 @@ public class Weight_HealthGoal extends AppCompatActivity {
         }
     }
 
+    // Saves the current goal values and timestamp to SharedPreferences.
     private void saveGoalToPrefs() {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(PREF_GOAL_MIN, goalMin);
@@ -144,6 +148,7 @@ public class Weight_HealthGoal extends AppCompatActivity {
         editor.apply();
     }
 
+    // Saves a new weight entry with today’s date to Firebase, updates feedback immediately, and refreshes the chart and logs.
     private void saveWeight() {
         String weightStr = inputWeight.getText().toString();
         if (weightStr.isEmpty()) {
@@ -152,7 +157,11 @@ public class Weight_HealthGoal extends AppCompatActivity {
         }
 
         float currentWeight = Float.parseFloat(weightStr);
-        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+        // Generate today's date string
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        sdf.setTimeZone(TimeZone.getDefault());
+        String date = sdf.format(new Date());
 
         String id = dbRef.push().getKey();
         if (id == null) return;
@@ -161,15 +170,22 @@ public class Weight_HealthGoal extends AppCompatActivity {
         logEntry.put("weight", currentWeight);
         logEntry.put("date", date);
 
-        dbRef.child(id).setValue(logEntry).addOnSuccessListener(aVoid -> {
-            Toast.makeText(this, "Weight saved", Toast.LENGTH_SHORT).show();
-            updateGoalFeedback(currentWeight);
-            loadWeightsFromFirebase();
-        }).addOnFailureListener(e -> {
-            Toast.makeText(this, "Failed to save weight", Toast.LENGTH_SHORT).show();
-        });
+        dbRef.child(id).setValue(logEntry)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Weight saved", Toast.LENGTH_SHORT).show();
+
+                    // Immediately reflect this weight in feedback
+                    updateGoalFeedback(currentWeight);
+
+                    // Then reload full chart and data
+                    loadWeightsFromFirebase();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to save weight", Toast.LENGTH_SHORT).show();
+                });
     }
 
+    // Updates the feedback message based on how the given weight compares to the user’s goal range.
     private void updateGoalFeedback(float currentWeight) {
         if (goalMin == 0 || goalMax == 0) return;
 
@@ -182,6 +198,7 @@ public class Weight_HealthGoal extends AppCompatActivity {
         }
     }
 
+    // Loads all weight logs from Firebase, updates the chart, and sets the goal feedback to today's log or most recent entry.
     private void loadWeightsFromFirebase() {
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -190,14 +207,48 @@ public class Weight_HealthGoal extends AppCompatActivity {
                 dateLabels.clear();
 
                 int index = 0;
+                float latestWeight = -1f;
+                Date latestDate = null;
+
+                float todayWeight = -1f;
+                String todayStr = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     Float weight = snap.child("weight").getValue(Float.class);
-                    String date = snap.child("date").getValue(String.class);
-                    if (weight == null || date == null) continue;
+                    String dateStr = snap.child("date").getValue(String.class);
+                    if (weight == null || dateStr == null) continue;
 
-                    weightEntries.add(new Entry(index, weight));
-                    dateLabels.add(date);
-                    index++;
+                    try {
+                        Date logDate = sdf.parse(dateStr);
+                        if (logDate != null && (latestDate == null || logDate.after(latestDate))) {
+                            latestDate = logDate;
+                            latestWeight = weight;
+                        }
+
+                        // Track today’s log (if exists)
+                        if (dateStr.equals(todayStr)) {
+                            todayWeight = weight;
+                        }
+
+                        weightEntries.add(new Entry(index, weight));
+
+                        // Format date for display
+                        SimpleDateFormat displayFormat = new SimpleDateFormat("MMM d", Locale.getDefault());
+                        dateLabels.add(displayFormat.format(logDate != null ? logDate : new Date()));
+
+                        index++;
+                    } catch (Exception e) {
+                        dateLabels.add(dateStr);
+                    }
+                }
+
+                // Priority: use today’s weight if exists, otherwise latest past weight
+                if (todayWeight > 0f) {
+                    updateGoalFeedback(todayWeight);
+                } else if (latestWeight > 0f) {
+                    updateGoalFeedback(latestWeight);
                 }
 
                 updateProgressChart();
@@ -210,8 +261,9 @@ public class Weight_HealthGoal extends AppCompatActivity {
         });
     }
 
+    // Updates the line chart with all logged weights and formats the X-axis with readable, spaced date labels.
     private void updateProgressChart() {
-        LineDataSet dataSet = new LineDataSet(weightEntries, "Weight Progress (kg)");
+        LineDataSet dataSet = new LineDataSet(weightEntries, "Weight Progress (lb)");
         dataSet.setLineWidth(2f);
         dataSet.setCircleRadius(4f);
         dataSet.setDrawValues(false);
@@ -223,6 +275,9 @@ public class Weight_HealthGoal extends AppCompatActivity {
         XAxis xAxis = weightProgressChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
+        xAxis.setAvoidFirstLastClipping(true); // avoid cutoff on edges
+        xAxis.setLabelRotationAngle(-30f);     // gentler tilt
+        xAxis.setLabelCount(dateLabels.size(), false); // allow automatic label spacing
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
@@ -231,6 +286,7 @@ public class Weight_HealthGoal extends AppCompatActivity {
             }
         });
 
+        weightProgressChart.setExtraBottomOffset(16f); // Prevent overlap
         weightProgressChart.invalidate();
     }
 }

@@ -7,37 +7,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FBE2E2"
-    tools:context=".FoodManager">
-
-    <!--bottom toolbar and search box-->
-    <LinearLayout
-        android:layout_width="409dp"
-        android:layout_height="563dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="111dp"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <!-- search box -->
-        <android.widget.SearchView
-            android:id="@+id/searchView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <!-- recycler view -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/searchRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="604dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-            app:layout_constraintTop_toBottomOf="@id/searchView" />
-    </LinearLayout>
+    tools:context=".Search">
 
     <!--header-->
     <androidx.cardview.widget.CardView
-        android:id="@+id/foodManagerCard"
+        android:id="@+id/searchMedicationsCard"
         android:layout_width="0dp"
         android:layout_height="110dp"
         android:layout_marginTop="0dp"
@@ -50,7 +24,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintWidth_percent="1.0">
+        app:layout_constraintWidth_percent="1.0"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,6 +78,34 @@
                 android:layout_weight="0.05" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <!--bottom toolbar and search box-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/searchMedicationsCard"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+
+        <!-- search box -->
+        <android.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- recycler view -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+            app:layout_constraintTop_toBottomOf="@id/searchView" />
+    </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"

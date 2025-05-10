@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FBE2E2"
     tools:context=".SleepLogs2">
 
     <!-- bottom toolbar -->
@@ -222,10 +223,4 @@
     </LinearLayout>
     </LinearLayout>
 
-
-
-
-
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

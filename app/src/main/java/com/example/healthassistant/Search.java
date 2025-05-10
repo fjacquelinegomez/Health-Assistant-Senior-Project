@@ -79,13 +79,6 @@ public class Search extends AppCompatActivity {
         adapter = new MedicationSearchAdapter(medicationList);
         recyclerView.setAdapter(adapter);
 
-        // Handle system insets for edge-to-edge layout
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
         // Search bar functionality
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

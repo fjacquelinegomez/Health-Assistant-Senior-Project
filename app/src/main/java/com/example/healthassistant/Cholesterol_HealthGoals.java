@@ -46,12 +46,6 @@ public class Cholesterol_HealthGoals extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_cholesterol_health_goals);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
 
         // Initialize Firebase
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -81,7 +75,7 @@ public class Cholesterol_HealthGoals extends AppCompatActivity {
         /*bottom bar navigation functionality*/
 
         BottomNavigationView nav = findViewById(R.id.bottomNavigationView);
-
+        nav.setSelectedItemId(R.id.healthGoals);  // Set the active tab
         nav.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:

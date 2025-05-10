@@ -1,5 +1,6 @@
 package com.example.healthassistant;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.*;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.*;
 
 import java.text.SimpleDateFormat;
@@ -64,12 +66,34 @@ public class BloodSugar_HealthGoals extends AppCompatActivity {
     private DatabaseReference dbRef;
     private Button editGoalButton;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blood_sugar_health_goals);
 
+        /*bottom bar navigation functionality*/
+        BottomNavigationView nav = findViewById(R.id.bottomNavigationView);
+        nav.setSelectedItemId(R.id.healthGoals);  // Set the active tab
+        nav.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.home:
+                    startActivity(new Intent(BloodSugar_HealthGoals.this, Homescreen.class));
+                    break;
+                case R.id.searchMedication:
+                    startActivity(new Intent(BloodSugar_HealthGoals.this, Search.class));
+                    break;
+                case R.id.foodManager:
+                    startActivity(new Intent(BloodSugar_HealthGoals.this, FoodManager.class));
+                    break;
+                case R.id.healthGoals:
+                    startActivity(new Intent(BloodSugar_HealthGoals.this, HealthGoals.class));
+                    break;
+                case R.id.medicationManager:
+                    startActivity(new Intent(BloodSugar_HealthGoals.this, MedicationManager.class));
+                    break;
+            }
+            return true;
+        });
         inputBloodSugar = findViewById(R.id.inputBloodSugar);
         inputGoalMin = findViewById(R.id.inputGoalMin);
         inputGoalMax = findViewById(R.id.inputGoalMax);

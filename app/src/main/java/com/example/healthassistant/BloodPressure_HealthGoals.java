@@ -47,12 +47,6 @@ public class BloodPressure_HealthGoals extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_blood_pressure_health_goals);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
 
         // Initialize Firebase
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -74,7 +68,7 @@ public class BloodPressure_HealthGoals extends AppCompatActivity {
         /*bottom bar navigation functionality*/
 
         BottomNavigationView nav = findViewById(R.id.bottomNavigationView);
-
+        nav.setSelectedItemId(R.id.healthGoals);  // Set the active tab
         bpEditButton.setOnClickListener(v -> {
             bpisEditing = !bpisEditing;
             bpEditButton.setText(bpisEditing ? "Save Table" : "Edit Table");

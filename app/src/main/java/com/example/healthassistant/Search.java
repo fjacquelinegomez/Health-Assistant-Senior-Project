@@ -45,6 +45,9 @@ public class Search extends AppCompatActivity {
         binding = ActivitySearchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Force this icon to show as selected
+        binding.bottomNavigationView.setSelectedItemId(R.id.searchMedication);
+
         // Bottom Navigation functionality
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {

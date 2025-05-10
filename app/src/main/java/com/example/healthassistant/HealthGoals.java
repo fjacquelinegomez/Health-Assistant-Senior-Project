@@ -27,12 +27,9 @@ public class HealthGoals extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_health_goals);
 
-
-
         /*bottom bar navigation functionality*/
-
         BottomNavigationView nav = findViewById(R.id.bottomNavigationView);
-
+        nav.setSelectedItemId(R.id.healthGoals);  // Set the active tab
         nav.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:

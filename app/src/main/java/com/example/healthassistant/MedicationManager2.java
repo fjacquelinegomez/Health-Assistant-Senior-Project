@@ -44,6 +44,9 @@ public class MedicationManager2 extends AppCompatActivity {
         binding = ActivityMedicationManager2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Force this icon to show as selected
+        binding.bottomNavigationView.setSelectedItemId(R.id.medicationManager);
+
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:

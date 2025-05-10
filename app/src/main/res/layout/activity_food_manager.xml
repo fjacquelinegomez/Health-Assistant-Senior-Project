@@ -170,7 +170,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/bottom_background"
         app:itemIconSize="35dp"
-        app:itemIconTint="@drawable/item_selector"
+        app:itemIconTint="@color/item_selector"
+        app:itemTextColor="@color/item_selector"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_taskbar" />
 

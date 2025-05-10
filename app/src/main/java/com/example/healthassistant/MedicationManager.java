@@ -62,12 +62,12 @@ public class MedicationManager extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_medication_manager);
 
-        /**section below is new**/
-
         /**bottom bar navigation functionality**/
         binding = ActivityMedicationManagerBinding.inflate(getLayoutInflater());
-
         setContentView(binding.getRoot());
+
+        // Force this icon to show as selected
+        binding.bottomNavigationView.setSelectedItemId(R.id.medicationManager);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {

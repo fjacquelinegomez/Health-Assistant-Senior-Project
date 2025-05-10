@@ -59,6 +59,9 @@ public class FoodManager extends AppCompatActivity {
         binding = ActivityFoodManagerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Force this icon to show as selected
+        binding.bottomNavigationView.setSelectedItemId(R.id.foodManager);
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -74,7 +77,7 @@ public class FoodManager extends AppCompatActivity {
                     startActivity(new Intent(FoodManager.this, FoodManager.class));
                     break;
                 case R.id.healthGoals:
-                    startActivity(new Intent(FoodManager.this, HealthGoals_PC.class));
+                    startActivity(new Intent(FoodManager.this, HealthGoals.class));
                     break;
                 case R.id.medicationManager:
                     startActivity(new Intent(FoodManager.this, MedicationManager.class));

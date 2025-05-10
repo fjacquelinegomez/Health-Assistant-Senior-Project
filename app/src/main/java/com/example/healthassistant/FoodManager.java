@@ -210,36 +210,6 @@ public class FoodManager extends AppCompatActivity {
 
     // Makes separate Spoonacular API calls for each selected food preference, dividing the total desired recipe count evenly among them,
     // and then merges the results into a single list for display.
-//    private void fetchRecipesProportionally(List<String> preferences, List<String> exclusions, String diet, String mealType) {
-//        int totalRecipes = 12;
-//        int perQuery = Math.max(1, totalRecipes / preferences.size());
-//        List<Recipe> combinedResults = new ArrayList<>();
-//        AtomicInteger completed = new AtomicInteger(0);
-//
-//        for (String preference : preferences) {
-//            RetrofitClient.getInstance().getSpoonacularService()
-//                    .getRecipesWithExclusions("12f9cc92173944a8aec01fec5f79c485", perQuery, String.join(",", exclusions), diet, preference.trim(), mealType)
-//                    .enqueue(new Callback<RecipeResponse>() {
-//                        @Override
-//                        public void onResponse(Call<RecipeResponse> call, Response<RecipeResponse> response) {
-//                            if (response.isSuccessful() && response.body() != null) {
-//                                combinedResults.addAll(response.body().getResults());
-//                            }
-//                            if (completed.incrementAndGet() == preferences.size()) {
-//                                displayFoodRecommendations(combinedResults);
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<RecipeResponse> call, Throwable t) {
-//                            Log.e("FoodManager", "API call failed for " + preference + ": " + t.getMessage());
-//                            if (completed.incrementAndGet() == preferences.size()) {
-//                                displayFoodRecommendations(combinedResults);
-//                            }
-//                        }
-//                    });
-//        }
-//    }
     private void fetchRecipesProportionally(List<String> preferences, List<String> exclusions, String diet, String mealType) {
         int totalRecipes = 12;
         int perQuery = Math.max(1, totalRecipes / preferences.size());
@@ -606,6 +576,4 @@ public class FoodManager extends AppCompatActivity {
                     eatenAdapter.notifyDataSetChanged();
                 });
     }
-
-
 }

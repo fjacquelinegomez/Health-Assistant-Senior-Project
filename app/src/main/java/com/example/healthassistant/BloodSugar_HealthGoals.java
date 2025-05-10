@@ -23,6 +23,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.*;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
 
 import java.text.SimpleDateFormat;
@@ -110,11 +111,14 @@ public class BloodSugar_HealthGoals extends AppCompatActivity {
         editGoalButton = findViewById(R.id.editGoalButton);
 
 
-        preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+//        preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        preferences = getSharedPreferences("BloodSugarPrefs_" + uid, MODE_PRIVATE);
         loadGoalFromPrefs();
 
         // Initialize Firebase reference
-        dbRef = FirebaseDatabase.getInstance().getReference("blood_sugar_logs");
+//        dbRef = FirebaseDatabase.getInstance().getReference("blood_sugar_logs");
+        dbRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("blood_sugar_logs");
 
         setupContextSpinner();
         setupDailyLineChart();

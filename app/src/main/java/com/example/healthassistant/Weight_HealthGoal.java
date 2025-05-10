@@ -14,6 +14,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.*;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
 
 import java.text.ParseException;
@@ -85,10 +86,14 @@ public class Weight_HealthGoal extends AppCompatActivity {
         goalFeedbackText = findViewById(R.id.goalFeedbackText);
         weightProgressChart = findViewById(R.id.weightProgressChart);
 
-        preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+//        preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        preferences = getSharedPreferences("WeightPrefs_" + uid, MODE_PRIVATE);
+
         loadGoalFromPrefs();
 
-        dbRef = FirebaseDatabase.getInstance().getReference("weight_logs");
+//        dbRef = FirebaseDatabase.getInstance().getReference("weight_logs");
+        dbRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("weight_logs");
 
         setGoalButton.setOnClickListener(v -> setWeightGoal());
         saveWeightButton.setOnClickListener(v -> saveWeight());

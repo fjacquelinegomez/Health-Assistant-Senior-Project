@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.healthassistant.databinding.ActivityHomescreenBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,6 +51,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import food.RecipeResponse;
+import food.RetrofitClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class Homescreen extends AppCompatActivity {
     //used for bottom bar
     ActivityHomescreenBinding binding;
@@ -60,6 +67,18 @@ public class Homescreen extends AppCompatActivity {
     private static int notificationCounter = 0;
 
     private TextView greeting;
+
+    private TextView recipeTitle;
+    private ImageView recipeImage;
+
+    private List<String> avoidIngredients = new ArrayList<>();
+    private List<String> allergies = new ArrayList<>();
+    private List<String> conditions = new ArrayList<>();
+    private List<String> preferences = new ArrayList<>();
+    private List<String> medications = new ArrayList<>();
+
+    private boolean allergiesLoaded = false;
+    private boolean conditionsLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +111,14 @@ public class Homescreen extends AppCompatActivity {
             }
             return false;
         });
+
+
+        // Bind views inside your CardView
+        recipeTitle = findViewById(R.id.recipeTitle);
+        recipeImage = findViewById(R.id.recipeImage);
+
+        // Start loading user data
+        loadUserHealthInfo();
 
         //apointments button
         ImageButton buttonAppoint = (ImageButton) findViewById(R.id.appointmentReminderButton);
@@ -144,12 +171,22 @@ public class Homescreen extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         String fullName = snapshot.child("fullName").getValue(String.class);
+                        String firstName = "friend"; // default fallback
+
                         if (fullName != null && !fullName.isEmpty()) {
-                            String firstName = fullName.split(" ")[0];  // Extract first name
-                            greeting.setText(firstName);
+                            try {
+                                String decryptedFullName = EncryptionUtils.decrypt(fullName);
+                                if (decryptedFullName != null && !decryptedFullName.isEmpty()) {
+                                    String[] parts = decryptedFullName.split(" ");
+                                    if (parts.length > 0) {
+                                        firstName = parts[0];
+                                    }
+                                }
+                            } catch (Exception e) {
+                                Log.e("Homescreen", "Failed to decrypt or parse full name", e);
+                            }
                         }
-                    } else {
-                        greeting.setText("friend!");
+                        greeting.setText(firstName + "!");
                     }
                 }
 
@@ -160,7 +197,7 @@ public class Homescreen extends AppCompatActivity {
             });
         }
 
-        //settings button
+            //settings button
         ImageButton buttonSettings = findViewById(R.id.userProfileButton);
         buttonSettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -315,8 +352,25 @@ public class Homescreen extends AppCompatActivity {
                         // Loops through all of the user's current medications
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             // Grabs values from the database
-                            int totalPills = document.getLong("totalPills").intValue();
-                            int pillsTaken = document.getLong("pillsTaken").intValue();
+                            Long totalPillsLong = document.getLong("totalPills");
+                            int totalPills = 0; // Provide a default value
+                            if (totalPillsLong != null) {
+                                totalPills = totalPillsLong.intValue();
+                            } else {
+                                Log.w("Homescreen", "Document missing 'totalPills': " + document.getId());
+                                // Optionally handle the missing data appropriately
+                            }
+
+
+
+                            Long pillsTakenLong = document.getLong("pillsTaken");
+                            int pillsTaken = 0; // Provide a default value
+                            if (pillsTakenLong != null) {
+                                pillsTaken = pillsTakenLong.intValue();
+                            } else {
+                                Log.w("Homescreen", "Document missing 'pillsTaken': " + document.getId());
+                                // Optionally handle the missing data appropriately
+                            }
                             DocumentReference medRef = document.getDocumentReference("medicationRef");
 
                             // Create a Medication object
@@ -541,5 +595,90 @@ public class Homescreen extends AppCompatActivity {
                 takenButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(Homescreen.this, R.color.white)));
             }
         }
+    }
+
+
+
+    private void loadUserHealthInfo() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("users").document(userId)
+                .collection("medicalHistory").document("allergies")
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists()) {
+                        allergies = (List<String>) doc.get("foodAllergies");
+                    }
+                    allergiesLoaded = true;
+                    checkReady();
+                });
+
+        db.collection("users").document(userId)
+                .collection("medicalHistory").document("conditions")
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists()) {
+                        conditions = (List<String>) doc.get("medicalConditions");
+                    }
+                    conditionsLoaded = true;
+                    checkReady();
+                });
+    }
+
+    private void checkReady() {
+        if (allergiesLoaded && conditionsLoaded) {
+            loadPreferences();
+        }
+    }
+
+    private void loadPreferences() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference prefRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("Food_Preferences_PC");
+
+        prefRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot entry : snapshot.getChildren()) {
+                    Boolean checked = entry.getValue(Boolean.class);
+                    if (checked != null && checked) {
+                        preferences.add(entry.getKey());
+                    }
+                }
+                fetchOneRecommendation();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                fetchOneRecommendation(); // still try
+            }
+        });
+    }
+
+    private void fetchOneRecommendation() {
+        String diet = "balanced"; // or customize based on user data
+        String include = preferences.size() > 0 ? preferences.get(0) : "";
+        String exclude = String.join(",", allergies); // or include conditions/meds too
+
+        RetrofitClient.getInstance().getSpoonacularService()
+                .getRecipesWithExclusions("12f9cc92173944a8aec01fec5f79c485", 1, exclude, diet, include, "main course", "random")
+                .enqueue(new Callback<RecipeResponse>() {
+                    @Override
+                    public void onResponse(Call<RecipeResponse> call, Response<RecipeResponse> response) {
+                        if (response.isSuccessful() && response.body() != null && response.body().getResults().size() > 0) {
+                            RecipeResponse.Recipe recipe = response.body().getResults().get(0);
+                            recipeTitle.setText(recipe.getTitle());
+                            recipeImage.setVisibility(ImageView.VISIBLE);
+                            Glide.with(getApplicationContext()).load(recipe.getImage()).into(recipeImage);
+                        } else {
+                            recipeTitle.setText("No recipe found.");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<RecipeResponse> call, Throwable t) {
+                        recipeTitle.setText("Failed to load recipe.");
+                    }
+                });
     }
 }

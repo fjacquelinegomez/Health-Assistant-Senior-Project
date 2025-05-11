@@ -3,6 +3,7 @@ package com.example.healthassistant;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.healthassistant.databinding.ActivityAppointmentsBinding;
@@ -71,6 +73,12 @@ public class Appointments extends AppCompatActivity {
             loadApptLogs(); // Refresh table with or without delete buttons
         });
 
+
+        CardView createReminderCard = findViewById(R.id.createReminderCard);
+        createReminderCard.setOnClickListener(v -> {
+            Toast.makeText(this, "This feature is still a WIP", Toast.LENGTH_SHORT).show();
+            Log.e("WIP_CARD", "Create Reminder card clicked - feature not implemented yet.");
+        });
 
         loadApptLogs(); // Load data when the activity starts
 

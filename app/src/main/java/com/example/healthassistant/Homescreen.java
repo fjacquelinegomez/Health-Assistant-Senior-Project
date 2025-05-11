@@ -144,12 +144,22 @@ public class Homescreen extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         String fullName = snapshot.child("fullName").getValue(String.class);
+                        String firstName = "friend"; // default fallback
+
                         if (fullName != null && !fullName.isEmpty()) {
-                            String firstName = fullName.split(" ")[0];  // Extract first name
-                            greeting.setText(firstName);
+                            try {
+                                String decryptedFullName = EncryptionUtils.decrypt(fullName);
+                                if (decryptedFullName != null && !decryptedFullName.isEmpty()) {
+                                    String[] parts = decryptedFullName.split(" ");
+                                    if (parts.length > 0) {
+                                        firstName = parts[0];
+                                    }
+                                }
+                            } catch (Exception e) {
+                                Log.e("Homescreen", "Failed to decrypt or parse full name", e);
+                            }
                         }
-                    } else {
-                        greeting.setText("friend!");
+                        greeting.setText(firstName + "!");
                     }
                 }
 
@@ -160,7 +170,7 @@ public class Homescreen extends AppCompatActivity {
             });
         }
 
-        //settings button
+            //settings button
         ImageButton buttonSettings = findViewById(R.id.userProfileButton);
         buttonSettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -315,8 +325,25 @@ public class Homescreen extends AppCompatActivity {
                         // Loops through all of the user's current medications
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             // Grabs values from the database
-                            int totalPills = document.getLong("totalPills").intValue();
-                            int pillsTaken = document.getLong("pillsTaken").intValue();
+                            Long totalPillsLong = document.getLong("totalPills");
+                            int totalPills = 0; // Provide a default value
+                            if (totalPillsLong != null) {
+                                totalPills = totalPillsLong.intValue();
+                            } else {
+                                Log.w("Homescreen", "Document missing 'totalPills': " + document.getId());
+                                // Optionally handle the missing data appropriately
+                            }
+
+
+
+                            Long pillsTakenLong = document.getLong("pillsTaken");
+                            int pillsTaken = 0; // Provide a default value
+                            if (pillsTakenLong != null) {
+                                pillsTaken = pillsTakenLong.intValue();
+                            } else {
+                                Log.w("Homescreen", "Document missing 'pillsTaken': " + document.getId());
+                                // Optionally handle the missing data appropriately
+                            }
                             DocumentReference medRef = document.getDocumentReference("medicationRef");
 
                             // Create a Medication object

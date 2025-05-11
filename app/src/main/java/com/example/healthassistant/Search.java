@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -34,7 +38,7 @@ public class Search extends AppCompatActivity {
     private RecyclerView recyclerView;
     private MedicationSearchAdapter adapter;
     private List<Medication> medicationList = new ArrayList<>();
-
+    private List<Medication> filteredList = new ArrayList<>();
     ActivitySearchBinding binding;
 
     @Override
@@ -44,6 +48,41 @@ public class Search extends AppCompatActivity {
 
         binding = ActivitySearchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        Spinner filterSpinner = findViewById(R.id.filterSpinner);
+
+        // Create an ArrayAdapter using the string array and a simple spinner layout
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.medication_filters,
+                android.R.layout.simple_spinner_item
+        );
+        Button test2 = findViewById(R.id.picture);
+        Intent intent = getIntent();
+        String str = intent.getStringExtra("message_key");
+
+        search = findViewById(R.id.searchView); // <-- initialize BEFORE using it
+        search.setQuery(str, true);
+        test2.setOnClickListener(v -> startActivity(new Intent(Search.this, BarcodeScannerActivity.class)));
+
+        // Specify the layout to use when the list of choices appears
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        filterSpinner.setAdapter(spinnerAdapter);
+
+        // Handle spinner selection
+        filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String selectedFilter = parentView.getItemAtPosition(position).toString();
+                applyFilter(selectedFilter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Do nothing
+            }
+        });
 
         // Force this icon to show as selected
         binding.bottomNavigationView.setSelectedItemId(R.id.searchMedication);
@@ -121,6 +160,9 @@ public class Search extends AppCompatActivity {
                                 String cleanedName = cleanMedicationName(med.getName());
                                 med.setName(cleanedName);
 
+                                // Set the type
+                                med.setType(med.getTty());
+
                                 if (!uniqueMedications.contains(cleanedName)) {
                                     uniqueMedications.add(cleanedName);
                                     medications.add(med);
@@ -131,7 +173,7 @@ public class Search extends AppCompatActivity {
 
                     medicationList.clear();
                     medicationList.addAll(medications);
-                    adapter.notifyDataSetChanged();
+                    applyFilter(((Spinner) findViewById(R.id.filterSpinner)).getSelectedItem().toString());
                     Log.d("SearchMedication", "Loaded " + medicationList.size() + " medications");
                 }
             }
@@ -142,6 +184,7 @@ public class Search extends AppCompatActivity {
             }
         });
     }
+
 
     private String cleanMedicationName(String medication) {
         String cleanedName = medication.replaceAll(
@@ -161,4 +204,29 @@ public class Search extends AppCompatActivity {
 
         return cleanedName;
     }
+
+    private void applyFilter(String filterType) {
+        List<Medication> filteredList = new ArrayList<>();
+
+        if (filterType == null || filterType.equalsIgnoreCase("All")) {
+            filteredList.addAll(medicationList);
+        } else {
+            for (Medication med : medicationList) {
+                if (filterType.equalsIgnoreCase("Ingredient") && "IN".equalsIgnoreCase(med.getType())) {
+                    filteredList.add(med);
+                } else if (filterType.equalsIgnoreCase("Brand Name") && "BN".equalsIgnoreCase(med.getType())) {
+                    filteredList.add(med);
+                } else if (filterType.equalsIgnoreCase("Clinical Drug") && "SCD".equalsIgnoreCase(med.getType())) {
+                    filteredList.add(med);
+                }
+            }
+        }
+
+        if (filteredList.isEmpty()) {
+            Toast.makeText(this, "No medications found for this filter", Toast.LENGTH_SHORT).show();
+        }
+
+        adapter.updateList(filteredList);
+    }
+
 }

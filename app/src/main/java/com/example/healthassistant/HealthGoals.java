@@ -2,9 +2,12 @@ package com.example.healthassistant;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
@@ -15,6 +18,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.healthassistant.databinding.ActivityFoodManagerBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class HealthGoals extends AppCompatActivity {
 
@@ -99,4 +109,5 @@ public class HealthGoals extends AppCompatActivity {
 
 
     }
+
 }

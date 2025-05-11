@@ -29,6 +29,12 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Vi
         this.medicationList = medicationList;
         this.context = context;
     }
+    public void updateList(List<Medication> newList) {
+        medicationList.clear();
+        medicationList.addAll(newList);
+        notifyDataSetChanged();
+    }
+
 
 
     @Override

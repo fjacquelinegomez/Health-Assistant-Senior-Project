@@ -70,6 +70,12 @@ public class SleepLogs2 extends AppCompatActivity {
             loadSleepLogs(); // Load data when the activity starts
         });
 
+
+        Button wipButton = findViewById(R.id.btnAnalyzeSleep);
+        wipButton.setOnClickListener(v ->
+                Toast.makeText(SleepLogs2.this, "Feature coming soon!", Toast.LENGTH_SHORT).show()
+        );
+
         loadSleepLogs(); // Load data when the activity starts
 
 

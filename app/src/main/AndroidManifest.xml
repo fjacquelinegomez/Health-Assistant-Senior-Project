@@ -23,6 +23,12 @@
         android:theme="@style/Theme.HealthAssistant"
         tools:targetApi="35">
         <activity
+            android:name=".LikedDislikedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SymptomAnalysis"
+            android:exported="false" />
+        <activity
             android:name=".Weight_HealthGoal"
             android:exported="false" />
         <activity

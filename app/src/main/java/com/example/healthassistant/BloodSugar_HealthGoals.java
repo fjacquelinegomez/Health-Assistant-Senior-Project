@@ -202,7 +202,8 @@ public class BloodSugar_HealthGoals extends AppCompatActivity {
                             Calendar logCal = Calendar.getInstance();
                             logCal.setTime(logDate);
                             int dayOfWeek = logCal.get(Calendar.DAY_OF_WEEK); // 1 = Sunday, 7 = Saturday
-                            int chartIndex = (dayOfWeek + 5) % 7;
+//                            int chartIndex = (dayOfWeek + 5) % 7;
+                            int chartIndex = dayOfWeek - 1; // Sunday = 0, Monday = 1, ..., Saturday = 6
 
                             totalCountMap.put(chartIndex, totalCountMap.getOrDefault(chartIndex, 0) + 1);
                             if (value >= goalMin && value <= goalMax) {
@@ -340,7 +341,8 @@ public class BloodSugar_HealthGoals extends AppCompatActivity {
 
                     Calendar cal = Calendar.getInstance();
                     int rawDay = cal.get(Calendar.DAY_OF_WEEK); // 1 = Sunday, 7 = Saturday
-                    int chartIndex = (rawDay + 5) % 7;
+//                    int chartIndex = (rawDay + 5) % 7;
+                    int chartIndex = rawDay - 1;
 
                     int total = totalCountMap.getOrDefault(chartIndex, 0) + 1;
                     totalCountMap.put(chartIndex, total);

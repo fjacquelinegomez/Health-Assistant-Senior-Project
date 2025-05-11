@@ -323,7 +323,76 @@ public class FoodManager extends AppCompatActivity {
     }
 
     // Contacts OpenFDA to identify food-medication conflicts.
+//    private List<String> getFoodInteractionsFromOpenFDA(String medName) {
+//        List<String> interactions = new ArrayList<>();
+//        Map<String, List<String>> interactionToIngredients = new HashMap<>();
+//        interactionToIngredients.put("grapefruit", Arrays.asList("grapefruit", "grapefruit juice"));
+//        interactionToIngredients.put("alcohol", Arrays.asList("alcohol", "beer", "wine", "liquor"));
+//        interactionToIngredients.put("caffeine", Arrays.asList("coffee", "black tea", "cola", "caffeine"));
+//        interactionToIngredients.put("dairy", Arrays.asList("milk", "cheese", "yogurt", "dairy"));
+//        interactionToIngredients.put("vitamin K", Arrays.asList("spinach", "kale", "collard greens", "lettuce", "vitamin K"));
+//        interactionToIngredients.put("fiber", Arrays.asList("broccoli", "apples", "beans", "whole grains", "fiber"));
+//
+//        List<String> avoidList = new ArrayList<>();
+//        List<String> moderationList = new ArrayList<>();
+//
+//        try {
+//            String query = URLEncoder.encode(medName, "UTF-8");
+//            String apiUrl = "https://api.fda.gov/drug/label.json?search=openfda.generic_name:" + query + "&limit=1";
+//            HttpURLConnection conn = (HttpURLConnection) new URL(apiUrl).openConnection();
+//            conn.setRequestMethod("GET");
+//
+//            if (conn.getResponseCode() != 200) return interactions;
+//
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+//            StringBuilder result = new StringBuilder();
+//            String line;
+//            while ((line = reader.readLine()) != null) result.append(line);
+//            reader.close();
+//
+//            JSONObject json = new JSONObject(result.toString());
+//            JSONArray results = json.optJSONArray("results");
+//            if (results != null && results.length() > 0) {
+//                JSONObject medInfo = results.getJSONObject(0);
+//                if (medInfo.has("drug_interactions")) {
+//                    JSONArray interactionsArray = medInfo.getJSONArray("drug_interactions");
+//                    for (int i = 0; i < interactionsArray.length(); i++) {
+//                        String interactionText = interactionsArray.getString(i).toLowerCase();
+//                        for (Map.Entry<String, List<String>> entry : interactionToIngredients.entrySet()) {
+//                            for (String term : entry.getValue()) {
+//                                if (interactionText.contains(term.toLowerCase())) {
+//                                    switch (entry.getKey()) {
+//                                        case "vitamin K":
+//                                            moderationList.add("Vitamin K (e.g., spinach, kale)");
+//                                            break;
+//                                        case "fiber":
+//                                            moderationList.add("Fiber (e.g., beans, whole grains)");
+//                                            break;
+//                                        default:
+//                                            avoidList.add(entry.getKey());
+//                                            break;
+//                                    }
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//
+//            if (!avoidList.isEmpty()) interactions.add("Avoid: " + String.join(", ", avoidList));
+//            if (!moderationList.isEmpty()) interactions.add("Moderation: " + String.join(", ", moderationList));
+//
+//        } catch (Exception e) {
+//            Log.e("OpenFDA", "Exception: " + e.getMessage());
+//        }
+//        return interactions;
+//    }
+
+
     private List<String> getFoodInteractionsFromOpenFDA(String medName) {
+        Log.d("OpenFDA", ">> getFoodInteractionsFromOpenFDA CALLED for: " + medName); // <--- add this
+
         List<String> interactions = new ArrayList<>();
         Map<String, List<String>> interactionToIngredients = new HashMap<>();
         interactionToIngredients.put("grapefruit", Arrays.asList("grapefruit", "grapefruit juice"));
@@ -339,10 +408,15 @@ public class FoodManager extends AppCompatActivity {
         try {
             String query = URLEncoder.encode(medName, "UTF-8");
             String apiUrl = "https://api.fda.gov/drug/label.json?search=openfda.generic_name:" + query + "&limit=1";
+            Log.d("OpenFDA", "Querying OpenFDA with medName: " + medName);
+            Log.d("OpenFDA", "Encoded query URL: " + apiUrl);
             HttpURLConnection conn = (HttpURLConnection) new URL(apiUrl).openConnection();
             conn.setRequestMethod("GET");
 
-            if (conn.getResponseCode() != 200) return interactions;
+            if (conn.getResponseCode() != 200) {
+                Log.e("OpenFDA", "API call failed with response code: " + conn.getResponseCode());
+                return interactions;
+            }
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder result = new StringBuilder();
@@ -352,27 +426,43 @@ public class FoodManager extends AppCompatActivity {
 
             JSONObject json = new JSONObject(result.toString());
             JSONArray results = json.optJSONArray("results");
+
             if (results != null && results.length() > 0) {
                 JSONObject medInfo = results.getJSONObject(0);
-                if (medInfo.has("drug_interactions")) {
-                    JSONArray interactionsArray = medInfo.getJSONArray("drug_interactions");
-                    for (int i = 0; i < interactionsArray.length(); i++) {
-                        String interactionText = interactionsArray.getString(i).toLowerCase();
-                        for (Map.Entry<String, List<String>> entry : interactionToIngredients.entrySet()) {
-                            for (String term : entry.getValue()) {
-                                if (interactionText.contains(term.toLowerCase())) {
-                                    switch (entry.getKey()) {
-                                        case "vitamin K":
-                                            moderationList.add("Vitamin K (e.g., spinach, kale)");
-                                            break;
-                                        case "fiber":
-                                            moderationList.add("Fiber (e.g., beans, whole grains)");
-                                            break;
-                                        default:
-                                            avoidList.add(entry.getKey());
-                                            break;
+
+                // Scan multiple text sections
+                String[] fieldsToCheck = new String[] {
+                        "drug_interactions", "warnings", "precautions",
+                        "description", "clinical_pharmacology", "contraindications", "warnings_and_cautions"
+                };
+
+                for (String field : fieldsToCheck) {
+                    if (medInfo.has(field)) {
+                        JSONArray sectionArray = medInfo.getJSONArray(field);
+                        for (int i = 0; i < sectionArray.length(); i++) {
+                            String interactionText = sectionArray.getString(i).toLowerCase();
+
+                            for (Map.Entry<String, List<String>> entry : interactionToIngredients.entrySet()) {
+                                for (String term : entry.getValue()) {
+                                    if (interactionText.contains(term.toLowerCase())) {
+                                        switch (entry.getKey()) {
+                                            case "vitamin K":
+                                                if (!moderationList.contains("Vitamin K (e.g., spinach, kale)")) {
+                                                    moderationList.add("Vitamin K (e.g., spinach, kale)");
+                                                }
+                                                break;
+                                            case "fiber":
+                                                if (!moderationList.contains("Fiber (e.g., beans, whole grains)")) {
+                                                    moderationList.add("Fiber (e.g., beans, whole grains)");
+                                                }
+                                                break;
+                                            default:
+                                                if (!avoidList.contains(entry.getKey())) {
+                                                    avoidList.add(entry.getKey());
+                                                }
+                                                break;
+                                        }
                                     }
-                                    break;
                                 }
                             }
                         }
@@ -383,11 +473,15 @@ public class FoodManager extends AppCompatActivity {
             if (!avoidList.isEmpty()) interactions.add("Avoid: " + String.join(", ", avoidList));
             if (!moderationList.isEmpty()) interactions.add("Moderation: " + String.join(", ", moderationList));
 
+            Log.d("OpenFDA", "Extracted Interactions: " + interactions);
+
         } catch (Exception e) {
             Log.e("OpenFDA", "Exception: " + e.getMessage());
         }
+
         return interactions;
     }
+
 
     // Determines the best diet tag to use based on conditions + preferences.
     private String determineDietFromInputs(List<String> conditions, List<String> foodPreferences) {

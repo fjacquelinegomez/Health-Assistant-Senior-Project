@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -55,6 +56,13 @@ public class Search extends AppCompatActivity {
                 R.array.medication_filters,
                 android.R.layout.simple_spinner_item
         );
+        Button test2 = findViewById(R.id.picture);
+        Intent intent = getIntent();
+        String str = intent.getStringExtra("message_key");
+
+        search = findViewById(R.id.searchView); // <-- initialize BEFORE using it
+        search.setQuery(str, true);
+        test2.setOnClickListener(v -> startActivity(new Intent(Search.this, BarcodeScannerActivity.class)));
 
         // Specify the layout to use when the list of choices appears
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -75,15 +75,15 @@ public class RegisterActivity2 extends AppCompatActivity {
         });
 
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+//            return insets;
+//        });
     }
 
 
-    //method for capturing the data from the input fields
+    //method for capturing the data from the input fields (new encrypted version)
     private void saveNames(){
         String uName = fullname.getText().toString().trim();
         String uUsername = username.getText().toString().trim();
@@ -94,15 +94,19 @@ public class RegisterActivity2 extends AppCompatActivity {
         }
 
 
-        // Data structure to save name and username
+        // Encrypt the user input before saving, (new)
+        String encryptedName = EncryptionUtils.encrypt(uName);
+        String encryptedUsername = EncryptionUtils.encrypt(uUsername);
+
+        // Data structure to save name and username (encryption new)
         HashMap<String, Object> userData = new HashMap<>();
-        userData.put("fullName", uName);
-        userData.put("username", uUsername);
+        userData.put("fullName", encryptedName);
+        userData.put("username", encryptedUsername);
 
         // Save data to Firebase
         databaseRef.setValue(userData)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Data saved successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Data saved securely! 🔐", Toast.LENGTH_SHORT).show();
 
                     // Navigate to Home Screen after data is saved
                     //Intent intent = new Intent(RegisterActivity2.this, ProfileCustomization.class);

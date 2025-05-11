@@ -56,7 +56,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Vi
         // Edit button functionality
         holder.editButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, AddMedication.class);
-            intent.putExtra("medicationId", medication.getId()); // passes in the userMed document
+            intent.putExtra("medicationId", medication.getUserId()); // passes in the userMed document
             context.startActivity(intent);
         });
 
@@ -70,7 +70,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Vi
 
                 // Updates new pills taken in firestore
                 FirebaseFirestore database = FirebaseFirestore.getInstance();
-                database.collection("userMedications").document(medication.getId())
+                database.collection("userMedications").document(medication.getUserId())
                         .update("pillsTaken", newPillsTaken)
                         .addOnSuccessListener(aVoid -> {
                             // refreshes the UI so changes are reflected

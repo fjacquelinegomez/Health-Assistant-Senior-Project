@@ -11,26 +11,34 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthassistant.databinding.ActivityMedicationManager2Binding;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Query;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.List;
 
 public class MedicationManager2 extends AppCompatActivity {
     private List<Medication> medicationList = new ArrayList<>();
     private MedicationAdapter medicationAdapter;
-    private ActivityMedicationManager2Binding binding;
+    ActivityMedicationManager2Binding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication_manager2);
 
-        // Bottom bar navigation functionality
+        /** Bottom bar navigation functionality **/
         binding = ActivityMedicationManager2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -65,50 +73,72 @@ public class MedicationManager2 extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
-        // Reference to the user's saved medications
+        // Gets a reference to the user's saved medications
         CollectionReference userMedicationRef = db.collection("userMedications");
 
-        // Pull the user's saved medications from the database
+        // Pulls all of the user's saved medication from the database
+        // Filters the userMedications collection to only show the user's saved medications
         String currentUserId = auth.getCurrentUser().getUid();
         userMedicationRef.whereEqualTo("userID", currentUserId)
-                .get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        medicationList.clear();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            int totalPills = document.getLong("totalPills").intValue();
-                            int pillsTaken = document.getLong("pillsTaken").intValue();
-                            String userKey = document.getId();
-                            String expirationDate = document.getString("expirationDate");
-                            String medicationForm = document.getString("medicationForm");
+            .get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                medicationList.clear();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    // Grabs all the user's inputted information about the medication
+                    int totalPills = document.getLong("totalPills").intValue();
+                    int pillsTaken = document.getLong("pillsTaken").intValue();
+                    String userKey = document.getId();
+                    String expirationDate = document.getString("expirationDate");
+                    String medicationForm = document.getString("medicationForm");
 
-                            // Fetch medication reference for additional info (medication name and type)
-                            DocumentReference medRef = document.getDocumentReference("medicationRef");
-                            if (medRef != null) {
-                                medRef.get().addOnCompleteListener(medTask -> {
-                                    if (medTask.isSuccessful() && medTask.getResult().exists()) {
-                                        String name = medTask.getResult().getString("Name");
-                                        String type = medTask.getResult().getString("type"); // Fetch the type
+                    // Grabs the reference of the medication for extra information (medication name)
+                    DocumentReference medRef = document.getDocumentReference("medicationRef");
+                    if (medRef != null) {
+                        medRef.get().addOnCompleteListener(medTask -> {
+                            if (medTask.isSuccessful() && medTask.getResult().exists()) {
+                                String name = medTask.getResult().getString("Name");
 
-                                        Medication medication = new Medication(name, medicationForm, expirationDate, pillsTaken, totalPills, userKey, type);
-                                        medicationList.add(medication);
-                                        medicationAdapter.notifyDataSetChanged();
-                                    } else {
-                                        Log.e("Firestore", "Error fetching medication", medTask.getException());
-                                    }
-                                });
+                                Medication medication = new Medication(name, medicationForm, expirationDate, pillsTaken, totalPills, userKey);
+                                medicationList.add(medication);
+                                medicationAdapter.notifyDataSetChanged();
+                            } else {
+                                Log.e("Firestore", "Error fetching medication", medTask.getException());
                             }
+                        });
+                    }
+                }
+
+            } else {
+                Log.e("FirestoreError", "Error loading medications", task.getException());
+            }
+        });
+        /**
+        // Retrieve data from Firestore and populate the RecyclerView
+        medicationRef.get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        medicationList.clear(); // Clear the list before adding new data
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Medication medication = document.toObject(Medication.class);
+                            medication.setKey(document.getId());  // Set the Firestore document ID as the key
+                            medicationList.add(medication);
                         }
+                        Log.d("MedicationManager", "Loaded medications: " + medicationList.size()); // Log the size
+                        medicationAdapter.notifyDataSetChanged(); // Notify the adapter to update the UI
                     } else {
+                        Toast.makeText(MedicationManager2.this, "Failed to load medications", Toast.LENGTH_SHORT).show();
                         Log.e("FirestoreError", "Error loading medications", task.getException());
+
                     }
                 });
+         **/
 
         // Add Medication Button
         Button button = findViewById(R.id.addMedicationButton);
         button.setOnClickListener(v -> startActivity(new Intent(MedicationManager2.this, Search.class)));
     }
 
-    // This method is called when data is fetched from Firestore to update the list
+    // This method is called when data is fetched from Firestore, to set the list.
     private void updateMedicationList(List<Medication> medications) {
         medicationList.clear();
         medicationList.addAll(medications);
@@ -133,27 +163,6 @@ public class MedicationManager2 extends AppCompatActivity {
     }
 }
 
-
-/**
- // Retrieve data from Firestore and populate the RecyclerView
- medicationRef.get()
- .addOnCompleteListener(task -> {
- if (task.isSuccessful()) {
- medicationList.clear(); // Clear the list before adding new data
- for (QueryDocumentSnapshot document : task.getResult()) {
- Medication medication = document.toObject(Medication.class);
- medication.setKey(document.getId());  // Set the Firestore document ID as the key
- medicationList.add(medication);
- }
- Log.d("MedicationManager", "Loaded medications: " + medicationList.size()); // Log the size
- medicationAdapter.notifyDataSetChanged(); // Notify the adapter to update the UI
- } else {
- Toast.makeText(MedicationManager2.this, "Failed to load medications", Toast.LENGTH_SHORT).show();
- Log.e("FirestoreError", "Error loading medications", task.getException());
-
- }
- });
- **/
 /**
 package com.example.healthassistant;
 

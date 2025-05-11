@@ -1,0 +1,242 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFE8ED"
+    tools:context=".Weight_HealthGoal">
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header CardView -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/BloodSugarGoalsCard"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#FAEDCB"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="15dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.05" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/BloodSugarHeaderText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Weight"
+                        android:textColor="#000000"
+                        android:textSize="28sp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Let's set a goal for your weight and track your progress for a healthier lifestyle ⚖️🎯"
+                android:textAlignment="center"
+                android:textColor="#555"
+                android:textSize="16sp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="#FAF3DD"> <!-- You can change this color -->
+                <!-- Goal Input Section -->
+                <LinearLayout
+                    android:id="@+id/goalInputSection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="16dp">
+                    <EditText
+                        android:id="@+id/inputGoalMin"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:hint="Min (lb)"
+                        android:inputType="number"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp"
+                        android:fontFamily="@font/poppins_medium" />
+                    <EditText
+                        android:id="@+id/inputGoalMax"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:hint="Max (lb)"
+                        android:inputType="number"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp"
+                        android:fontFamily="@font/poppins_medium" />
+                    <Button
+                        android:id="@+id/setGoalButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Set Goal"
+                        android:textColor="#FFFF"
+                        android:fontFamily="@font/poppins_bold"
+                        android:backgroundTint="#000000"
+                        android:elevation="2dp"
+                        android:padding="12dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:id="@+id/goalBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/goal_section_background"
+                android:padding="12dp"
+                android:layout_marginTop="0dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp">
+                <TextView
+                    android:id="@+id/goalTitleDisplay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Goal"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textColor="#000"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"/>
+                <!-- Goal Display Section -->
+                <TextView
+                    android:id="@+id/goalDisplay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Goal"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/editGoalButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Edit Goal"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#FFFF"
+                android:backgroundTint="#000000"
+                android:elevation="2dp"
+                android:textSize="16sp"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone" />
+
+            <!-- Feedback Message -->
+            <TextView
+                android:id="@+id/goalFeedbackText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="You're within your goal range 🎯"
+                android:fontFamily="@font/poppins_medium"
+                android:textAlignment="center"
+                android:textColor="#555"
+                android:textSize="14sp"  />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/weightProgressChart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Log Weight Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Log Weight"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#000"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/inputWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter today’s weight (lb)"
+                android:inputType="numberDecimal"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Save Button -->
+            <Button
+                android:id="@+id/saveWeightButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save Weight"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#FFFF"
+                android:backgroundTint="#000000"
+                android:elevation="2dp"
+                android:textSize="16sp"
+                android:layout_marginBottom="24dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_background"
+        app:itemIconSize="35dp"
+        app:itemIconTint="@drawable/item_selector"
+        app:itemPaddingBottom="1dp"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_taskbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

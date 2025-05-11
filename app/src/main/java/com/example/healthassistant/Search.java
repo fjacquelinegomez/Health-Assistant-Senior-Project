@@ -84,6 +84,9 @@ public class Search extends AppCompatActivity {
             }
         });
 
+        // Force this icon to show as selected
+        binding.bottomNavigationView.setSelectedItemId(R.id.searchMedication);
+
         // Bottom Navigation functionality
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -115,13 +118,6 @@ public class Search extends AppCompatActivity {
         adapter = new MedicationSearchAdapter(medicationList);
         recyclerView.setAdapter(adapter);
 
-        // Handle system insets for edge-to-edge layout
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
         // Search bar functionality
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -144,7 +140,7 @@ public class Search extends AppCompatActivity {
     private void searchMedication(String drugName) {
         Log.d("SearchMedication", "Searching for: " + drugName);
 
-        RxNormApiService service = RetrofitService.getClient().create(RxNormApiService.class);
+        RxNormApiService service = RetrofitService.getRxNormClient().create(RxNormApiService.class);
         service.searchDrugs(drugName).enqueue(new Callback<RxNormApiResponse>() {
             @Override
             public void onResponse(Call<RxNormApiResponse> call, Response<RxNormApiResponse> response) {

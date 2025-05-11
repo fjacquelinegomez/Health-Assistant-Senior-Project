@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     id 'com.google.gms.google-services'
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -30,6 +31,9 @@ android {
     buildFeatures {
         viewBinding true
     }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
 }
 dependencies {
 
@@ -39,7 +43,8 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.firebase.database // realtime database
     implementation libs.firebase.auth // authentication database
-    implementation libs.firebase.firestore // firestore databases
+    implementation libs.firebase.firestore
+    implementation libs.core.ktx// firestore databases
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
@@ -82,4 +87,10 @@ dependencies {
     // for notifications
     implementation 'androidx.core:core:1.7.0'
     implementation 'androidx.work:work-runtime:2.7.0'
+    //image portion of food recs
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+    //blood sugar graphs
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
 }

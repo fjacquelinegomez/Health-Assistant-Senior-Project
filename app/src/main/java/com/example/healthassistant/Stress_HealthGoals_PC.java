@@ -62,15 +62,10 @@ public class Stress_HealthGoals_PC extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_stress_health_goals_pc);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
 
         /*bottom bar navigation functionality*/
         BottomNavigationView nav = findViewById(R.id.bottomNavigationView);
+        nav.setSelectedItemId(R.id.healthGoals);  // Set the active tab
         nav.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:

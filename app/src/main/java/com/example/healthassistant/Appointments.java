@@ -3,28 +3,45 @@ package com.example.healthassistant;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.example.healthassistant.databinding.ActivityAppointmentsBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Appointments extends AppCompatActivity {
     ActivityAppointmentsBinding binding;
+    private DatabaseReference databaseRef;
+    private String userId;
 
     private EditText dateInput, typeInput, providerInput;
-    private Button addAppointmentButton;
-    private DatabaseReference appointmentsRef;
-    private FirebaseUser currentUser;
+    private TableLayout apptLogTable;
+
+    private Button apptEdit;
+    private boolean isEditing = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,22 +50,38 @@ public class Appointments extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
 
-        if (currentUser != null) {
-            appointmentsRef = FirebaseDatabase.getInstance().getReference("appointments").child(currentUser.getUid());
-        }
+        // Initialize Firebase
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("appointments");
 
 
         // Find views from layout
-        dateInput = findViewById(R.id.dateReminderLinearLayout).findViewById(R.id.inputApptDate); // if you set an id for EditText
-        typeInput = findViewById(R.id.typeAppointmentInputLinearLayout).findViewById(R.id.inputApptType); // make sure your EditText has id "type"
-        providerInput = findViewById(R.id.providerAppointmentInputLinearLayout).findViewById(R.id.inputApptType); // and id "name"
-        addAppointmentButton = findViewById(R.id.addAppointmentButton);
+        dateInput = findViewById(R.id.inputApptDate); // if you set an id for EditText
+        typeInput = findViewById(R.id.inputApptType); // make sure your EditText has id "type"
+        providerInput = findViewById(R.id.inputApptDr); // and id "name"
+        apptLogTable = findViewById(R.id.appointmentsTableLayout);
+        apptEdit = findViewById(R.id.editAppointmentsTableButton);
 
-        // Button click listener
-        addAppointmentButton.setOnClickListener(v -> addAppointment());
+
+        Button btnCreateLog = findViewById(R.id.addAppointmentButton);
+        btnCreateLog.setOnClickListener(view -> createLog());
+
+        apptEdit.setOnClickListener(v -> {
+            isEditing = !isEditing;
+            apptEdit.setText(isEditing ? "Save Table" : "Edit Table");
+            loadApptLogs(); // Refresh table with or without delete buttons
+        });
+
+
+        CardView createReminderCard = findViewById(R.id.createReminderCard);
+        createReminderCard.setOnClickListener(v -> {
+            Toast.makeText(this, "This feature is still a WIP", Toast.LENGTH_SHORT).show();
+            Log.e("WIP_CARD", "Create Reminder card clicked - feature not implemented yet.");
+        });
+
+        loadApptLogs(); // Load data when the activity starts
+
 
         // Bottom Navigation
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -73,87 +106,130 @@ public class Appointments extends AppCompatActivity {
         });
     }
 
-    private void addAppointment() {
+    // Create Log Function
+    private void createLog() {
         String date = dateInput.getText().toString().trim();
         String type = typeInput.getText().toString().trim();
         String provider = providerInput.getText().toString().trim();
 
         if (TextUtils.isEmpty(date) || TextUtils.isEmpty(type) || TextUtils.isEmpty(provider)) {
-            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String appointmentId = appointmentsRef.push().getKey();  // Unique ID
-        Appointment appointment = new Appointment(date, type, provider);
+        // Create a unique key for each log
+        String logId = databaseRef.push().getKey();
 
-        if (appointmentId != null) {
-            appointmentsRef.child(appointmentId).setValue(appointment)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            // Add row to table
-                            addAppointmentToTable(appointment);
-                            Toast.makeText(this, "Appointment added", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(this, "Failed to save appointment", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
+        // Create log entry
+        Map<String, String> logEntry = new HashMap<>();
+        logEntry.put("date", date);
+        logEntry.put("type", type);
+        logEntry.put("provider", provider);
 
+        // Save to Firebase
+        databaseRef.child(logId).setValue(logEntry)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Log created successfully", Toast.LENGTH_SHORT).show();
+                    loadApptLogs(); // Refresh the table
+                    clearInputFields();
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed to create log", Toast.LENGTH_SHORT).show());
+    }
+
+    // Clear Input Fields
+    private void clearInputFields() {
         dateInput.setText("");
         typeInput.setText("");
         providerInput.setText("");
     }
 
-    private void addAppointmentToTable(Appointment appointment) {
-        TableRow row = new TableRow(this);
-        row.setLayoutParams(new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT,
-                TableRow.LayoutParams.WRAP_CONTENT
-        ));
+    // Load Logs from Firebase
+    private void loadApptLogs() {
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                apptLogTable.removeAllViews(); // Clear table before loading new data
 
-        TextView dateCol = new TextView(this);
-        dateCol.setText(appointment.getDate());
-        dateCol.setPadding(10, 10, 10, 10);
+                // Add table headers
+                TableRow headerRow = new TableRow(Appointments.this);
+                headerRow.addView(createStyledHeader("Date"));
+                headerRow.addView(createStyledHeader("Type"));
+                headerRow.addView(createStyledHeader("Provider"));
+                //if (isEditing) {
+                //headerRow.addView(createStyledHeader("Delete"));
+                //}
+                apptLogTable.addView(headerRow);
 
-        TextView typeCol = new TextView(this);
-        typeCol.setText(appointment.getType());
-        typeCol.setPadding(10, 10, 10, 10);
+                for (DataSnapshot logSnapshot : snapshot.getChildren()) {
+                    String logId = logSnapshot.getKey();
+                    String date = logSnapshot.child("date").getValue(String.class);
+                    String type = logSnapshot.child("type").getValue(String.class);
+                    String provider = logSnapshot.child("provider").getValue(String.class);
 
-        TextView providerCol = new TextView(this);
-        providerCol.setText(appointment.getProvider());
-        providerCol.setPadding(10, 10, 10, 10);
+                    TableRow row = new TableRow(Appointments.this);
+                    row.addView(createTextView(date));
+                    row.addView(createTextView(type));
+                    row.addView(createTextView(provider));
 
-        row.addView(dateCol);
-        row.addView(typeCol);
-        row.addView(providerCol);
+                    // Add Delete Button
+                    if (isEditing) {
+                        Button deleteButton = new Button(Appointments.this);
+                        deleteButton.setText("Delete");
+                        deleteButton.setTextColor(getResources().getColor(android.R.color.white));
+                        deleteButton.setTextSize(14);
+                        deleteButton.setTypeface(ResourcesCompat.getFont(Appointments.this, R.font.poppins_medium));
+                        deleteButton.setPadding(16, 8, 16, 8);
+                        deleteButton.setOnClickListener(view -> deleteLog(logId));
+                        row.addView(deleteButton);
+                    }
 
-        //appointmentTable.addView(row);
+                    apptLogTable.addView(row);
+                }
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Appointments.this, "Failed to load logs", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-    public class Appointment {
-        private String date;
-        private String type;
-        private String provider;
 
-        public Appointment() {
-            // Required for Firebase
-        }
 
-        public Appointment(String date, String type, String provider) {
-            this.date = date;
-            this.type = type;
-            this.provider = provider;
-        }
+    // make sure the headers appears the exact same as the xml file
+    private TextView createStyledHeader(String text) {
+        TextView textView = new TextView(this);
+        textView.setText(text);
+        textView.setPadding(16, 16, 16, 16);
+        textView.setTextSize(17);
+        textView.setTextColor(getResources().getColor(android.R.color.black));
+        textView.setBackgroundResource(R.drawable.cell_shape_header); // Your drawable
+        textView.setGravity(Gravity.CENTER);
+        textView.setTypeface(ResourcesCompat.getFont(this, R.font.poppins_medium)); // Your font
+        return textView;
+    }
 
-        public String getDate() {
-            return date;
-        }
+    // Helper Method: Create a TextView for Table Rows
+    private TextView createTextView(String text) {
+        TextView textView = new TextView(this);
+        textView.setText(text);
+        textView.setPadding(8, 8, 8, 8);
+        textView.setGravity(Gravity.CENTER);
+        textView.setTextSize(16);
+        textView.setTextColor(getResources().getColor(android.R.color.black));
+        textView.setTypeface(ResourcesCompat.getFont(this, R.font.poppins_medium)); // Apply font
+        return textView;
+    }
 
-        public String getType() {
-            return type;
-        }
-
-        public String getProvider() {
-            return provider;
-        }
+    // Delete Log Function
+    private void deleteLog(String logId) {
+        databaseRef.child(logId).removeValue()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Log deleted", Toast.LENGTH_SHORT).show();
+                    loadApptLogs(); // Refresh the table
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed to delete log", Toast.LENGTH_SHORT).show());
     }
 }

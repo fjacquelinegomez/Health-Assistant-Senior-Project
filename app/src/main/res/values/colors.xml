@@ -12,4 +12,5 @@
     <color name="st1_orange">#FFA500</color>
     <color name="st2_orange">#CC5500</color>
     <color name="hyper_red">#FF0000</color>
+    <color name="light_grey">#E2E2E2</color> <!-- medication manager color -->
 </resources>

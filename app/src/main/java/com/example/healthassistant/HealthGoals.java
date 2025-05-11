@@ -29,7 +29,7 @@ import java.util.Map;
 public class HealthGoals extends AppCompatActivity {
 
 
-    private ImageButton stress_hg_btn, cholesterol_hg_btn, bp_hg_btn;
+    private ImageButton stress_hg_btn, cholesterol_hg_btn, bp_hg_btn, bs_hg_btn, weight_hg_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +37,9 @@ public class HealthGoals extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_health_goals);
 
-
-
         /*bottom bar navigation functionality*/
-
         BottomNavigationView nav = findViewById(R.id.bottomNavigationView);
-
+        nav.setSelectedItemId(R.id.healthGoals);  // Set the active tab
         nav.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
@@ -91,6 +88,22 @@ public class HealthGoals extends AppCompatActivity {
         // Blood Pressure Button Logic
         bp_hg_btn.setOnClickListener(v -> {
             Intent intent = new Intent(HealthGoals.this, BloodPressure_HealthGoals.class);
+            startActivity(intent);
+        });
+
+        bs_hg_btn = findViewById(R.id.BloodSLogButton);
+
+        // Blood Sugar Button Logic
+        bs_hg_btn.setOnClickListener(v -> {
+            Intent intent = new Intent(HealthGoals.this, BloodSugar_HealthGoals.class);
+            startActivity(intent);
+        });
+
+        weight_hg_btn = findViewById(R.id.WeightLogButton);
+
+        // Blood Sugar Button Logic
+        weight_hg_btn.setOnClickListener(v -> {
+            Intent intent = new Intent(HealthGoals.this, Weight_HealthGoal.class);
             startActivity(intent);
         });
 

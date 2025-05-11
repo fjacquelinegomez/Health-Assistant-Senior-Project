@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -76,6 +77,15 @@ public class SymptomLogs extends AppCompatActivity {
 
 
         loadSympLogs(); // Load data when the activity starts
+
+
+
+        Button sympbtn = (Button) findViewById(R.id.btnAnalyzeSymp);
+        sympbtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(SymptomLogs.this, SymptomAnalysis.class));
+            }
+        });
 
 
         /*bottom bar navigation functionality*/

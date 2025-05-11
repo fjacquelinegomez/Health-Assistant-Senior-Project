@@ -10,7 +10,6 @@
     tools:context=".FoodManager">
 
     <!--bottom toolbar and search box-->
-
     <LinearLayout
         android:layout_width="409dp"
         android:layout_height="563dp"
@@ -34,9 +33,7 @@
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
             app:layout_constraintTop_toBottomOf="@id/searchView" />
-
     </LinearLayout>
-
 
     <!--header-->
     <androidx.cardview.widget.CardView
@@ -104,23 +101,6 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.05" />
-
-            <Spinner
-                android:id="@+id/filterSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_margin="16dp"
-                android:spinnerMode="dropdown"
-                android:visibility="visible"
-                tools:layout_editor_absoluteX="-59dp"
-                tools:layout_editor_absoluteY="468dp" />
-            <Button
-                android:id="@+id/picture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:text="scan" />
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

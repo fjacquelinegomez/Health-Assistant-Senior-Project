@@ -107,7 +107,7 @@ public class ProfileCustomization extends AppCompatActivity {
 
         //logic when a user presses health goals
         btnHG.setOnClickListener(v ->{
-            Intent intent = new Intent(ProfileCustomization.this, HealthGoals_PC.class);
+            Intent intent = new Intent(ProfileCustomization.this, HealthGoals.class);
             activityLauncher.launch(intent);
         });
 
@@ -135,38 +135,81 @@ public class ProfileCustomization extends AppCompatActivity {
             //databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             databaseRef.addValueEventListener(new ValueEventListener() {
 
+
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    if (snapshot.exists()) {
+//                        String fullName = snapshot.child("fullName").getValue(String.class);
+//                        if (fullName != null && !fullName.isEmpty()) {
+//                            String decryptedFullName = EncryptionUtils.decrypt(fullName); // NEW, encrypts the name from firebase
+//                            String firstName = decryptedFullName.split(" ")[0];  // Extract first name
+//
+//                            if (!fromSettings) {
+//                                greeting.setText(String.format("Hello %s!", firstName));
+//                            } else {
+//                                greeting.setText(getString(R.string.header_pc_settings)); // "Profile Customization"
+//                                description.setText(getString(R.string.description_pc_settings)); // "Profile Customization"
+//                            }
+//                        }
+//                        else {
+//                            // If no name exists in Firebase, set the default greeting
+//                            if (!fromSettings) {
+//                                greeting.setText("Hello!");
+//                            } else {
+//                                greeting.setText(getString(R.string.header_pc_settings));
+//                            }
+//                        }
+//
+//                        // Fetch completion status
+//                        isMedicalHistoryCompleted = snapshot.child("medicalHistoryCompleted").getValue(Boolean.class) != null &&
+//                                snapshot.child("medicalHistoryCompleted").getValue(Boolean.class);
+//                        isHealthGoalsCompleted = snapshot.child("healthGoalsCompleted").getValue(Boolean.class) != null &&
+//                                snapshot.child("healthGoalsCompleted").getValue(Boolean.class);
+//                        isDietaryRestrictionsCompleted = snapshot.child("dietaryRestrictionsCompleted").getValue(Boolean.class) != null &&
+//                                snapshot.child("dietaryRestrictionsCompleted").getValue(Boolean.class);
+//                        isFoodPreferencesCompleted = snapshot.child("foodPreferencesCompleted").getValue(Boolean.class) != null &&
+//                                snapshot.child("foodPreferencesCompleted").getValue(Boolean.class);
+//
+//                        // Update button states based on completion status
+//                        updateButtonStates();
+//                    } else {
+//                        greeting.setText("Hello!");
+//                    }
+//                }
+
+//code above was replaced with below
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         String fullName = snapshot.child("fullName").getValue(String.class);
-                        if (fullName != null && !fullName.isEmpty()) {
-                            String firstName = fullName.split(" ")[0];  // Extract first name
+                        String firstName = "User"; // default fallback
 
-                            if (!fromSettings) {
-                                greeting.setText(String.format("Hello %s!", firstName));
-                            } else {
-                                greeting.setText(getString(R.string.header_pc_settings)); // "Profile Customization"
-                                description.setText(getString(R.string.description_pc_settings)); // "Profile Customization"
+                        if (fullName != null && !fullName.isEmpty()) {
+                            try {
+                                String decryptedFullName = EncryptionUtils.decrypt(fullName);
+                                if (decryptedFullName != null && !decryptedFullName.isEmpty()) {
+                                    String[] parts = decryptedFullName.split(" ");
+                                    if (parts.length > 0) {
+                                        firstName = parts[0];
+                                    }
+                                }
+                            } catch (Exception e) {
+                                Log.e("ProfileCustomization", "Failed to decrypt or parse full name", e);
                             }
                         }
-                        else {
-                            // If no name exists in Firebase, set the default greeting
-                            if (!fromSettings) {
-                                greeting.setText("Hello!");
-                            } else {
-                                greeting.setText(getString(R.string.header_pc_settings));
-                            }
+
+                        if (!fromSettings) {
+                            greeting.setText(String.format("Hello %s!", firstName));
+                        } else {
+                            greeting.setText(getString(R.string.header_pc_settings));
+                            description.setText(getString(R.string.description_pc_settings));
                         }
 
                         // Fetch completion status
-                        isMedicalHistoryCompleted = snapshot.child("medicalHistoryCompleted").getValue(Boolean.class) != null &&
-                                snapshot.child("medicalHistoryCompleted").getValue(Boolean.class);
-                        isHealthGoalsCompleted = snapshot.child("healthGoalsCompleted").getValue(Boolean.class) != null &&
-                                snapshot.child("healthGoalsCompleted").getValue(Boolean.class);
-                        isDietaryRestrictionsCompleted = snapshot.child("dietaryRestrictionsCompleted").getValue(Boolean.class) != null &&
-                                snapshot.child("dietaryRestrictionsCompleted").getValue(Boolean.class);
-                        isFoodPreferencesCompleted = snapshot.child("foodPreferencesCompleted").getValue(Boolean.class) != null &&
-                                snapshot.child("foodPreferencesCompleted").getValue(Boolean.class);
+                        isMedicalHistoryCompleted = Boolean.TRUE.equals(snapshot.child("medicalHistoryCompleted").getValue(Boolean.class));
+                        isHealthGoalsCompleted = Boolean.TRUE.equals(snapshot.child("healthGoalsCompleted").getValue(Boolean.class));
+                        isDietaryRestrictionsCompleted = Boolean.TRUE.equals(snapshot.child("dietaryRestrictionsCompleted").getValue(Boolean.class));
+                        isFoodPreferencesCompleted = Boolean.TRUE.equals(snapshot.child("foodPreferencesCompleted").getValue(Boolean.class));
 
                         // Update button states based on completion status
                         updateButtonStates();
@@ -174,6 +217,7 @@ public class ProfileCustomization extends AppCompatActivity {
                         greeting.setText("Hello!");
                     }
                 }
+
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {

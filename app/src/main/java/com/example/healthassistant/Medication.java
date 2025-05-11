@@ -20,8 +20,6 @@ public class Medication {
     private int pillsTaken;
     private int totalPills;
     private String additionalNotes;
-    private String type;
-    private String tty;
     /*
     private String expireDate;
     private int totalPills;
@@ -34,22 +32,19 @@ public class Medication {
 
     // Constructor
     //public Medication(String name, String expireDate, int totalPills, int dosesTaken, String dosageForm, String key) {
-    public Medication(String name, String medicationForm, String expirationDate, int pillsTaken, int totalPills, String Id, String type) {
+    public Medication(String name, String medicationForm, String expirationDate, int pillsTaken, int totalPills, String Id) {
         this.name = name;
         this.medicationForm = medicationForm;
         this.expirationDate = expirationDate;
         this.pillsTaken = pillsTaken;
         this.totalPills = totalPills;
         this.Id = Id;
-        this.type = type;
     }
 
     // Getter Methods
     public String getName() { return name; }
     public String getRxcui() { return rxcui; }
     public String getId() { return Id; }
-    public String getType() {return type;}
-    public String getTty() {return tty;}
     public DocumentReference getMedicationRef() { return medicationRef; }
     public String getMedicationForm() { return medicationForm; }
     public int getDosageAmount() { return dosageAmount; }
@@ -72,8 +67,6 @@ public class Medication {
     public void setPillsTaken(int pillsTaken) {this.pillsTaken = pillsTaken; }
     public void setTotalPills(int totalPills) { this.totalPills = totalPills; }
     public void setAdditionalNotes(String additionalNotes) { this.additionalNotes = additionalNotes; }
-    public void setType(String type) {this.type = type;}
-    public void setTty(String tty) {this.tty = tty;}
 
     // Method that calculates if the medication is expiring soon, returns true if it's about to expire in 7 days
     public boolean isExpiringSoon(String expirationDate) {

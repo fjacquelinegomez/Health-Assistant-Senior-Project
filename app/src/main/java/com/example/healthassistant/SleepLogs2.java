@@ -49,11 +49,6 @@ public class SleepLogs2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sleep_logs2);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         // Initialize Firebase
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -74,6 +69,12 @@ public class SleepLogs2 extends AppCompatActivity {
             SleepEditButton.setText(SleepisEditing ? "Save Table" : "Edit Table");
             loadSleepLogs(); // Load data when the activity starts
         });
+
+
+        Button wipButton = findViewById(R.id.btnAnalyzeSleep);
+        wipButton.setOnClickListener(v ->
+                Toast.makeText(SleepLogs2.this, "Feature coming soon!", Toast.LENGTH_SHORT).show()
+        );
 
         loadSleepLogs(); // Load data when the activity starts
 
@@ -101,16 +102,6 @@ public class SleepLogs2 extends AppCompatActivity {
                     break;
             }
             return true;
-        });
-
-
-        // Adjust padding for system bars
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            v.setPadding(insets.getInsets(WindowInsetsCompat.Type.systemBars()).left,
-                    insets.getInsets(WindowInsetsCompat.Type.systemBars()).top,
-                    insets.getInsets(WindowInsetsCompat.Type.systemBars()).right,
-                    insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom);
-            return insets;
         });
 
     }

@@ -232,7 +232,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/todayMedicationCard"
                 android:layout_width="0dp"
-                android:layout_height="180dp"
+                android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -253,6 +253,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_gravity="center_vertical">
+                        <!-- Image stuff
                         <LinearLayout
                             android:id="@+id/medicationImageLayout"
                             android:layout_width="wrap_content"
@@ -264,46 +265,55 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/medication_image"
-                                android:layout_gravity="center" />
+                                android:layout_gravity="center"
+                                android:visibility="gone"/>
                         </LinearLayout>
+                        -->
+                        <ImageView
+                            android:id="@+id/timeLeftButton"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/move_to_previous_medication"
+                            android:layout_weight="1"
+                            android:layout_gravity="center_vertical"
+                            android:visibility="invisible"/>
+
                         <LinearLayout
                             android:id="@+id/medicationInfoLayout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
                             android:layout_weight="1"
+                            android:orientation="vertical"
                             android:paddingTop="10dp">
+
                             <TextView
+                                android:id="@+id/timeMedicationName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="MEDICATION NAME"
                                 android:layout_gravity="center_horizontal"
-                                android:fontFamily="@font/poppins_bold"
-                                android:textSize="19dp"
                                 android:layout_marginBottom="-10dip"
-                                android:textColor="#000000" />
-
-
-                            <!-- Button to choose time -->
-                            <Button
-                                android:id="@+id/setTimeButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_bold"
-                                android:text="Set Reminder Time"
-                                android:layout_gravity="center_horizontal"
-                                android:paddingTop="10dp"/>
-
+                                android:text="No medication found"
+                                android:textColor="#000000"
+                                android:textSize="19dp" />
                             <!-- TextView to show selected time -->
                             <TextView
-                                android:id="@+id/selectedTimeText"
+                                android:id="@+id/timeMedicationTime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/poppins_medium"
-                                android:text="No time selected"
                                 android:layout_gravity="center_horizontal"
-                                android:paddingTop="5dp"/>
+                                android:fontFamily="@font/poppins_medium"
+                                android:paddingTop="5dp"
+                                android:text=" " />
                         </LinearLayout>
+                        <ImageView
+                            android:id="@+id/timeRightButton"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/move_forward_in_medication"
+                            android:layout_weight="1"
+                            android:layout_gravity="center_vertical"
+                            android:visibility="invisible"/>
                     </LinearLayout>
                     <View
                         android:id="@+id/horizontal_line"
@@ -323,34 +333,14 @@
                             android:layout_weight="1"
                             android:gravity="center">
                             <Button
-                                android:id="@+id/skipButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/x_skip"
-                                android:text ="Skip"
-                                android:textAllCaps="false"
-                                android:textSize="20dp"
-                                android:backgroundTint="@android:color/white"/>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:gravity="center"></LinearLayout>
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center">
-                            <Button
-                                android:id="@+id/dislikeButton"
+                                android:id="@+id/takenButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:drawableLeft="@drawable/check_done"
-                                android:text ="Done"
+                                android:text ="Taken"
                                 android:textAllCaps="false"
                                 android:textSize="20dp"
-                                android:backgroundTint="@android:color/white"/>
+                                android:backgroundTint="@color/white"/>
                         </LinearLayout>
                     </LinearLayout>
                 </RelativeLayout>

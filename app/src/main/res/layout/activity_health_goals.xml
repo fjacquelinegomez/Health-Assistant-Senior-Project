@@ -10,6 +10,7 @@
 
 
 
+
     <!--header-->
     <androidx.cardview.widget.CardView
         android:id="@+id/HealthGoalsCard"
@@ -63,7 +64,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!--body-->
+    <!--body, new fixed the layout :)-->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -97,8 +98,6 @@
             android:alignmentMode="alignMargins"
             android:useDefaultMargins="true"
             android:layout_gravity="center">
-
-
 
 
             <!-- Stress button -->
@@ -163,8 +162,6 @@
 
             </LinearLayout>
 
-
-
             <!--Cholesterol log button-->
             <LinearLayout
                 android:layout_width="0dp"
@@ -195,7 +192,6 @@
                     android:textSize="20sp" />
 
             </LinearLayout>
-
 
             <!--Blood Sugar log button-->
 

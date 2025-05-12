@@ -30,6 +30,8 @@ public class Medication {
     private int totalPills;
     private String additionalNotes;
     private Map<String, Boolean> takenToday;
+    private String type;
+    private String tty;
 
     // Default constructor (needed for Firebase)
     public Medication() {}
@@ -137,6 +139,12 @@ public class Medication {
 
     public Map<String, Boolean> getTakenToday() { return takenToday; }
     public void setTakenToday(Map<String, Boolean> takenToday) { this.takenToday = takenToday; }
+
+    public String getType() {return type;}
+    public void setType(String type) {this.type = type;}
+
+    public String getTty() {return tty;}
+    public void setTty(String tty) {this.tty = tty;}
 
 
     // Helper methods
